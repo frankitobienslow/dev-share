@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="60.799164mm"
+   height="18.258835mm"
+   viewBox="0 0 60.799164 18.258835"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3 (0e150ed6c4, 2023-07-21)"
+   sodipodi:docname="DevShare logo.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#384bbf"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="2.9255612"
+     inkscape:cx="91.435448"
+     inkscape:cy="52.810381"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g1"
+     inkscape:export-bgcolor="#ffffff00"
+     showgrid="false" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-90.957483,-139.37057)">
+    <g
+       id="g1"
+       transform="translate(-83.488204,-55.601669)">
+      <g
+         id="g9"
+         transform="translate(0,-59.061718)">
+        <text
+           xml:space="preserve"
+           style="font-style:italic;font-variant:normal;font-weight:800;font-stretch:normal;font-size:16.9333px;font-family:sublima;-inkscape-font-specification:'sublima Ultra-Bold Italic';text-align:center;letter-spacing:-0.105833px;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:#ffff00;stroke-width:0;paint-order:stroke fill markers"
+           x="-280.10406"
+           y="-176.41924"
+           id="text5"
+           transform="rotate(-160.07831)"><tspan
+             sodipodi:role="line"
+             id="tspan5"
+             style="font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;font-size:16.9333px;font-family:sublima;-inkscape-font-specification:'sublima Ultra-Bold';stroke-width:0"
+             x="-280.15698"
+             y="-176.41924">&lt;</tspan></text>
+        <text
+           xml:space="preserve"
+           style="font-style:italic;font-variant:normal;font-weight:800;font-stretch:normal;font-size:16.9333px;font-family:sublima;-inkscape-font-specification:'sublima Ultra-Bold Italic';text-align:center;letter-spacing:-0.105833px;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:#ffff00;stroke-width:0;paint-order:stroke fill markers"
+           x="-278.66202"
+           y="-169.38589"
+           id="text6"
+           transform="rotate(-160.07831)"><tspan
+             sodipodi:role="line"
+             id="tspan6"
+             style="font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;font-size:16.9333px;font-family:sublima;-inkscape-font-specification:'sublima Ultra-Bold';stroke-width:0"
+             x="-278.71494"
+             y="-169.38589">&gt;</tspan></text>
+      </g>
+      <text
+         xml:space="preserve"
+         style="font-style:italic;font-variant:normal;font-weight:800;font-stretch:normal;font-size:12.7px;font-family:sublima;-inkscape-font-specification:'sublima Ultra-Bold Italic';text-align:center;letter-spacing:-0.529167px;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:#ffff00;stroke-width:0;paint-order:stroke fill markers"
+         x="218.93846"
+         y="208.5665"
+         id="text7"><tspan
+           sodipodi:role="line"
+           id="tspan7"
+           style="font-style:normal;font-variant:normal;font-weight:200;font-stretch:normal;font-size:12.7px;font-family:sublima;-inkscape-font-specification:'sublima Ultra-Light';letter-spacing:-0.529167px;stroke-width:0"
+           x="218.67387"
+           y="208.5665">hare</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;font-size:12.7px;font-family:sublima;-inkscape-font-specification:'sublima Ultra-Bold';text-align:center;letter-spacing:-0.529167px;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:#ffff00;stroke-width:0;paint-order:stroke fill markers"
+         x="186.67853"
+         y="208.5665"
+         id="text8"><tspan
+           sodipodi:role="line"
+           id="tspan8"
+           style="font-style:normal;font-variant:normal;font-weight:200;font-stretch:normal;font-size:12.7px;font-family:sublima;-inkscape-font-specification:'sublima Ultra-Light';letter-spacing:-0.529167px;stroke-width:0"
+           x="186.41394"
+           y="208.5665">Dev</tspan></text>
+    </g>
+  </g>
+</svg>

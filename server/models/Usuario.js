@@ -1,8 +1,5 @@
 const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = new Sequelize('devshare-db', 'tu_usuario', 'tu_contraseña', {
-    host: 'localhost',
-    dialect: 'mysql'
-});
+const sequelize = require('../db.js');
 
 const Usuario = sequelize.define('Usuario', {
     id: {
@@ -21,6 +18,11 @@ const Usuario = sequelize.define('Usuario', {
     apellido: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    email: { // Agregar campo email
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true // Asegúrate de que el email sea único
     },
     password: {
         type: DataTypes.STRING,

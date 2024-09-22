@@ -1,7 +1,9 @@
 const express = require('express');
 const mysql = require('mysql2');
 const dotenv = require('dotenv');
+const cors = require('cors'); // Importar cors
 const usuarioRoutes = require('./routes/usuarioRoutes'); // Asegúrate de tener este archivo
+const sequelize = require('./db.js');
 
 dotenv.config();
 
@@ -16,14 +18,12 @@ const connection = mysql.createConnection({
   database: process.env.DB_NAME,
 });
 
-// Conecta a la base de datos
-connection.connect((err) => {
-  if (err) {
-    console.error('Error conectando a la base de datos:', err.stack);
-    return;
-  }
-  console.log('Conectado a la base de datos MySQL');
-});
+// Middleware para habilitar CORS
+app.use(cors({
+  origin: 'http://localhost:8081', // Cambia esto a la URL de tu cliente
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 
 // Middleware para parsear JSON
 app.use(express.json());
@@ -51,3 +51,11 @@ app.use((err, req, res, next) => {
 app.listen(port, () => {
   console.log(`Servidor corriendo en http://localhost:${port}`);
 });
+
+sequelize.authenticate()
+    .then(() => {
+        console.log('Conexión a la base de datos establecida correctamente.');
+    })
+    .catch(err => {
+        console.error('No se pudo conectar a la base de datos:', err);
+    });

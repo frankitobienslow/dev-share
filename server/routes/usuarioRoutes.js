@@ -1,13 +1,17 @@
 const express = require('express');
-const UsuarioController = require('../controllers/usuarioController'); // Ajusta la ruta según tu estructura
+const UsuarioController = require('../controllers/usuarioController');
+const verificarToken = require('../middleware/authMiddleware'); // Importa tu middleware
 
 const router = express.Router();
 
 // Rutas para usuarios
-router.post('/', UsuarioController.createUsuario);       // Crear usuario
-router.get('/', UsuarioController.getUsuarios);       // Obtener todos los usuarios
-router.get('/:id', UsuarioController.getUsuarioById);    // Obtener un usuario por ID
-router.put('/:id', UsuarioController.updateUsuario);      // Actualizar usuario
-router.delete('/:id', UsuarioController.deleteUsuario);   // Eliminar usuario
+router.post('/', UsuarioController.createUsuario);       // Crear usuario (no necesita autenticación)
+router.get('/', verificarToken, UsuarioController.getUsuarios); // Obtener todos los usuarios (requiere autenticación)
+router.get('/:id', verificarToken, UsuarioController.getUsuarioById); // Obtener un usuario por ID (requiere autenticación)
+router.put('/:id', verificarToken, UsuarioController.updateUsuario); // Actualizar usuario (requiere autenticación)
+router.delete('/:id', verificarToken, UsuarioController.deleteUsuario); // Eliminar usuario (requiere autenticación)
+
+// Nueva ruta para login
+router.post('/login', UsuarioController.loginUsuario);   // Login de usuario (no necesita autenticación)
 
 module.exports = router;

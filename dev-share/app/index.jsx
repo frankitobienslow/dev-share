@@ -2,12 +2,11 @@ import React from 'react';
 import { View, Text, Pressable, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient'; // Para el gradiente de fondo
 import { useRouter } from 'expo-router'; // Para la navegación
-
 import { NativeWindStyleSheet } from "nativewind"; //<---Compatibilidad para React Native con NativeWind
+
 NativeWindStyleSheet.setOutput({
   default: "native",
 });
-
 const Home = () => {
   const router = useRouter(); // Para la navegación
 
@@ -38,6 +37,7 @@ const Home = () => {
         </Pressable>
       </View>
     </View>
+    
   );
 };
 

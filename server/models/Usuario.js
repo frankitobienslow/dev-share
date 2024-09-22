@@ -9,7 +9,8 @@ const Usuario = sequelize.define('Usuario', {
     },
     dni: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        unique: true // Asegúrate de que el DNI sea único también
     },
     nombre: {
         type: DataTypes.STRING,
@@ -19,7 +20,7 @@ const Usuario = sequelize.define('Usuario', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    email: { // Agregar campo email
+    email: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true // Asegúrate de que el email sea único

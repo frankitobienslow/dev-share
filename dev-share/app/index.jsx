@@ -3,6 +3,7 @@ import { View, Text, Pressable, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient'; // Para el gradiente de fondo
 import { useRouter } from 'expo-router'; // Para la navegación
 import { NativeWindStyleSheet } from "nativewind"; //<---Compatibilidad para React Native con NativeWind
+import Button from '../components/Button';
 
 NativeWindStyleSheet.setOutput({
   default: "native",
@@ -23,18 +24,19 @@ const Home = () => {
         <Text className="text-gray-600 text-center mb-8">
           Conéctate con otros desarrolladores y comparte tus ideas y proyectos.
         </Text>
-        <Pressable
-          className="bg-green-500 rounded-lg p-4 mb-4 w-3/4"
+        <Button
+          text="Regístrate"
+          color={['#2E7D32', '#4CAF50']}
           onPress={() => router.push('/register')}
-        >
-          <Text className="text-white text-center text-lg font-semibold">Regístrate</Text>
-        </Pressable>
-        <Pressable
-          className="bg-blue-500 rounded-lg p-4 w-3/4"
+          width="w-3/4"
+          style={{ marginBottom: 16 }} // Margen entre botones
+        />
+        <Button
+          text="Iniciar Sesión"
+          color={['#1976D2', '#64B5F6']}
           onPress={() => router.push('/login')}
-        >
-          <Text className="text-white text-center text-lg font-semibold">Iniciar Sesión</Text>
-        </Pressable>
+          width="w-3/4"
+        />
       </View>
     </View>
     

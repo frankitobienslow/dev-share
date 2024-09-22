@@ -1,6 +1,73 @@
 const Usuario = require('../models/Usuario');
+const Desarrollador = require('../models/Desarrollador');
+const Cliente = require('../models/Cliente');
 const bcryptjs = require('bcryptjs'); // Para encriptar/desencriptar passwords
 const jwt = require('jsonwebtoken'); // Importa jsonwebtoken
+
+exports.createDesarrollador = async (req, res) => {
+    try {
+        const { dni, nombre, apellido, email, password } = req.body;
+
+        // Validar campos requeridos
+        if (!dni || !nombre || !apellido || !email || !password) {
+            return res.status(400).json({ message: 'Faltan datos requeridos' });
+        }
+
+        // Verificar si el DNI o el email ya existen
+        const dniExists = await Usuario.findOne({ where: { dni } });
+        const emailExists = await Usuario.findOne({ where: { email } });
+        if (dniExists || emailExists) {
+            return res.status(400).json({ message: 'DNI o email ya están registrados' });
+        }
+
+        // Encriptar la contraseña
+        const hashedPassword = await bcryptjs.hash(password, 10);
+
+        // Crear el usuario primero
+        const usuario = await Usuario.create({ dni, nombre, apellido, email, password: hashedPassword });
+
+        // Crear el desarrollador
+        await Desarrollador.create({ id: usuario.id, activo: true }); // Asegúrate de que la tabla Desarrollador esté definida
+
+        res.status(201).json({ message: 'Desarrollador registrado exitosamente' });
+    } catch (error) {
+        console.error('Error al crear desarrollador:', error);
+        res.status(500).json({ error: error.message });
+    }
+};
+
+// Crear cliente
+exports.createCliente = async (req, res) => {
+    try {
+        const { dni, nombre, apellido, email, password } = req.body;
+
+        // Validar campos requeridos
+        if (!dni || !nombre || !apellido || !email || !password) {
+            return res.status(400).json({ message: 'Faltan datos requeridos' });
+        }
+
+        // Verificar si el DNI o el email ya existen
+        const dniExists = await Usuario.findOne({ where: { dni } });
+        const emailExists = await Usuario.findOne({ where: { email } });
+        if (dniExists || emailExists) {
+            return res.status(400).json({ message: 'DNI o email ya están registrados' });
+        }
+
+        // Encriptar la contraseña
+        const hashedPassword = await bcryptjs.hash(password, 10);
+
+        // Crear el usuario primero
+        const usuario = await Usuario.create({ dni, nombre, apellido, email, password: hashedPassword });
+
+        // Crear el cliente
+        await Cliente.create({ id: usuario.id }); // Asegúrate de que la tabla Cliente esté definida
+
+        res.status(201).json({ message: 'Cliente registrado exitosamente' });
+    } catch (error) {
+        console.error('Error al crear cliente:', error);
+        res.status(500).json({ error: error.message });
+    }
+};
 
 // Autenticar usuario (Login)
 exports.loginUsuario = async (req, res) => {
@@ -36,20 +103,34 @@ exports.loginUsuario = async (req, res) => {
 // Crear usuario
 exports.createUsuario = async (req, res) => {
     try {
-        const { dni, nombre, apellido, email, password } = req.body; // Agregar email aquí
+        const { dni, nombre, apellido, email, password } = req.body;
         console.log('Datos de registro:', req.body);
-        if (!dni || !nombre || !apellido || !email || !password) { // Validar email
+
+        // Validar que los campos requeridos estén presentes
+        if (!dni || !nombre || !apellido || !email || !password) {
             return res.status(400).json({ message: 'Faltan datos requeridos' });
+        }
+
+        // Verificar si el DNI ya existe
+        const dniExists = await Usuario.findOne({ where: { dni } });
+        if (dniExists) {
+            return res.status(400).json({ message: 'El DNI ya está registrado' });
+        }
+
+        // Verificar si el email ya existe
+        const emailExists = await Usuario.findOne({ where: { email } });
+        if (emailExists) {
+            return res.status(400).json({ message: 'El email ya está registrado' });
         }
 
         // Encriptar la contraseña antes de guardarla
         const hashedPassword = await bcryptjs.hash(password, 10);
 
-        // Crear el usuario con el email incluido
+        // Crear el usuario
         const usuario = await Usuario.create({ dni, nombre, apellido, email, password: hashedPassword });
         res.status(201).json(usuario);
     } catch (error) {
-        console.error('Error al crear el usuario:', error); // Agrega este log
+        console.error('Error al crear el usuario:', error);
         res.status(500).json({ error: error.message });
     }
 };

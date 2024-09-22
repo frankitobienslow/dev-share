@@ -12,7 +12,7 @@ const Button = ({
   size = 'medium',
   icon: Icon,
   disabled = false,
-  textColor = '#FFFFFF', // Color en formato hexadecimal
+  textColor = '#FFFFFF',
   fontSize = 'text-lg',
   style,
   width = 'w-1/4',
@@ -44,50 +44,48 @@ const Button = ({
   const fontSizeValue = fontSize === 'text-lg' ? 18 : fontSize === 'text-xl' ? 20 : 14;
 
   return (
-    <Link href={link} asChild>
-      <Pressable
-        onPress={disabled ? null : onPress}
-        onPressIn={handlePressIn}
-        onPressOut={handlePressOut}
-        className={`overflow-hidden ${sizeStyles[size]} ${width} ${
-          disabled ? 'opacity-50' : ''
-        } ${style}`}
-        accessibilityRole="button"
-        accessibilityLabel={accessibilityLabel}
-        accessibilityState={{ disabled }}
-        accessibilityHint={text}
-        disabled={disabled}
+    <Pressable
+      onPress={disabled ? null : link ? () => router.push(link) : onPress}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+      className={`overflow-hidden ${sizeStyles[size]} ${width} ${
+        disabled ? 'opacity-50' : ''
+      } ${style}`}
+      accessibilityRole="button"
+      accessibilityLabel={accessibilityLabel}
+      accessibilityState={{ disabled }}
+      accessibilityHint={text}
+      disabled={disabled}
+    >
+      <Animated.View
+        style={{
+          transform: [{ scale: scaleAnim }],
+        }}
       >
-        <Animated.View
-          style={{
-            transform: [{ scale: scaleAnim }], // Aplica la animación de escala
-          }}
+        <LinearGradient
+          colors={color}
+          locations={[0, 0.3, 0.7, 1]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          className={`rounded-2xl ${sizeStyles[size]} shadow p-3 overflow-hidden`}
         >
-          <LinearGradient
-            colors={color}
-            locations={[0, 0.3, 0.7, 1]} // Ajusta la posición del gradiente
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            className={`rounded-2xl ${sizeStyles[size]} shadow p-3 overflow-hidden`}
-          >
-            <View className="flex-row items-center justify-center">
-              {Icon && (
-                <View style={{ marginRight: 8 }}>
-                  {React.cloneElement(Icon, { color: textColor })}
-                </View>
-              )}
-              {disabled ? (
-                <ActivityIndicator color={textColor} />
-              ) : (
-                <Text style={{ color: textColor, fontSize: fontSizeValue, fontWeight: '600', textAlign: 'center' }}>
-                  {text}
-                </Text>
-              )}
-            </View>
-          </LinearGradient>
-        </Animated.View>
-      </Pressable>
-    </Link>
+          <View className="flex-row items-center justify-center">
+            {Icon && (
+              <View style={{ marginRight: 8 }}>
+                {React.cloneElement(Icon, { color: textColor })}
+              </View>
+            )}
+            {disabled ? (
+              <ActivityIndicator color={textColor} />
+            ) : (
+              <Text style={{ color: textColor, fontSize: fontSizeValue, fontWeight: '600', textAlign: 'center' }}>
+                {text}
+              </Text>
+            )}
+          </View>
+        </LinearGradient>
+      </Animated.View>
+    </Pressable>
   );
 };
 

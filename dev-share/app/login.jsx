@@ -3,9 +3,11 @@ import { View, Text, TextInput, Pressable, Alert } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useUser } from "../context/UserContext"; // Asegúrate de la ruta
 
 const Login = () => {
-  const [email, setEmail] = useState(""); // Cambia 'dni' por 'email'
+  const { login } = useUser(); // Usa el hook personalizado
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
 
@@ -16,15 +18,26 @@ const Login = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }), // Cambia 'dni' por 'email'
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
 
       if (response.status === 200) {
         await AsyncStorage.setItem("token", data.token);
+        
+        // Asegúrate de que el objeto usuario contenga el rol
+        const userData = {
+          id: data.usuario.id, // O el campo correspondiente
+          nombre: data.usuario.nombre,
+          email:data.usuario.email,
+          rol: data.usuario.rol, // Aquí se incluye el rol
+          // Agrega otros campos que necesites
+        };
+
+        login(userData); // Usa la función de login del contexto
         Alert.alert("Login exitoso", `Bienvenido ${data.usuario.nombre}`);
-        router.push("/dashboard"); // Redirigir a la página principal o dashboard
+        router.push("/dashboard");
       } else {
         Alert.alert("Error", data.message);
       }
@@ -45,11 +58,11 @@ const Login = () => {
         </Text>
         <TextInput
           className="border border-gray-300 rounded-lg p-4 mb-4"
-          placeholder="Email" // Cambia el placeholder a "Email"
+          placeholder="Email"
           placeholderTextColor="#888"
-          keyboardType="email-address" // Cambia el tipo de teclado
-          value={email} // Cambia 'dni' por 'email'
-          onChangeText={setEmail} // Cambia 'setDni' por 'setEmail'
+          keyboardType="email-address"
+          value={email}
+          onChangeText={setEmail}
         />
         <TextInput
           className="border border-gray-300 rounded-lg p-4 mb-6"

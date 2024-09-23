@@ -1,33 +1,45 @@
-const Usuario = require('../models/Usuario');
-const Desarrollador = require('../models/Desarrollador');
-const Cliente = require('../models/Cliente');
-const bcryptjs = require('bcryptjs'); // Para encriptar/desencriptar passwords
-const jwt = require('jsonwebtoken'); // Importa jsonwebtoken
+// Autenticar usuario (Login)
+const Usuario = require('../models/Usuario'); // Asegúrate de importar tu modelo de usuario
+const Cliente = require('../models/Cliente'); // Modelo para cliente
+const Desarrollador = require('../models/Desarrollador'); // Modelo para desarrollador
+const bcryptjs = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
+// Crear usuario genérico
+exports.createUsuario = async (datosUsuario) => {
+    const { dni, nombre, apellido, email, password } = datosUsuario;
+
+    // Validar que los campos requeridos estén presentes
+    if (!dni || !nombre || !apellido || !email || !password) {
+        throw new Error('Faltan datos requeridos');
+    }
+
+    // Verificar si el DNI o el email ya existen
+    const dniExists = await Usuario.findOne({ where: { dni } });
+    const emailExists = await Usuario.findOne({ where: { email } });
+    if (dniExists || emailExists) {
+        throw new Error('DNI o email ya están registrados');
+    }
+
+    // Encriptar la contraseña
+    const hashedPassword = await bcryptjs.hash(password, 10);
+
+    // Crear el usuario
+    const usuario = await Usuario.create({ dni, nombre, apellido, email, password: hashedPassword });
+
+    return usuario; // Devolver el usuario creado
+};
+
+// Crear desarrollador
 exports.createDesarrollador = async (req, res) => {
     try {
         const { dni, nombre, apellido, email, password } = req.body;
 
-        // Validar campos requeridos
-        if (!dni || !nombre || !apellido || !email || !password) {
-            return res.status(400).json({ message: 'Faltan datos requeridos' });
-        }
-
-        // Verificar si el DNI o el email ya existen
-        const dniExists = await Usuario.findOne({ where: { dni } });
-        const emailExists = await Usuario.findOne({ where: { email } });
-        if (dniExists || emailExists) {
-            return res.status(400).json({ message: 'DNI o email ya están registrados' });
-        }
-
-        // Encriptar la contraseña
-        const hashedPassword = await bcryptjs.hash(password, 10);
-
-        // Crear el usuario primero
-        const usuario = await Usuario.create({ dni, nombre, apellido, email, password: hashedPassword });
+        // Crear el usuario usando la función genérica
+        const usuario = await exports.createUsuario({ dni, nombre, apellido, email, password });
 
         // Crear el desarrollador
-        await Desarrollador.create({ id: usuario.id, activo: true }); // Asegúrate de que la tabla Desarrollador esté definida
+        await Desarrollador.create({ id: usuario.id, activo: true });
 
         res.status(201).json({ message: 'Desarrollador registrado exitosamente' });
     } catch (error) {
@@ -41,26 +53,11 @@ exports.createCliente = async (req, res) => {
     try {
         const { dni, nombre, apellido, email, password } = req.body;
 
-        // Validar campos requeridos
-        if (!dni || !nombre || !apellido || !email || !password) {
-            return res.status(400).json({ message: 'Faltan datos requeridos' });
-        }
-
-        // Verificar si el DNI o el email ya existen
-        const dniExists = await Usuario.findOne({ where: { dni } });
-        const emailExists = await Usuario.findOne({ where: { email } });
-        if (dniExists || emailExists) {
-            return res.status(400).json({ message: 'DNI o email ya están registrados' });
-        }
-
-        // Encriptar la contraseña
-        const hashedPassword = await bcryptjs.hash(password, 10);
-
-        // Crear el usuario primero
-        const usuario = await Usuario.create({ dni, nombre, apellido, email, password: hashedPassword });
+        // Crear el usuario usando la función genérica
+        const usuario = await exports.createUsuario({ dni, nombre, apellido, email, password });
 
         // Crear el cliente
-        await Cliente.create({ id: usuario.id }); // Asegúrate de que la tabla Cliente esté definida
+        await Cliente.create({ id: usuario.id });
 
         res.status(201).json({ message: 'Cliente registrado exitosamente' });
     } catch (error) {
@@ -69,68 +66,53 @@ exports.createCliente = async (req, res) => {
     }
 };
 
-// Autenticar usuario (Login)
+
+
 exports.loginUsuario = async (req, res) => {
-    const { email, password } = req.body; // Cambiar dni por email
+    const { email, password } = req.body;
+    console.log("Login intento:", email); // Verifica que se esté llamando a esta función
     try {
-        // Buscar usuario por email
         const usuario = await Usuario.findOne({ where: { email } });
+        console.log("Usuario encontrado:", usuario); // Verifica el usuario encontrado
 
         if (!usuario) {
             return res.status(404).json({ message: 'Usuario no encontrado' });
         }
 
-        // Comparar la contraseña enviada con la almacenada (desencriptada)
         const match = await bcryptjs.compare(password, usuario.password);
+        console.log("Contraseña correcta:", match); // Verifica si la contraseña es correcta
 
         if (!match) {
             return res.status(401).json({ message: 'Contraseña incorrecta' });
         }
 
-        // Generar un token JWT
-        const token = jwt.sign({ id: usuario.id, email: usuario.email }, process.env.JWT_SECRET, {
-            expiresIn: '1h', // El token expirará en 1 hora
+        // Obtener rol del usuario en un solo paso
+        const rol = await Cliente.findOne({ where: { id: usuario.id } })
+            .then(cliente => cliente ? 'cliente' : 
+                Desarrollador.findOne({ where: { id: usuario.id } })
+                .then(desarrollador => desarrollador ? 'desarrollador' : null)
+            );
+
+        console.log("Rol encontrado:", rol); // Verifica el rol encontrado
+
+        const token = jwt.sign(
+            { id: usuario.id, email: usuario.email, rol },
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' }
+        );
+
+        res.status(200).json({
+            message: 'Login exitoso',
+            usuario: {
+                id: usuario.id,
+                nombre: usuario.nombre,
+                email: usuario.email,
+                rol, // Aquí devolvemos el rol directamente
+            },
+            token
         });
-
-        // Retornar el usuario y el token
-        res.status(200).json({ message: 'Login exitoso', usuario, token });
     } catch (error) {
-        console.error(error); // Log del error para debug
-        res.status(500).json({ error: error.message });
-    }
-};
-
-// Crear usuario
-exports.createUsuario = async (req, res) => {
-    try {
-        const { dni, nombre, apellido, email, password } = req.body;
-        console.log('Datos de registro:', req.body);
-
-        // Validar que los campos requeridos estén presentes
-        if (!dni || !nombre || !apellido || !email || !password) {
-            return res.status(400).json({ message: 'Faltan datos requeridos' });
-        }
-
-        // Verificar si el DNI ya existe
-        const dniExists = await Usuario.findOne({ where: { dni } });
-        if (dniExists) {
-            return res.status(400).json({ message: 'El DNI ya está registrado' });
-        }
-
-        // Verificar si el email ya existe
-        const emailExists = await Usuario.findOne({ where: { email } });
-        if (emailExists) {
-            return res.status(400).json({ message: 'El email ya está registrado' });
-        }
-
-        // Encriptar la contraseña antes de guardarla
-        const hashedPassword = await bcryptjs.hash(password, 10);
-
-        // Crear el usuario
-        const usuario = await Usuario.create({ dni, nombre, apellido, email, password: hashedPassword });
-        res.status(201).json(usuario);
-    } catch (error) {
-        console.error('Error al crear el usuario:', error);
+        console.error("Error en login:", error); // Más detalle del error
         res.status(500).json({ error: error.message });
     }
 };
@@ -158,6 +140,7 @@ exports.getUsuarioById = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
 
 // Actualizar usuario
 exports.updateUsuario = async (req, res) => {

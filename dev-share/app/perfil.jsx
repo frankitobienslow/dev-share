@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import { useUser } from '../context/UserContext'; // Asegúrate de que la ruta sea correcta
 import { useRouter } from 'expo-router';
 
-const Dashboard = () => {
+const Perfil = () => {
   const { user } = useUser();
   const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
@@ -21,13 +21,15 @@ const Dashboard = () => {
   if (!user) {
     return <Text className="text-center text-lg">Cargando...</Text>; // Muestra esto mientras se redirige o carga la info
   }
-
   return (
     <View className="flex-1 justify-center items-center p-6 bg-gray-100">
-      <Text className="text-3xl font-bold text-gray-900 mb-4">Dashboard</Text>
-      <Text className="text-xl text-gray-700 mb-2">Bienvenido, {user.nombre}</Text>
+      <Text className="text-3xl font-bold text-gray-900 mb-4">Perfil de Usuario</Text>
+      <Text className="text-xl text-gray-700 mb-2">Nombre: {user.nombre}</Text>
+      <Text className="text-xl text-gray-700 mb-6">Email: {user.email}</Text>
+      <Text className="text-xl text-gray-700 mb-6">Rol:{user.rol}</Text>
     </View>
   );
+
 };
 
-export default Dashboard;
+export default Perfil;

@@ -1,8 +1,9 @@
-const Usuario = require('../models/Usuario');
-const Desarrollador = require('../models/Desarrollador');
-const Cliente = require('../models/Cliente');
-const bcryptjs = require('bcryptjs'); // Para encriptar/desencriptar passwords
-const jwt = require('jsonwebtoken'); // Importa jsonwebtoken
+// Autenticar usuario (Login)
+const Usuario = require('../models/Usuario'); // Asegúrate de importar tu modelo de usuario
+const Cliente = require('../models/Cliente'); // Modelo para cliente
+const Desarrollador = require('../models/Desarrollador'); // Modelo para desarrollador
+const bcryptjs = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 // Crear usuario genérico
 exports.createUsuario = async (datosUsuario) => {
@@ -65,33 +66,53 @@ exports.createCliente = async (req, res) => {
     }
 };
 
-// Autenticar usuario (Login)
+
+
 exports.loginUsuario = async (req, res) => {
-    const { email, password } = req.body; // Cambiar dni por email
+    const { email, password } = req.body;
+    console.log("Login intento:", email); // Verifica que se esté llamando a esta función
     try {
-        // Buscar usuario por email
         const usuario = await Usuario.findOne({ where: { email } });
+        console.log("Usuario encontrado:", usuario); // Verifica el usuario encontrado
 
         if (!usuario) {
             return res.status(404).json({ message: 'Usuario no encontrado' });
         }
 
-        // Comparar la contraseña enviada con la almacenada (desencriptada)
         const match = await bcryptjs.compare(password, usuario.password);
+        console.log("Contraseña correcta:", match); // Verifica si la contraseña es correcta
 
         if (!match) {
             return res.status(401).json({ message: 'Contraseña incorrecta' });
         }
 
-        // Generar un token JWT
-        const token = jwt.sign({ id: usuario.id, email: usuario.email }, process.env.JWT_SECRET, {
-            expiresIn: '1h', // El token expirará en 1 hora
-        });
+        // Obtener rol del usuario en un solo paso
+        const rol = await Cliente.findOne({ where: { id: usuario.id } })
+            .then(cliente => cliente ? 'cliente' : 
+                Desarrollador.findOne({ where: { id: usuario.id } })
+                .then(desarrollador => desarrollador ? 'desarrollador' : null)
+            );
 
-        // Retornar el usuario y el token
-        res.status(200).json({ message: 'Login exitoso', usuario, token });
+        console.log("Rol encontrado:", rol); // Verifica el rol encontrado
+
+        const token = jwt.sign(
+            { id: usuario.id, email: usuario.email, rol },
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' }
+        );
+
+        res.status(200).json({
+            message: 'Login exitoso',
+            usuario: {
+                id: usuario.id,
+                nombre: usuario.nombre,
+                email: usuario.email,
+                rol, // Aquí devolvemos el rol directamente
+            },
+            token
+        });
     } catch (error) {
-        console.error(error); // Log del error para debug
+        console.error("Error en login:", error); // Más detalle del error
         res.status(500).json({ error: error.message });
     }
 };
@@ -119,6 +140,7 @@ exports.getUsuarioById = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
 
 // Actualizar usuario
 exports.updateUsuario = async (req, res) => {

@@ -77,9 +77,9 @@ const Register = () => {
         />
         <Text className="text-2xl font-bold text-gray-800 mb-6 text-center">Registro Exitoso</Text>
         <Button
-          text="Continuar"
+          text="Ir al dashboard"
           color={['#2E7D32', '#4CAF50']}
-          onPress={() => router.push('/home')} // Cambia la ruta según tu necesidad
+          onPress={() => router.push('/dashboard')} // Cambia la ruta según tu necesidad
           width="w-3/4"
         />
       </View>

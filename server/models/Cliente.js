@@ -8,17 +8,17 @@ Cliente.init({
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true,
+        // El id ya no es autoIncrement, ya que es una clave foránea de Usuario
     },
     // Otros campos específicos de Cliente
 }, {
     sequelize,
     modelName: 'Cliente',
     tableName: 'cliente',
-    timestamps:false
+    timestamps: false
 });
 
-// Aquí puedes establecer la relación si es necesario
-Cliente.belongsTo(Usuario, { foreignKey: 'id_usuario' });
+// Relacionar Cliente con Usuario
+Cliente.belongsTo(Usuario, { foreignKey: 'id', onDelete: 'RESTRICT' });
 
 module.exports = Cliente;

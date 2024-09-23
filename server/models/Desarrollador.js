@@ -8,7 +8,7 @@ Desarrollador.init({
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true,
+        // Ya no debe ser autoIncrement, porque es una clave foránea de Usuario
     },
     activo: {
         type: DataTypes.BOOLEAN,
@@ -23,6 +23,7 @@ Desarrollador.init({
     timestamps: false // Asegúrate de que esté correcto
 });
 
-Desarrollador.belongsTo(Usuario, { foreignKey: 'id_usuario' });
+// Relacionar Desarrollador con Usuario
+Desarrollador.belongsTo(Usuario, { foreignKey: 'id', onDelete: 'RESTRICT' });
 
 module.exports = Desarrollador;

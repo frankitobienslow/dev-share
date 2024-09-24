@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 23-09-2024 a las 02:53:22
+-- Tiempo de generación: 24-09-2024 a las 11:04:59
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -69,7 +69,7 @@ CREATE TABLE `desarrollador` (
 --
 
 INSERT INTO `desarrollador` (`id`, `activo`) VALUES
-(21, 1);
+(26, 1);
 
 -- --------------------------------------------------------
 
@@ -120,6 +120,15 @@ CREATE TABLE `evaluacion` (
   `resultado` int(11) DEFAULT NULL,
   `fecha` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `evaluacion`
+--
+
+INSERT INTO `evaluacion` (`id`, `id_desarrollador`, `id_habilidad`, `id_nivel`, `resultado`, `fecha`) VALUES
+(1, 26, 7, 1, 100, '2024-09-24'),
+(2, 26, 8, 2, 100, '2024-09-24'),
+(3, 26, 24, 4, 100, '2024-09-24');
 
 -- --------------------------------------------------------
 
@@ -354,8 +363,8 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id`, `nombre`, `apellido`, `password`, `email`, `dni`) VALUES
-(21, 'Francisco', 'insua', '$2a$10$HuM1Z53c91BjfMM.HKgw..g26To8rNYUYDg/K5vgB54UM5bYFZsFK', 'franinsua7@gmail.com', '44103173'),
-(22, 'lokillo', 'AAA', '$2a$10$x0ICM2jTRN9oP//FL2.KS.sD9T/c2b.4wlkTJcwL3ud3zvQT84gAi', 'marianoturner@hotmail.com', '848418');
+(22, 'lokillo', 'AAA', '$2a$10$x0ICM2jTRN9oP//FL2.KS.sD9T/c2b.4wlkTJcwL3ud3zvQT84gAi', 'marianoturner@hotmail.com', '848418'),
+(26, 'Francisco', 'insua', '$2a$10$vRzCZyPaMYYakF2M/4Wsi.pCQJ1SgEUytSQnh/bU4LErNIV/APOQS', 'franinsua7@gmail.com', '44103173');
 
 --
 -- Índices para tablas volcadas
@@ -516,7 +525,7 @@ ALTER TABLE `contrato`
 -- AUTO_INCREMENT de la tabla `desarrollador`
 --
 ALTER TABLE `desarrollador`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT de la tabla `equipo`
@@ -540,7 +549,7 @@ ALTER TABLE `etapa`
 -- AUTO_INCREMENT de la tabla `evaluacion`
 --
 ALTER TABLE `evaluacion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `experiencia`
@@ -612,7 +621,7 @@ ALTER TABLE `rol`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- Restricciones para tablas volcadas

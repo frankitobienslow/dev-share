@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TextInput, StyleSheet, Label} from 'react-native';
-import {Formik, useFormik, Form, Field, Formik} from 'formik';
+import {useFormik, Form, Field} from 'formik';
 import { Button } from 'react-native';
 
 

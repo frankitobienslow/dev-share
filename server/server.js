@@ -2,7 +2,7 @@ const express = require('express');
 const mysql = require('mysql2');
 const dotenv = require('dotenv');
 const cors = require('cors'); // Importar cors
-const usuarioRoutes = require('./routes/usuarioRoutes'); // Asegúrate de tener este archivo
+const routes = require('./routes'); // Asegúrate de tener este archivo
 const sequelize = require('./db.js');
 
 dotenv.config();
@@ -28,8 +28,8 @@ app.use(cors({
 // Middleware para parsear JSON
 app.use(express.json());
 
-// Rutas
-app.use('/api/usuarios', usuarioRoutes); // Rutas de usuario
+// Usa el enrutador de routes.js
+app.use('/api', routes); // Ahora todas las rutas se manejarán desde aquí
 
 // Ejemplo de ruta
 app.get('/', (req, res) => {

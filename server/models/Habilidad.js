@@ -27,7 +27,9 @@ Habilidad.init({
     },
 }, {
     sequelize,
-    modelName: 'Habilidad',
+    modelName: 'habilidad',
+    tableName:'habilidad',
+    timestamps:false
 });
 
 module.exports = Habilidad;

@@ -55,7 +55,7 @@ const Header = () => {
             <Text className="text-white text-lg">Experiencia</Text>
           </Pressable>
           {user && user.rol === "desarrollador" && (
-            <Pressable onPress={() => handleOptionPress("/conocimientos")}>
+            <Pressable onPress={() => handleOptionPress("/skills")}>
               <Text className="text-white text-lg">Conocimientos</Text>
             </Pressable>
           )}

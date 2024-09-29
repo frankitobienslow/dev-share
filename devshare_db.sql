@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 24-09-2024 a las 11:04:59
+-- Tiempo de generación: 29-09-2024 a las 09:57:08
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -121,15 +121,6 @@ CREATE TABLE `evaluacion` (
   `fecha` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `evaluacion`
---
-
-INSERT INTO `evaluacion` (`id`, `id_desarrollador`, `id_habilidad`, `id_nivel`, `resultado`, `fecha`) VALUES
-(1, 26, 7, 1, 100, '2024-09-24'),
-(2, 26, 8, 2, 100, '2024-09-24'),
-(3, 26, 24, 4, 100, '2024-09-24');
-
 -- --------------------------------------------------------
 
 --
@@ -240,11 +231,11 @@ CREATE TABLE `nivel` (
 --
 
 INSERT INTO `nivel` (`id`, `nombre`) VALUES
-(1, 'Trainee'),
-(2, 'Junior'),
-(3, 'Semi-Senior'),
-(4, 'Senior'),
-(5, 'Lead');
+(0, 'Trainee'),
+(1, 'Junior'),
+(2, 'Semi-Senior'),
+(3, 'Senior'),
+(4, 'Lead');
 
 -- --------------------------------------------------------
 
@@ -310,8 +301,9 @@ CREATE TABLE `requerimiento` (
 CREATE TABLE `requerimiento_rol` (
   `id` int(11) NOT NULL,
   `id_requerimiento` int(11) DEFAULT NULL,
-  `id_rol` int(11) DEFAULT NULL,
-  `cantidad_desarrolladores` int(11) DEFAULT NULL
+  `cantidad_desarrolladores` int(11) DEFAULT NULL,
+  `id_habilidad` int(11) DEFAULT NULL,
+  `id_nivel` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -491,7 +483,8 @@ ALTER TABLE `requerimiento`
 ALTER TABLE `requerimiento_rol`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_requerimiento` (`id_requerimiento`),
-  ADD KEY `id_rol` (`id_rol`);
+  ADD KEY `requerimiento_rol_ibfk_habilidad` (`id_habilidad`),
+  ADD KEY `requerimiento_rol_ibfk_nivel` (`id_nivel`);
 
 --
 -- Indices de la tabla `rol`
@@ -549,7 +542,7 @@ ALTER TABLE `etapa`
 -- AUTO_INCREMENT de la tabla `evaluacion`
 --
 ALTER TABLE `evaluacion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT de la tabla `experiencia`
@@ -713,7 +706,8 @@ ALTER TABLE `requerimiento`
 --
 ALTER TABLE `requerimiento_rol`
   ADD CONSTRAINT `requerimiento_rol_ibfk_1` FOREIGN KEY (`id_requerimiento`) REFERENCES `requerimiento` (`id`),
-  ADD CONSTRAINT `requerimiento_rol_ibfk_2` FOREIGN KEY (`id_rol`) REFERENCES `rol` (`id`);
+  ADD CONSTRAINT `requerimiento_rol_ibfk_habilidad` FOREIGN KEY (`id_habilidad`) REFERENCES `habilidad` (`id`),
+  ADD CONSTRAINT `requerimiento_rol_ibfk_nivel` FOREIGN KEY (`id_nivel`) REFERENCES `nivel` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

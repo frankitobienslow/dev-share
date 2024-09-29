@@ -42,3 +42,21 @@ exports.createEvaluacion = async (req, res) => {
     res.status(500).json({ error: 'Error al crear la evaluación', details: error.message });
   }
 };
+
+// Obtener evaluaciones por ID de usuario (id_desarrollador)
+exports.getEvaluacionesByUserId = async (req, res) => {
+  const { id_usuario } = req.params;
+  try {
+    const evaluaciones = await Evaluacion.findAll({
+      where: { id_desarrollador: id_usuario } // Filtro por id_desarrollador
+    });
+
+    if (evaluaciones.length > 0) {
+      res.status(200).json(evaluaciones);
+    } else {
+      res.status(404).json({ error: 'No se encontraron evaluaciones para este usuario' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Error al obtener las evaluaciones por usuario' });
+  }
+};

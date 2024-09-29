@@ -7,6 +7,7 @@ const Perfil = () => {
   const { user } = useUser();
   const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
+  
 
   useEffect(() => {
     // Asegurarse de que el layout esté montado

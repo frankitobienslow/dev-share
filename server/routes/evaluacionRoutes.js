@@ -6,5 +6,6 @@ const evaluacionController = require('../controllers/evaluacionController');
 router.get('/', evaluacionController.getAllEvaluaciones);      // Obtener todas las evaluaciones
 router.get('/:id', evaluacionController.getEvaluacionById);    // Obtener una evaluación por ID
 router.post('/', evaluacionController.createEvaluacion);       // Crear una nueva evaluación
+router.get('/usuario/:id_usuario', evaluacionController.getEvaluacionesByUserId);
 
 module.exports = router;

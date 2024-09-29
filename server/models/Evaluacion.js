@@ -34,11 +34,9 @@ const Evaluacion = db.define('Evaluacion', {
   },
   resultado: {
     type: DataTypes.INTEGER,
-    allowNull: false,
   },
   fecha: {
     type: DataTypes.DATEONLY, // Solo la fecha sin la hora
-    allowNull: false,
   },
 }, {
   tableName: 'evaluacion', // Nombre de la tabla

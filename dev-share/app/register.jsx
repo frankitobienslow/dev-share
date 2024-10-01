@@ -30,6 +30,7 @@ const Register = () => {
   const router = useRouter();
 
   const handleRegister = async (values) => {
+    console.log(values);
     try {
       const { userType, ...restoDeValores } = values;
       const urlBase = "http://localhost:3000/api/usuarios/";

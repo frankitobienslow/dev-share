@@ -8,7 +8,7 @@
    version="1.1"
    id="svg1"
    inkscape:version="1.3 (0e150ed6c4, 2023-07-21)"
-   sodipodi:docname="DevShare logo.svg"
+   sodipodi:docname="DevShare-logo.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -25,7 +25,7 @@
      inkscape:document-units="mm"
      inkscape:zoom="2.9255612"
      inkscape:cx="91.435448"
-     inkscape:cy="52.810381"
+     inkscape:cy="52.81038"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="-8"
@@ -72,28 +72,16 @@
              x="-278.71494"
              y="-169.38589">&gt;</tspan></text>
       </g>
-      <text
-         xml:space="preserve"
-         style="font-style:italic;font-variant:normal;font-weight:800;font-stretch:normal;font-size:12.7px;font-family:sublima;-inkscape-font-specification:'sublima Ultra-Bold Italic';text-align:center;letter-spacing:-0.529167px;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:#ffff00;stroke-width:0;paint-order:stroke fill markers"
-         x="218.93846"
-         y="208.5665"
-         id="text7"><tspan
-           sodipodi:role="line"
-           id="tspan7"
-           style="font-style:normal;font-variant:normal;font-weight:200;font-stretch:normal;font-size:12.7px;font-family:sublima;-inkscape-font-specification:'sublima Ultra-Light';letter-spacing:-0.529167px;stroke-width:0"
-           x="218.67387"
-           y="208.5665">hare</tspan></text>
-      <text
-         xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;font-size:12.7px;font-family:sublima;-inkscape-font-specification:'sublima Ultra-Bold';text-align:center;letter-spacing:-0.529167px;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:#ffff00;stroke-width:0;paint-order:stroke fill markers"
-         x="186.67853"
-         y="208.5665"
-         id="text8"><tspan
-           sodipodi:role="line"
-           id="tspan8"
-           style="font-style:normal;font-variant:normal;font-weight:200;font-stretch:normal;font-size:12.7px;font-family:sublima;-inkscape-font-specification:'sublima Ultra-Light';letter-spacing:-0.529167px;stroke-width:0"
-           x="186.41394"
-           y="208.5665">Dev</tspan></text>
+      <path
+         style="font-weight:200;font-size:12.7px;font-family:sublima;-inkscape-font-specification:'sublima Ultra-Light';text-align:center;letter-spacing:-0.529167px;text-anchor:middle;fill:#ffffff;stroke:#ffff00;stroke-width:0;paint-order:stroke fill markers"
+         d="m 208.07711,208.5665 h 0.5333 v -4.42764 c 0,-1.12241 0.81855,-1.87275 2.04019,-1.87275 1.22783,0 2.04638,0.75034 2.04638,1.87275 v 4.42764 h 0.5333 v -4.42764 c 0,-1.38906 -1.02939,-2.31924 -2.51767,-2.31924 -1.0418,0 -1.78594,0.48369 -2.1022,1.25264 v -3.63389 h -0.5333 z m 8.76639,0.19844 c 1.079,0 1.87895,-0.4899 2.25723,-1.27745 0.0124,0.33487 0.0992,0.75035 0.21704,1.07901 h 0.5395 c -0.13643,-0.37207 -0.24185,-0.84956 -0.24185,-1.22163 v -3.6835 c 0,-1.10381 -0.99219,-1.84175 -2.49287,-1.84175 -1.50068,0 -2.49907,0.78135 -2.49907,1.95957 h 0.5333 c 0,-0.91157 0.78135,-1.51308 1.96577,-1.51308 1.17822,0 1.95957,0.5581 1.95957,1.39526 0,0.91777 -0.96738,1.0604 -2.02778,1.20303 -1.28985,0.17983 -2.73472,0.39687 -2.73472,2.02778 0,1.12861 1.0542,1.87276 2.52388,1.87276 z m -1.99058,-1.89136 c 0,-1.27744 1.19683,-1.45108 2.39365,-1.61231 0.75035,-0.0992 1.47588,-0.20464 1.83555,-0.65732 v 1.64331 c 0,1.24644 -0.84336,2.07119 -2.1456,2.07119 -1.24024,0 -2.0836,-0.5519 -2.0836,-1.44487 z m 6.41615,1.69292 h 0.5333 v -4.42764 c 0,-1.16582 0.84336,-1.87275 2.1084,-1.87275 0.24804,0 0.48369,0.0248 0.70073,0.0806 v -0.44648 c -0.22324,-0.0496 -0.45889,-0.0806 -0.70693,-0.0806 -1.07281,0 -1.82315,0.4961 -2.14561,1.26504 v -1.0666 h -0.48989 z m 6.07508,0.19844 c 1.33325,0 2.33164,-0.79375 2.72852,-2.0836 h -0.55811 c -0.35347,1.01699 -1.14102,1.63711 -2.17041,1.63711 -1.38286,0 -2.31924,-1.12241 -2.38745,-2.82153 h 5.3144 c 0.006,-0.062 0.006,-0.13643 0.006,-0.20464 0,-2.08359 -1.17202,-3.47266 -2.93315,-3.47266 -1.75493,0 -2.92695,1.38907 -2.92695,3.47266 0,2.08359 1.17202,3.47266 2.92695,3.47266 z m -2.38745,-3.6773 c 0.0682,-1.69912 1.00459,-2.82153 2.38745,-2.82153 1.38906,0 2.32544,1.12241 2.39365,2.82153 z"
+         id="text7"
+         aria-label="hare" />
+      <path
+         style="font-weight:200;font-size:12.7px;font-family:sublima;-inkscape-font-specification:'sublima Ultra-Light';text-align:center;letter-spacing:-0.529167px;text-anchor:middle;fill:#ffffff;stroke:#ffff00;stroke-width:0;paint-order:stroke fill markers"
+         d="m 177.24241,208.5665 h 3.36724 c 2.23862,0 3.75791,-1.83555 3.75791,-4.57027 0,-2.73471 -1.50689,-4.55786 -3.75171,-4.55786 h -3.37344 z m 0.5457,-0.48369 v -8.16075 h 2.82774 c 1.91616,0 3.20601,1.63091 3.20601,4.07417 0,2.44947 -1.29605,4.08658 -3.21221,4.08658 z m 10.3725,0.68213 c 1.33325,0 2.33164,-0.79375 2.72851,-2.0836 h -0.5581 c -0.35347,1.01699 -1.14102,1.63711 -2.17041,1.63711 -1.38286,0 -2.31924,-1.12241 -2.38745,-2.82153 h 5.3144 c 0.006,-0.062 0.006,-0.13643 0.006,-0.20464 0,-2.08359 -1.17202,-3.47266 -2.93315,-3.47266 -1.75493,0 -2.92696,1.38907 -2.92696,3.47266 0,2.08359 1.17203,3.47266 2.92696,3.47266 z m -2.38745,-3.6773 c 0.0682,-1.69912 1.00459,-2.82153 2.38745,-2.82153 1.38906,0 2.32544,1.12241 2.39365,2.82153 z m 8.21448,3.47886 h 0.5333 l 2.6107,-6.54844 h -0.54571 l -2.33164,5.8415 -2.33784,-5.8415 h -0.5457 z"
+         id="text8"
+         aria-label="Dev" />
     </g>
   </g>
 </svg>

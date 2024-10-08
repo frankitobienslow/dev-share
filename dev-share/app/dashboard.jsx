@@ -22,12 +22,13 @@ const Dashboard = () => {
     return <Text className="text-center text-lg">Cargando...</Text>; // Muestra esto mientras se redirige o carga la info
   }
   // probando ......
-  function fetchData(){
-    const res = fetch('http:/localhost:3000/api/usarios/1');
-    const data = res.json();
-    console.log(data);
-  }
-  fetchData();
+  // function fetchData(){
+  //   const res = fetch('http:/localhost:3000/api/usarios');
+  //   console.log(res);
+  //   const data = res.json();
+  //   console.log(data);
+  // }
+  // fetchData();
 
   return (
     <View className="flex-1 justify-center items-center p-6 bg-gray-100">

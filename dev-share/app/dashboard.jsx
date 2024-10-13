@@ -55,6 +55,12 @@ const Dashboard = () => {
       <View style={styles.container}>
         <View style = {styles.col1}>
           <Text style = {styles.titulo}> Ofertas Aplicadas  </Text>
+          <Text style = {styles.titulo}> La idea seria que antes de poner las ofertas 
+            y los proyectos, obtenga todos los usuarios y determine si el que ingreso
+            es cliente o desarrollador para despues hacer un renderizado condicional
+            y en base al rol poner lo que corresponda. 
+            Cree el componente peticiones para hacer el llamado a la BD y obtener todos los 
+            usuarios pero en la consola del navegador me da ususario indefinido   </Text>
 
         </View>
         <View style = {styles.col2}>

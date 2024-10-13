@@ -8,7 +8,7 @@ const Dashboard = () => {
   const { user } = useUser();
   const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
-  const {usuario,cargar,error} = Peticion("http://localhost:3000/api/usuario");
+  const {usuario,cargar,error} = Peticion("http://localhost:3000/api/usuarios");
   // PRUEBA DE OBTENER LOS DATOS DEL USUARIO DESDE LA BD
 
   // Fetch de Mounted

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ScrollView, Text, View, Pressable } from 'react-native';
 import { useUser } from "../context/UserContext";
+import { useRouter } from 'expo-router'; // Importa useRouter para la navegación
 
 const MySkills = ({ handleRendirNuevamente, refresh }) => {
   const [evaluaciones, setEvaluaciones] = useState([]); // Estado para evaluaciones
@@ -8,6 +9,7 @@ const MySkills = ({ handleRendirNuevamente, refresh }) => {
   const [niveles, setNiveles] = useState([]);
   const [filtro, setFiltro] = useState('validadas'); // Estado para manejar filtro activo
   const { user } = useUser();
+  const router = useRouter(); // Define useRouter
 
   // Fetch de evaluaciones
   useEffect(() => {
@@ -26,7 +28,7 @@ const MySkills = ({ handleRendirNuevamente, refresh }) => {
     };
 
     fetchEvaluaciones();
-  }, [refresh]); // Dependencias pueden ser ajustadas según sea necesario
+  }, [refresh]);
 
   // Fetch de habilidades
   useEffect(() => {
@@ -67,6 +69,15 @@ const MySkills = ({ handleRendirNuevamente, refresh }) => {
     ? evaluaciones.filter(evaluacion => evaluacion.resultado >= 70)
     : evaluaciones.filter(evaluacion => evaluacion.resultado < 70 || evaluacion.resultado === null);
 
+  // Función que redirige a la página de test con el id de la evaluación
+  const handleRendir = (idEvaluacion) => {
+    // Redirige a la pantalla de examen pasando el ID de la evaluación
+    router.push({
+      pathname: '/test', // Asegúrate que 'test' sea la ruta correcta
+      params: { id: idEvaluacion }
+    });
+  };
+
   return (
     <ScrollView className="flex-1 p-6 bg-gray-100">
       <Text className="text-3xl font-bold text-gray-900 mb-4">Mis Habilidades</Text>
@@ -106,7 +117,7 @@ const MySkills = ({ handleRendirNuevamente, refresh }) => {
               {/* Lógica para mostrar botones de rendir o rendir nuevamente */}
               {evaluacion.resultado === null ? (
                 <Pressable
-                  onPress={() => handleRendirNuevamente(evaluacion.id)}
+                  onPress={() => handleRendir(evaluacion.id)} // Redirigir a examen
                   className="bg-blue-500 rounded py-1 px-2 mt-2 self-start"
                 >
                   <Text className="text-white text-sm">Rendir</Text>
@@ -114,7 +125,7 @@ const MySkills = ({ handleRendirNuevamente, refresh }) => {
               ) : (
                 evaluacion.resultado < 70 && (
                   <Pressable
-                    onPress={() => handleRendirNuevamente(evaluacion.id)}
+                    onPress={() => handleRendir(evaluacion.id)} // Redirigir a examen
                     className="bg-red-500 rounded py-1 px-2 mt-2 self-start"
                   >
                     <Text className="text-white text-sm">Rendir nuevamente</Text>

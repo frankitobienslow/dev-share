@@ -39,7 +39,7 @@ exports.validateAnswers = async (req, res) => {
       let puntaje = 0;
       preguntas.forEach((pregunta, index) => {
         if (pregunta.correcta === respuestasUsuario[index]) {
-          puntaje += 20; // Asignar 20 puntos por cada respuesta correcta
+          puntaje += 10; // Asignar 20 puntos por cada respuesta correcta
         }
       });
   

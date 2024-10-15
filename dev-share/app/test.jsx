@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Pressable, ScrollView, ActivityIndicator, Button } from 'react-native';
-import { useLocalSearchParams } from 'expo-router'; // Hook para obtener el ID desde los parámetros
+import { View, Text, Pressable, ScrollView, ActivityIndicator, Modal } from 'react-native';
+import { useLocalSearchParams, useRouter } from 'expo-router'; // Hook para obtener el ID y para la navegación
 import { styled } from 'nativewind';
-
-const StyledPressable = styled(Pressable); // Para poder usar las clases de Tailwind en Pressable
-const StyledScrollView = styled(ScrollView);
-const StyledText = styled(Text);
-const StyledView = styled(View);
-const StyledButton = styled(Button);
 
 const Test = () => {
   const { id } = useLocalSearchParams(); // Obtiene el ID del test desde los parámetros de la URL
   const [preguntas, setPreguntas] = useState([]); // Estado para almacenar las preguntas
   const [respuestas, setRespuestas] = useState({}); // Estado para almacenar las respuestas seleccionadas
   const [loading, setLoading] = useState(true); // Estado de carga mientras se obtienen las preguntas
-  const [puntaje, setPuntaje] = useState(null); // Estado para almacenar el puntaje obtenido después de validar
+  const [puntaje, setPuntaje] = useState(null); // Estado para almacenar el puntaje
+  const [modalVisible, setModalVisible] = useState(false); // Estado para el modal
+  const [feedback, setFeedback] = useState(null); // Almacena el feedback del examen
+  const router = useRouter(); // Para navegar de vuelta a /skills
 
   // Fetch para obtener las preguntas basadas en el ID del test
   useEffect(() => {
@@ -47,21 +44,33 @@ const Test = () => {
     }));
   };
 
-  // Función para enviar las respuestas al backend
+  // Enviar respuestas para validar el examen
   const handleSubmit = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/api/gpt/validate-answers`, {
+      const res = await fetch('http://localhost:3000/api/gpt/validate-answers', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ id, respuestasUsuario: respuestas }), // Enviamos el ID del test y las respuestas
+        body: JSON.stringify({
+          id,
+          respuestasUsuario: respuestas,
+        }),
       });
 
       const data = await res.json();
-      setPuntaje(data.puntaje); // Guardamos el puntaje obtenido después de validar las respuestas
+      setPuntaje(data.puntaje);
+
+      // Mostrar modal con feedback
+      const feedbackText =
+        data.puntaje >= 70
+          ? '¡Habilidad validada!'
+          : 'No se cumplieron las expectativas de la evaluación';
+
+      setFeedback(feedbackText);
+      setModalVisible(true);
     } catch (error) {
-      console.error('Error al validar el examen:', error); // Logueamos el error en caso de fallo
+      console.error('Error al enviar respuestas:', error);
     }
   };
 
@@ -70,37 +79,90 @@ const Test = () => {
     return <ActivityIndicator size="large" color="#0000ff" />;
   }
 
+  const PressableStyled = styled(Pressable);
+  const TextStyled = styled(Text);
+
+  // Mostrar las preguntas si están disponibles
   return (
-    <StyledScrollView className="p-5">
-      {preguntas.length > 0 ? (
-        preguntas.map((pregunta, index) => (
-          <StyledView key={index} className="mb-5">
-            <StyledText className="text-lg mb-2">{pregunta.pregunta}</StyledText>
-            {pregunta.opciones.map((opcion, i) => (
-              <StyledPressable
-                key={i}
-                onPress={() => handleSelect(index, opcion)} // Guardamos la opción seleccionada
-                className={`p-4 rounded border ${
-                  respuestas[index] === opcion ? 'bg-blue-200' : 'bg-white'
-                } border-gray-300 my-1`}
-              >
-                <StyledText className="text-base">{opcion}</StyledText>
-              </StyledPressable>
-            ))}
-          </StyledView>
-        ))
-      ) : (
-        <StyledText>No se pudieron cargar las preguntas.</StyledText>
-      )}
+    <View className="flex-1 p-4">
+      <ScrollView className="select-none">
+        {preguntas.length > 0 ? (
+          preguntas.map((pregunta, index) => (
+            <View key={index} className="mb-5">
+              <TextStyled className="text-lg mb-3">{pregunta.pregunta}</TextStyled>
+              {pregunta.opciones.map((opcion, i) => (
+                <PressableStyled
+                  key={i}
+                  onPress={() => handleSelect(index, opcion)} // Guardamos la opción seleccionada
+                  className={`p-4 rounded-lg mb-2 border ${
+                    respuestas[index] === opcion ? 'bg-blue-200' : 'bg-white'
+                  }`}
+                >
+                  <TextStyled className="text-base">{opcion}</TextStyled>
+                </PressableStyled>
+              ))}
+            </View>
+          ))
+        ) : (
+          <TextStyled>No se pudieron cargar las preguntas.</TextStyled>
+        )}
+      </ScrollView>
 
-      {/* Botón para enviar respuestas */}
-      <StyledButton title="Enviar respuestas" onPress={handleSubmit} />
+      <PressableStyled
+        onPress={handleSubmit}
+        className="mt-4 p-4 bg-blue-500 rounded-lg"
+      >
+        <TextStyled className="text-white text-center text-lg">Enviar respuestas</TextStyled>
+      </PressableStyled>
 
-      {/* Mostrar el puntaje una vez que se obtenga */}
-      {puntaje !== null && (
-        <StyledText className="text-lg mt-5">Puntaje obtenido: {puntaje}</StyledText>
-      )}
-    </StyledScrollView>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View className="flex-1 justify-center items-center bg-black bg-opacity-50">
+          <View className="w-4/5 bg-white p-6 rounded-lg">
+            <TextStyled className="text-lg font-bold text-center mb-2">
+              {feedback}
+            </TextStyled>
+            <TextStyled className="text-center mb-4">
+              Resultado: {puntaje}
+            </TextStyled>
+
+            <ScrollView>
+              {preguntas.map((pregunta, index) => (
+                <View key={index} className="mb-5">
+                  <TextStyled className="font-bold mb-2">{pregunta.pregunta}</TextStyled>
+                  <TextStyled
+                    className={`${
+                      respuestas[index] === pregunta.correcta
+                        ? 'text-green-500'
+                        : 'text-red-500'
+                    }`}
+                  >
+                    Tu respuesta: {respuestas[index]} -{' '}
+                    {respuestas[index] === pregunta.correcta ? 'Correcta' : 'Incorrecta'}
+                  </TextStyled>
+                  {respuestas[index] !== pregunta.correcta && (
+                    <TextStyled className="text-green-500">
+                      Respuesta correcta: {pregunta.correcta}
+                    </TextStyled>
+                  )}
+                </View>
+              ))}
+            </ScrollView>
+
+            <PressableStyled
+              onPress={() => router.replace('/skills')} // Navega de vuelta a /skills sin recargar la página
+              className="mt-4 p-4 bg-blue-500 rounded-lg"
+            >
+              <TextStyled className="text-white text-center text-lg">Volver a habilidades</TextStyled>
+            </PressableStyled>
+          </View>
+        </View>
+      </Modal>
+    </View>
   );
 };
 

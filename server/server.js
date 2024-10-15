@@ -4,7 +4,6 @@ const dotenv = require("dotenv");
 const cors = require("cors"); // Importar cors
 const routes = require("./routes"); // Asegúrate de tener este archivo
 const sequelize = require("./db.js");
-const OpenAI = require("openai");
 
 dotenv.config();
 
@@ -63,8 +62,3 @@ sequelize
   .catch((err) => {
     console.error("No se pudo conectar a la base de datos:", err);
   });
-
-  // Configurar OpenAI con tu API Key
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY, // Asegúrate de tener tu API Key en .env
-});

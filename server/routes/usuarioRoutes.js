@@ -6,7 +6,7 @@ const router = express.Router();
 
 // Rutas para usuarios
 router.post('/', UsuarioController.createUsuario);       // Crear usuario (no necesita autenticación)
-router.get('/', verificarToken, UsuarioController.getUsuarios); // Obtener todos los usuarios (requiere autenticación)
+router.get('/', UsuarioController.getUsuarios); // Obtener todos los usuarios (requiere autenticación)
 router.get('/:id', verificarToken, UsuarioController.getUsuarioById); // Obtener un usuario por ID (requiere autenticación)
 router.get('/:id', verificarToken, UsuarioController.getDesarrolladorById); // Obtener un usuario por ID (requiere autenticación)
 router.put('/:id', verificarToken, UsuarioController.updateUsuario); // Actualizar usuario (requiere autenticación)

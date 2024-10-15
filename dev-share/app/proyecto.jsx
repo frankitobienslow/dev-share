@@ -1,14 +1,16 @@
 import React from "react";
 import { View } from "react-native";
-import Button from "../components/Button";
+//import Button from "../components/Button";
 import PublicarOferta from "../components/PublicarOferta";
-import BuscarOferta from "../components/BuscarOferta";
+
 
 
 const Proyecto=()=>{
     return (
         <View>
-            <Text> Proyecto </Text>
+            <Text> Publique su Oferta laboral aqui </Text>
+            <PublicarOferta></PublicarOferta>
+
         </View>
     );
     

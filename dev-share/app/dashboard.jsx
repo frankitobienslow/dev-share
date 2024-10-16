@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView, ActivityIndicator,StyleSheet,Button, TouchableOpacity} from 'react-native';
+import { View, Text, ScrollView, ActivityIndicator,StyleSheet, TouchableOpacity} from 'react-native';
 import { useUser } from '../context/UserContext'; // Asegúrate de que la ruta sea correcta
 import { useRouter } from 'expo-router';
 import peticiones from '../components/Peticiones';
@@ -16,6 +16,7 @@ const Dashboard = () => {
   
   // LOGICA PARA SABER SI EL USUARIO ES CLIENTE O DESARROLLADOR
   let desarrollador = false;  // dato de prueba para hacer la logica del dashboard
+  
 
   //let id = 2; // se tiene que recuperar del id del usuario ingresado. 
   // const {dev} = peticiones(`http://localhost:3000/api/usuarios/${id}`);
@@ -99,8 +100,9 @@ const styles = StyleSheet.create({
   },
   boton:{
     width:150,
-    borderColor:'black',
-    backgroundColor:'#00bfff',
+    borderColor:'white',
+    backgroundColor:'#075985',
+    borderRadius:5,
   }
 
 })

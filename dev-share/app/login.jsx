@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { View, Text, TextInput, Pressable, Alert } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useUser } from "../context/UserContext"; // Asegúrate de la ruta
+import AsyncStorage from "@react-native-async-storage/async-storage"; // Asegúrate de que esté importado
 
 const Login = () => {
   const { login } = useUser(); // Usa el hook personalizado
@@ -13,6 +13,8 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
+      console.log("Intentando iniciar sesión con:", { email, password });
+      
       const response = await fetch("http://localhost:3000/api/usuarios/login", {
         method: "POST",
         headers: {
@@ -22,26 +24,38 @@ const Login = () => {
       });
 
       const data = await response.json();
+      console.log("Respuesta del servidor:", data); // Verificar la respuesta
 
       if (response.status === 200) {
-        await AsyncStorage.setItem("token", data.token);
+        console.log("Inicio de sesión exitoso, guardando token...");
         
+        await AsyncStorage.setItem("token", data.token);
+
+        // Verificar si el token se guardó correctamente
+        const tokenGuardado = await AsyncStorage.getItem("token");
+        console.log("Token guardado correctamente:", tokenGuardado);
+
         // Asegúrate de que el objeto usuario contenga el rol
         const userData = {
           id: data.usuario.id, // O el campo correspondiente
           nombre: data.usuario.nombre,
-          email:data.usuario.email,
+          email: data.usuario.email,
           rol: data.usuario.rol, // Aquí se incluye el rol
           // Agrega otros campos que necesites
         };
 
+        console.log("Usuario logueado:", userData); // Verificar datos del usuario
         login(userData); // Usa la función de login del contexto
+
         Alert.alert("Login exitoso", `Bienvenido ${data.usuario.nombre}`);
+
+        console.log("Redirigiendo al dashboard...");
         router.push("/dashboard");
       } else {
         Alert.alert("Error", data.message);
       }
     } catch (error) {
+      console.error("Error en la autenticación:", error.message);
       Alert.alert("Error", "Hubo un problema con la autenticación");
     }
   };

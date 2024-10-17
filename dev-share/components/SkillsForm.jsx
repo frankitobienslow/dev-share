@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, Pressable, ScrollView, Alert, ActivityIndicator } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { useUser } from "../context/UserContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SkillsForm = ({ onUpdateSkills }) => {
   const [skills, setSkills] = useState([{ habilidad: "", nivel: "" }]);
@@ -15,24 +16,64 @@ const SkillsForm = ({ onUpdateSkills }) => {
   useEffect(() => {
     const fetchHabilidades = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/skills/");
+        const token = await AsyncStorage.getItem("token");  // Recuperar el token
+        const response = await fetch("http://localhost:3000/api/skills/", {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${token}`,  // Incluir el token
+            "Content-Type": "application/json",
+          }
+        });
+        
+        // Debug: Muestra el estado de la respuesta y el cuerpo
+        console.log("Response Status (Habilidades):", response.status);
+        console.log("Response Headers (Habilidades):", response.headers);
+        
+        if (!response.ok) {
+          const errorMessage = await response.text(); // Recuperar el mensaje de error del cuerpo
+          console.error("Error al obtener habilidades:", errorMessage);
+          throw new Error("No se pudo obtener las habilidades");
+        }
+        
         const data = await response.json();
+        console.log("Habilidades recibidas:", data); // Debug: Muestra las habilidades recibidas
         setHabilidadesDisponibles(data);
       } catch (error) {
         console.error("Error fetching habilidades:", error.message);
+        setMessage(`Error: ${error.message}`); // Mensaje de error
       }
     };
-
+  
     const fetchNiveles = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/niveles/");
+        const token = await AsyncStorage.getItem("token");  // Recuperar el token
+        const response = await fetch("http://localhost:3000/api/niveles/", {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${token}`,  // Incluir el token
+            "Content-Type": "application/json",
+          }
+        });
+
+        // Debug: Muestra el estado de la respuesta y el cuerpo
+        console.log("Response Status (Niveles):", response.status);
+        console.log("Response Headers (Niveles):", response.headers);
+        
+        if (!response.ok) {
+          const errorMessage = await response.text(); // Recuperar el mensaje de error del cuerpo
+          console.error("Error al obtener niveles:", errorMessage);
+          throw new Error("No se pudo obtener los niveles");
+        }
+
         const data = await response.json();
+        console.log("Niveles recibidos:", data); // Debug: Muestra los niveles recibidos
         setNivelesDisponibles(data);
       } catch (error) {
         console.error("Error fetching niveles:", error.message);
+        setMessage(`Error: ${error.message}`); // Mensaje de error
       }
     };
-
+  
     fetchHabilidades();
     fetchNiveles();
   }, []);
@@ -65,9 +106,11 @@ const SkillsForm = ({ onUpdateSkills }) => {
 
       if (id_habilidad !== undefined && id_nivel !== undefined) {
         try {
+          const token = await AsyncStorage.getItem("token");  // Recuperar el token
           const response = await fetch("http://localhost:3000/api/tests/", {
             method: "POST",
             headers: {
+              "Authorization": `Bearer ${token}`,  // Incluir el token
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
@@ -79,14 +122,19 @@ const SkillsForm = ({ onUpdateSkills }) => {
             }),
           });
 
+          // Debug: Muestra el estado de la respuesta y el cuerpo
+          console.log("Response Status (Enviar Skill):", response.status);
+          console.log("Response Headers (Enviar Skill):", response.headers);
+          
           if (!response.ok) {
+            const errorMessage = await response.text(); // Recuperar el mensaje de error del cuerpo
+            console.error("Error al guardar la habilidad:", errorMessage);
             throw new Error("Error al guardar la habilidad");
           }
         } catch (error) {
           console.error("Error al enviar:", error.message);
-          setLoading(false);
           setMessage(`Error al enviar: ${error.message}`);
-          return;
+          return; // Salir si hay un error
         }
       }
     });

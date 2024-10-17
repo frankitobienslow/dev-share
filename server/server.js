@@ -21,7 +21,7 @@ const connection = mysql.createConnection({
 // Middleware para habilitar CORS
 app.use(
   cors({
-    origin: "http://localhost:8081", // Cambia esto a la URL de tu cliente
+    origin: "*", // Acepta solicitudes desde cualquier origen
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
@@ -32,11 +32,6 @@ app.use(express.json());
 
 // Usa el enrutador de routes.js
 app.use("/api", routes); // Ahora todas las rutas se manejarán desde aquí
-
-// Ejemplo de ruta
-app.get("/", (req, res) => {
-  res.send("¡Hola, mundo!");
-});
 
 // Manejar errores 404
 app.use((req, res, next) => {

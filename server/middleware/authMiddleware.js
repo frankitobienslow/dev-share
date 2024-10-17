@@ -1,31 +1,35 @@
 const jwt = require('jsonwebtoken');
 
-const verificarToken = (roles = []) => {
+const verificarToken = (rolesPermitidos = []) => {
     return (req, res, next) => {
-        const token = req.headers['authorization']?.split(' ')[1];
+        try {
+            // Verifica si hay un token en la cabecera Authorization
+            const token = req.headers['authorization']?.split(' ')[1];
+            if (!token) {
+                return res.status(403).json({ message: 'Se requiere autenticación' });
+            }
 
-        if (!token) {
-            return res.status(403).json({ message: 'Se requiere autenticación' });
+            // Verifica y decodifica el token
+            jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+                if (err) {
+                    return res.status(401).json({ message: 'Token inválido o expirado' });
+                }
+
+                // Adjunta los datos del usuario a la request
+                req.usuarioId = decoded.id;
+                req.rol = decoded.rol; // Asumimos que en el token ya se guarda un campo 'rol'
+
+                // Si se especifican roles permitidos, verificamos si el usuario tiene alguno
+                if (rolesPermitidos.length && !rolesPermitidos.includes(req.rol)) {
+                    return res.status(403).json({ message: 'Acceso denegado' });
+                }
+
+                // Si pasa todas las verificaciones, continúa
+                next();
+            });
+        } catch (error) {
+            return res.status(500).json({ message: 'Error procesando la autenticación' });
         }
-
-        jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-            if (err) {
-                return res.status(401).json({ message: 'Token inválido' });
-            }
-
-            req.usuarioId = decoded.id;
-            req.isCliente = decoded.isCliente; // Asegúrate de que esto esté en el token
-            req.isDesarrollador = decoded.isDesarrollador; // Asegúrate de que esto esté en el token
-
-            // Verifica los roles permitidos
-            if (roles.length && !roles.some(role => {
-                return (role === 'cliente' && req.isCliente) || (role === 'desarrollador' && req.isDesarrollador);
-            })) {
-                return res.status(403).json({ message: 'Acceso denegado' });
-            }
-
-            next();
-        });
     };
 };
 

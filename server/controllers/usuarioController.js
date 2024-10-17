@@ -96,7 +96,7 @@ exports.loginUsuario = async (req, res) => {
         console.log("Rol encontrado:", rol); // Verifica el rol encontrado
 
         const token = jwt.sign(
-            { id: usuario.id, email: usuario.email, rol },
+            { id: usuario.id, email: usuario.email, rol:rol },
             process.env.JWT_SECRET,
             { expiresIn: '1h' }
         );

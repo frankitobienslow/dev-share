@@ -10,7 +10,16 @@ const Dashboard = () => {
   const { user } = useUser();  // Extraer el usuario del UserContext
   const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
-  const { datos, cargar, error } = peticiones("http://localhost:3000/api/usuarios");
+  const {datos,cargar,error} = peticiones("http://localhost:3000/api/usuarios");
+  //const {datos,cargar,error} = peticiones("http://localhost:3000/api/usuarios");
+  
+  // LOGICA PARA SABER SI EL USUARIO ES CLIENTE O DESARROLLADOR
+  let desarrollador = false;  // dato de prueba para hacer la logica del dashboard
+
+
+  //let id = 2; // se tiene que recuperar del id del usuario ingresado. 
+  // const {dev} = peticiones(`http://localhost:3000/api/usuarios/${id}`);
+   //console.log(datos); 
   
   // Verificar si el usuario es desarrollador o cliente
   const esDesarrollador = user?.rol === 'desarrollador';  // El rol se toma del UserContext

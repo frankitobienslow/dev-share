@@ -106,6 +106,16 @@ CREATE TABLE `etapa` (
   `duracion_estimada` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `etapa`
+--
+
+INSERT INTO `etapa` (`nombre`, `duracion_estimada`) VALUES
+('Planificación', '2024-10-15'),
+('Desarrollo', '2024-12-15'),
+('Pruebas', '2025-01-15'),
+('Despliegue', '2025-02-15');
+
 -- --------------------------------------------------------
 
 --
@@ -265,6 +275,15 @@ CREATE TABLE `proyecto` (
   `id_equipo` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `proyecto`
+--
+
+INSERT INTO `proyecto` (`duracion_estimada`, `titulo`, `descripcion`, `id_cliente`, `id_equipo`) VALUES
+('2024-12-31', 'Desarrollo de Plataforma Web', 'Creación de una plataforma web para gestión de proyectos.', 22, NULL),
+('2025-06-30', 'Aplicación Móvil', 'Desarrollo de una aplicación móvil para seguimiento de tareas.', 22, NULL),
+('2024-09-15', 'Sistema de Gestión', 'Implementación de un sistema de gestión empresarial integral.', 22, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -279,6 +298,31 @@ CREATE TABLE `proyecto_etapa` (
   `fecha_fin` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `proyecto_etapa`
+-- 
+
+-- Proyecto 1: Desarrollo de Plataforma Web
+INSERT INTO `proyecto_etapa` (`id_proyecto`, `id_etapa`, `fecha_inicio`, `fecha_fin`) VALUES
+(1, 1, '2024-10-16', '2024-10-31'), -- Planificación
+(1, 2, '2024-11-01', '2024-12-15'), -- Desarrollo
+(1, 3, '2024-12-16', '2025-01-15'), -- Pruebas
+(1, 4, '2025-01-16', '2025-02-15'); -- Despliegue
+
+-- Proyecto 2: Aplicación Móvil
+INSERT INTO `proyecto_etapa` (`id_proyecto`, `id_etapa`, `fecha_inicio`, `fecha_fin`) VALUES
+(2, 1, '2024-10-16', '2024-10-31'), -- Planificación
+(2, 2, '2024-11-01', '2025-06-15'), -- Desarrollo
+(2, 3, '2025-06-16', '2025-07-15'), -- Pruebas
+(2, 4, '2025-07-16', '2025-08-15'); -- Despliegue
+
+-- Proyecto 3: Sistema de Gestión
+INSERT INTO `proyecto_etapa` (`id_proyecto`, `id_etapa`, `fecha_inicio`, `fecha_fin`) VALUES
+(3, 1, '2024-09-16', '2024-09-30'), -- Planificación
+(3, 2, '2024-10-01', '2024-12-15'), -- Desarrollo
+(3, 3, '2024-12-16', '2025-01-15'), -- Pruebas
+(3, 4, '2025-01-16', '2025-02-15'); -- Despliegue
+
 -- --------------------------------------------------------
 
 --
@@ -291,6 +335,18 @@ CREATE TABLE `requerimiento` (
   `id_proyecto_etapa` int(11) DEFAULT NULL,
   `descripcion` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `requerimiento`
+-- 
+
+INSERT INTO `requerimiento` (`nombre`, `id_proyecto_etapa`, `descripcion`) VALUES
+('Definir Alcance', 1, 'Establecer los objetivos y alcance del proyecto.'),
+('Diseñar UI/UX', 1, 'Crear los diseños de interfaz y experiencia de usuario.'),
+('Desarrollar Backend', 2, 'Implementar la lógica del servidor y base de datos.'),
+('Desarrollar Frontend', 2, 'Crear la interfaz de usuario y la interacción.'),
+('Realizar Pruebas Unitarias', 3, 'Verificar el funcionamiento de componentes individuales.'),
+('Desplegar Aplicación', 4, 'Lanzar la aplicación en el entorno de producción.');
 
 -- --------------------------------------------------------
 
@@ -305,6 +361,18 @@ CREATE TABLE `requerimiento_rol` (
   `id_habilidad` int(11) DEFAULT NULL,
   `id_nivel` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `requerimiento_rol`
+-- 
+
+INSERT INTO `requerimiento_rol` (`id_requerimiento`, `cantidad_desarrolladores`, `id_habilidad`, `id_nivel`) VALUES
+(1, 1, 15, 1), -- Definir Alcance: HTML, Trainee
+(2, 2, 29, 2), -- Diseñar UI/UX: UX/UI Design, Junior
+(3, 2, 9, 3),  -- Desarrollar Backend: Node.js, Senior
+(4, 2, 8, 2),  -- Desarrollar Frontend: React, Junior
+(5, 1, 11, 2), -- Realizar Pruebas Unitarias: QA, Junior
+(6, 1, 24, 3); -- Desplegar Aplicación: Cloud Computing, Senior
 
 -- --------------------------------------------------------
 

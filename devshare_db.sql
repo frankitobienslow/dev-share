@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 29-09-2024 a las 09:57:08
+-- Tiempo de generación: 20-10-2024 a las 21:03:43
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -36,7 +36,8 @@ CREATE TABLE `cliente` (
 --
 
 INSERT INTO `cliente` (`id`) VALUES
-(22);
+(22),
+(27);
 
 -- --------------------------------------------------------
 
@@ -82,6 +83,13 @@ CREATE TABLE `equipo` (
   `nombre` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `equipo`
+--
+
+INSERT INTO `equipo` (`id`, `nombre`) VALUES
+(1, 'EQUIPO LOCO');
+
 -- --------------------------------------------------------
 
 --
@@ -94,6 +102,13 @@ CREATE TABLE `equipo_desarrollador` (
   `id_equipo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `equipo_desarrollador`
+--
+
+INSERT INTO `equipo_desarrollador` (`id`, `id_desarrollador`, `id_equipo`) VALUES
+(1, 26, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -105,16 +120,6 @@ CREATE TABLE `etapa` (
   `nombre` varchar(255) NOT NULL,
   `duracion_estimada` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `etapa`
---
-
-INSERT INTO `etapa` (`nombre`, `duracion_estimada`) VALUES
-('Planificación', '2024-10-15'),
-('Desarrollo', '2024-12-15'),
-('Pruebas', '2025-01-15'),
-('Despliegue', '2025-02-15');
 
 -- --------------------------------------------------------
 
@@ -130,6 +135,16 @@ CREATE TABLE `evaluacion` (
   `resultado` int(11) DEFAULT NULL,
   `fecha` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `evaluacion`
+--
+
+INSERT INTO `evaluacion` (`id`, `id_desarrollador`, `id_habilidad`, `id_nivel`, `resultado`, `fecha`) VALUES
+(25, 26, 7, 1, 80, '2024-10-15'),
+(26, 26, 24, 0, 120, '2024-10-15'),
+(27, 26, 19, 2, 80, '2024-10-15'),
+(28, 26, 14, 2, 80, '2024-10-15');
 
 -- --------------------------------------------------------
 
@@ -272,17 +287,16 @@ CREATE TABLE `proyecto` (
   `titulo` varchar(255) DEFAULT NULL,
   `descripcion` text DEFAULT NULL,
   `id_cliente` int(11) NOT NULL,
-  `id_equipo` int(11) DEFAULT NULL
+  `id_equipo` int(11) DEFAULT NULL,
+  `disponible` tinyint(1) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `proyecto`
 --
 
-INSERT INTO `proyecto` (`duracion_estimada`, `titulo`, `descripcion`, `id_cliente`, `id_equipo`) VALUES
-('2024-12-31', 'Desarrollo de Plataforma Web', 'Creación de una plataforma web para gestión de proyectos.', 22, NULL),
-('2025-06-30', 'Aplicación Móvil', 'Desarrollo de una aplicación móvil para seguimiento de tareas.', 22, NULL),
-('2024-09-15', 'Sistema de Gestión', 'Implementación de un sistema de gestión empresarial integral.', 22, NULL);
+INSERT INTO `proyecto` (`id`, `duracion_estimada`, `titulo`, `descripcion`, `id_cliente`, `id_equipo`, `disponible`) VALUES
+(1, '2024-10-19', 'PROYECTO PRUEBA', 'Este es un proyecto de prueba', 22, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -298,31 +312,6 @@ CREATE TABLE `proyecto_etapa` (
   `fecha_fin` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `proyecto_etapa`
--- 
-
--- Proyecto 1: Desarrollo de Plataforma Web
-INSERT INTO `proyecto_etapa` (`id_proyecto`, `id_etapa`, `fecha_inicio`, `fecha_fin`) VALUES
-(1, 1, '2024-10-16', '2024-10-31'), -- Planificación
-(1, 2, '2024-11-01', '2024-12-15'), -- Desarrollo
-(1, 3, '2024-12-16', '2025-01-15'), -- Pruebas
-(1, 4, '2025-01-16', '2025-02-15'); -- Despliegue
-
--- Proyecto 2: Aplicación Móvil
-INSERT INTO `proyecto_etapa` (`id_proyecto`, `id_etapa`, `fecha_inicio`, `fecha_fin`) VALUES
-(2, 1, '2024-10-16', '2024-10-31'), -- Planificación
-(2, 2, '2024-11-01', '2025-06-15'), -- Desarrollo
-(2, 3, '2025-06-16', '2025-07-15'), -- Pruebas
-(2, 4, '2025-07-16', '2025-08-15'); -- Despliegue
-
--- Proyecto 3: Sistema de Gestión
-INSERT INTO `proyecto_etapa` (`id_proyecto`, `id_etapa`, `fecha_inicio`, `fecha_fin`) VALUES
-(3, 1, '2024-09-16', '2024-09-30'), -- Planificación
-(3, 2, '2024-10-01', '2024-12-15'), -- Desarrollo
-(3, 3, '2024-12-16', '2025-01-15'), -- Pruebas
-(3, 4, '2025-01-16', '2025-02-15'); -- Despliegue
-
 -- --------------------------------------------------------
 
 --
@@ -335,18 +324,6 @@ CREATE TABLE `requerimiento` (
   `id_proyecto_etapa` int(11) DEFAULT NULL,
   `descripcion` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `requerimiento`
--- 
-
-INSERT INTO `requerimiento` (`nombre`, `id_proyecto_etapa`, `descripcion`) VALUES
-('Definir Alcance', 1, 'Establecer los objetivos y alcance del proyecto.'),
-('Diseñar UI/UX', 1, 'Crear los diseños de interfaz y experiencia de usuario.'),
-('Desarrollar Backend', 2, 'Implementar la lógica del servidor y base de datos.'),
-('Desarrollar Frontend', 2, 'Crear la interfaz de usuario y la interacción.'),
-('Realizar Pruebas Unitarias', 3, 'Verificar el funcionamiento de componentes individuales.'),
-('Desplegar Aplicación', 4, 'Lanzar la aplicación en el entorno de producción.');
 
 -- --------------------------------------------------------
 
@@ -361,18 +338,6 @@ CREATE TABLE `requerimiento_rol` (
   `id_habilidad` int(11) DEFAULT NULL,
   `id_nivel` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `requerimiento_rol`
--- 
-
-INSERT INTO `requerimiento_rol` (`id_requerimiento`, `cantidad_desarrolladores`, `id_habilidad`, `id_nivel`) VALUES
-(1, 1, 15, 1), -- Definir Alcance: HTML, Trainee
-(2, 2, 29, 2), -- Diseñar UI/UX: UX/UI Design, Junior
-(3, 2, 9, 3),  -- Desarrollar Backend: Node.js, Senior
-(4, 2, 8, 2),  -- Desarrollar Frontend: React, Junior
-(5, 1, 11, 2), -- Realizar Pruebas Unitarias: QA, Junior
-(6, 1, 24, 3); -- Desplegar Aplicación: Cloud Computing, Senior
 
 -- --------------------------------------------------------
 
@@ -424,7 +389,8 @@ CREATE TABLE `usuario` (
 
 INSERT INTO `usuario` (`id`, `nombre`, `apellido`, `password`, `email`, `dni`) VALUES
 (22, 'lokillo', 'AAA', '$2a$10$x0ICM2jTRN9oP//FL2.KS.sD9T/c2b.4wlkTJcwL3ud3zvQT84gAi', 'marianoturner@hotmail.com', '848418'),
-(26, 'Francisco', 'insua', '$2a$10$vRzCZyPaMYYakF2M/4Wsi.pCQJ1SgEUytSQnh/bU4LErNIV/APOQS', 'franinsua7@gmail.com', '44103173');
+(26, 'Francisco', 'insua', '$2a$10$vRzCZyPaMYYakF2M/4Wsi.pCQJ1SgEUytSQnh/bU4LErNIV/APOQS', 'franinsua7@gmail.com', '44103173'),
+(27, 'prueba', 'prueba', '$2a$10$jL0FQGidvu50pVfwQqNY6u3QWytfPKQhNTFQLsYXV8nOvLpA1Jj5G', 'prueba@prueba.com', '1111111');
 
 --
 -- Índices para tablas volcadas
@@ -574,7 +540,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT de la tabla `contrato`
@@ -592,13 +558,13 @@ ALTER TABLE `desarrollador`
 -- AUTO_INCREMENT de la tabla `equipo`
 --
 ALTER TABLE `equipo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `equipo_desarrollador`
 --
 ALTER TABLE `equipo_desarrollador`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `etapa`
@@ -610,7 +576,7 @@ ALTER TABLE `etapa`
 -- AUTO_INCREMENT de la tabla `evaluacion`
 --
 ALTER TABLE `evaluacion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT de la tabla `experiencia`
@@ -652,7 +618,7 @@ ALTER TABLE `postulacion`
 -- AUTO_INCREMENT de la tabla `proyecto`
 --
 ALTER TABLE `proyecto`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `proyecto_etapa`
@@ -682,7 +648,7 @@ ALTER TABLE `rol`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- Restricciones para tablas volcadas

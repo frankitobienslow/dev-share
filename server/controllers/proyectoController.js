@@ -1,4 +1,8 @@
-const { Proyecto, Cliente, Equipo } = require('../models/Proyecto');
+const Proyecto = require("../models/Proyecto"); // Asegúrate de que esta línea sea correcta
+const Cliente = require("../models/Cliente"); // Asegúrate de que esta línea sea correcta
+const Equipo = require("../models/Equipo"); // Asegúrate de que esta línea sea correcta
+const EquipoDesarrollador = require("../models/EquipoDesarrollador"); // Asegúrate de que esta línea sea correcta
+const Usuario = require("../models/Usuario"); // Asegúrate de que esta línea sea correcta
 
 const ProyectoController = {
   // Obtener todos los proyectos
@@ -6,9 +10,9 @@ const ProyectoController = {
     try {
       const proyectos = await Proyecto.findAll({
         include: [
-          { model: Cliente, attributes: ['id', 'nombre'] },
-          { model: Equipo, attributes: ['id', 'nombre'] }
-        ]
+          { model: Cliente, attributes: ["id", "nombre"] },
+          { model: Equipo, attributes: ["id", "nombre"] },
+        ],
       });
       res.json(proyectos);
     } catch (error) {
@@ -21,14 +25,14 @@ const ProyectoController = {
     try {
       const proyecto = await Proyecto.findByPk(req.params.id, {
         include: [
-          { model: Cliente, attributes: ['id', 'nombre'] },
-          { model: Equipo, attributes: ['id', 'nombre'] }
-        ]
+          { model: Cliente, attributes: ["id", "nombre"] },
+          { model: Equipo, attributes: ["id", "nombre"] },
+        ],
       });
       if (proyecto) {
         res.json(proyecto);
       } else {
-        res.status(404).json({ message: 'Proyecto no encontrado' });
+        res.status(404).json({ message: "Proyecto no encontrado" });
       }
     } catch (error) {
       res.status(500).json({ message: error.message });
@@ -49,13 +53,13 @@ const ProyectoController = {
   updateProyecto: async (req, res) => {
     try {
       const [updated] = await Proyecto.update(req.body, {
-        where: { id: req.params.id }
+        where: { id: req.params.id },
       });
       if (updated) {
         const updatedProyecto = await Proyecto.findByPk(req.params.id);
         res.json(updatedProyecto);
       } else {
-        res.status(404).json({ message: 'Proyecto no encontrado' });
+        res.status(404).json({ message: "Proyecto no encontrado" });
       }
     } catch (error) {
       res.status(400).json({ message: error.message });
@@ -66,17 +70,77 @@ const ProyectoController = {
   deleteProyecto: async (req, res) => {
     try {
       const deleted = await Proyecto.destroy({
-        where: { id: req.params.id }
+        where: { id: req.params.id },
       });
       if (deleted) {
-        res.json({ message: 'Proyecto eliminado exitosamente' });
+        res.json({ message: "Proyecto eliminado exitosamente" });
       } else {
-        res.status(404).json({ message: 'Proyecto no encontrado' });
+        res.status(404).json({ message: "Proyecto no encontrado" });
       }
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
-  }
+  },
+
+  getProyectosByUsuario : async (req, res) => {
+    const { id_usuario } = req.params; // Obtener el ID del usuario de los parámetros
+    try {
+        // Verifica que el usuario esté autenticado
+        if (!req.usuarioId) {
+            return res.status(401).json({ message: "Usuario no autenticado" });
+        }
+
+        // Opcionalmente, verifica si el ID del usuario que hace la solicitud coincide con el id_usuario
+        if (req.usuarioId !== parseInt(id_usuario, 10)) {
+            return res.status(403).json({ message: "No tienes permiso para acceder a estos proyectos" });
+        }
+
+        const { rol } = req; // Aquí puedes obtener el rol que has adjuntado
+        let proyectos;
+
+        if (rol === "cliente") {
+            proyectos = await Proyecto.findAll({
+                where: { id_cliente: id_usuario },
+                include: [
+                    {
+                        model: Cliente,
+                        include: [{ model: Usuario, attributes: ["id", "nombre", "apellido"] }] // Incluir Usuario aquí
+                    },
+                    { model: Equipo, attributes: ["id", "nombre"] },
+                ],
+            });
+        } else if (rol === "desarrollador") {
+            const equiposDelDesarrollador = await EquipoDesarrollador.findAll({
+                where: { id_desarrollador: id_usuario },
+                attributes: ["id_equipo"],
+            });
+
+            const idsEquipos = equiposDelDesarrollador.map((ed) => ed.id_equipo);
+
+            if (idsEquipos.length === 0) {
+                return res.json([]); // Si no hay equipos, retorna un array vacío
+            }
+
+            proyectos = await Proyecto.findAll({
+                where: { id_equipo: idsEquipos },
+                include: [
+                    {
+                        model: Cliente,
+                        include: [{ model: Usuario, attributes: ["id", "nombre", "apellido"] }] // Incluir Usuario aquí
+                    },
+                    { model: Equipo, attributes: ["id", "nombre"] },
+                ],
+            });
+        } else {
+            return res.status(400).json({ message: "Rol de usuario no válido" });
+        }
+
+        res.json(proyectos);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error al obtener los proyectos del usuario" });
+    }
+}
 };
 
 module.exports = ProyectoController;

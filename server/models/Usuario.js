@@ -34,4 +34,19 @@ const Usuario = sequelize.define('Usuario', {
     timestamps: false // Cambia esto si usas createdAt/updatedAt
 });
 
+// Agregar asociaciones
+Usuario.associate = (models) => {
+    // Asociación uno a uno con Cliente
+    Usuario.hasOne(models.Cliente, {
+        foreignKey: 'id', // Suponiendo que el id del Usuario es la clave primaria en Cliente
+        as: 'cliente' // Puedes cambiar el alias si lo deseas
+    });
+
+    // Asociación uno a uno con Desarrollador
+    Usuario.hasOne(models.Desarrollador, {
+        foreignKey: 'id', // Suponiendo que el id del Usuario es la clave primaria en Desarrollador
+        as: 'desarrollador' // Puedes cambiar el alias si lo deseas
+    });
+};
+
 module.exports = Usuario;

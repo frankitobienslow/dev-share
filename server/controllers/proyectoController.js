@@ -25,10 +25,20 @@ const ProyectoController = {
     try {
       const proyecto = await Proyecto.findByPk(req.params.id, {
         include: [
-          { model: Cliente, attributes: ["id", "nombre"] },
+          {
+            model: Cliente,
+            attributes: ["id"],
+            include: [
+              {
+                model: Usuario, // Incluir el modelo Usuario
+                attributes: ["nombre", "apellido"], // Atributos que necesitas del Usuario
+              },
+            ],
+          },
           { model: Equipo, attributes: ["id", "nombre"] },
         ],
       });
+      
       if (proyecto) {
         res.json(proyecto);
       } else {
@@ -38,7 +48,7 @@ const ProyectoController = {
       res.status(500).json({ message: error.message });
     }
   },
-
+  
   // Crear un nuevo proyecto
   createProyecto: async (req, res) => {
     try {

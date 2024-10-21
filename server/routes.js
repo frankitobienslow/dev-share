@@ -8,6 +8,8 @@ const gptRoutes=require('./routes/gptRoutes');
 const equipoRoutes=require('./routes/equipoRoutes');
 const equipoDesarrolladorRoutes=require('./routes/equipoDesarrolladorRoutes');
 const proyectoRoutes=require('./routes/proyectoRoutes');
+const feedbackRoutes=require('./routes/feedbackRoutes');
+const feedbackUsuarioRoutes=require('./routes/feedbackUsuarioRoutes');
 
 const router = express.Router();
 
@@ -18,6 +20,7 @@ router.use('/tests', evaluacionRoutes);
 router.use('/usuarios', usuarioRoutes); // Ahora todas las rutas de usuario están protegidas
 router.use('/gpt', gptRoutes); 
 router.use('/proyectos', proyectoRoutes); 
-
+router.use('/feedback', feedbackRoutes); 
+router.use('/feedbackUsuario', feedbackUsuarioRoutes); 
 
 module.exports = router;

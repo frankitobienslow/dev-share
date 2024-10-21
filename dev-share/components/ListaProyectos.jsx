@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, ActivityIndicator } from 'react-native';
 import { useUser } from '../context/UserContext';
 import { useRouter } from 'expo-router';
-import AsyncStorage from '@react-native-async-storage/async-storage'; // Asegúrate de tener esto importado
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import ProyectoItem from './ProyectoItem'; // Importar el componente ProyectoItem
 
-const Proyectos = () => {
-  const { user } = useUser();  
+const ListaProyectos = () => {
+  const { user } = useUser();
   const router = useRouter();
   const [proyectos, setProyectos] = useState([]);
   const [cargando, setCargando] = useState(false);
-  const [message, setMessage] = useState(""); // Estado para manejar mensajes
+  const [message, setMessage] = useState("");
 
   const fetchProyectos = async () => {
     setCargando(true);
@@ -34,7 +35,7 @@ const Proyectos = () => {
       setProyectos(data);
     } catch (error) {
       console.error('Error fetching proyectos:', error.message);
-      setMessage(`Error: ${error.message}`); // Actualiza el mensaje en caso de error
+      setMessage(`Error: ${error.message}`);
     } finally {
       setCargando(false);
     }
@@ -52,23 +53,14 @@ const Proyectos = () => {
       {cargando ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : message ? (
-        <Text className="text-red-500">{message}</Text> // Mostrar mensaje de error si existe
+        <Text className="text-red-500">{message}</Text>
       ) : (
         proyectos.map((proyecto) => (
-          <View key={proyecto.id} className="border p-4 mb-4 rounded-lg bg-gray-100">
-            <Text className="text-lg font-bold">{proyecto.titulo}</Text>
-            <Text className="text-sm text-gray-600">{proyecto.descripcion}</Text>
-            <Text className="text-sm">Cliente: {proyecto.Cliente?.Usuario?.nombre + ' ' + proyecto.Cliente?.Usuario?.apellido || 'Sin asignar'}</Text>
-            <Text className="text-sm">Equipo: {proyecto.Equipo?.nombre || 'Sin asignar'}</Text>
-            {/* Agregar el estado del proyecto aquí */}
-            <Text className={`text-sm ${proyecto.disponible ? 'text-green-600' : 'text-red-600'}`}>
-              Estado: {proyecto.disponible ? 'Activo' : 'Inactivo'}
-            </Text>
-          </View>
+          <ProyectoItem key={proyecto.id} proyecto={proyecto} /> // Usar ProyectoItem
         ))
       )}
     </ScrollView>
   );
 };
 
-export default Proyectos;
+export default ListaProyectos;

@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 
-const Proyecto = ({ proyectoId = null }) => {
+const AbmProyecto = ({ proyectoId = null }) => {
   const router = useRouter();
 
   // Schema de validación con Yup
@@ -140,4 +140,4 @@ const Proyecto = ({ proyectoId = null }) => {
   );
 };
 
-export default Proyecto;
+export default AbmProyecto;

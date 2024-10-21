@@ -11,7 +11,7 @@ import { useRouter } from "expo-router";
 import peticiones from "../components/Peticiones";
 import Dev from "../components/Dev";
 import Client from "../components/Client";
-import Proyectos from "../components/Proyectos"; // Importa el componente de Proyectos
+import ListaProyectos from "../components/ListaProyectos"; // Importa el componente de Proyectos
 
 const Dashboard = () => {
   const { user } = useUser(); // Extraer el usuario del UserContext
@@ -54,15 +54,15 @@ const Dashboard = () => {
       {/* Si es desarrollador, muestra contenido específico para desarrolladores */}
       {esDesarrollador ? (
         <View className="p-4">
-          <Proyectos /> {/* Mostrar lista de proyectos del usuario */}
+          <ListaProyectos /> {/* Mostrar lista de proyectos del usuario */}
         </View>
       ) : (
         <View className="p-4">
-          <Proyectos /> {/* Mostrar lista de proyectos del usuario */}
+          <ListaProyectos /> {/* Mostrar lista de proyectos del usuario */}
           {/* Botón "Publicar Oferta" */}
           <Pressable
             className="bg-blue-700 rounded-lg py-2 px-4 mt-4"
-            onPress={() => router.push("/proyecto")}
+            onPress={() => router.push("/abm-proyecto")}
           >
             <Text className="text-white text-lg text-center">
             Nuevo proyecto

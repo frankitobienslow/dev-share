@@ -135,3 +135,5 @@ dist
 
 # Ingnorar webpack.config.js
 .webpack.config.js
+# ignorando archivo de prueba
+probando.jsx

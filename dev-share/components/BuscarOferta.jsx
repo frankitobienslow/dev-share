@@ -1,88 +1,66 @@
-import { useState } from 'react';
-import { View, Text, TextInput, FlatList,TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import ProyectoCard from './proyectoCard'; // Importa el nuevo componente para mostrar los proyectos
+import { FaSearch } from 'react-icons/fa'; // Asegúrate de instalar react-icons
 
-const datosAleatorios=[
-    {
-        id:1, titulo:'bootstrap',
-        id:2, titulo:'React',
-        id:3, titulo:'Javascript',
-        id:4, titulo: 'CSS',
-        id:5, titulo:'PHP',
-        id:6, titulo:'Phyton'
-    }
+const BuscarOferta = () => {
+    const [proyectos, setProyectos] = useState([]);
+    const [filtro, setFiltro] = useState(''); // Un solo estado para el filtro
 
-];
+    // Función para obtener proyectos desde el backend con el filtro
+    const obtenerProyectos = async (filtro = '') => {
+        try {
+            const response = await axios.get('/api/proyectos', {
+                params: { filtro }
+            });
+            console.log('Datos de la API:', response.data); // Verifica la respuesta
+            // Asegúrate de que sea un arreglo
+            setProyectos(Array.isArray(response.data) ? response.data : []);
+        } catch (error) {
+            console.error('Error al obtener proyectos:', error.response || error.message);
+        }
+    };
 
-/** BUSQUEDA -- ARMADO LOGICO */
-const busqueda=()=>{
-    const [consulta, setConsulta]=useState(''); // para gestionar la consulta en la barra de busqueda
-    const [resultado,setResultado]=useState(datosAleatorios); // para relacionar el macheo entre la busqueda y los resultados
+    // Obtener todos los proyectos al montar el componente
+    useEffect(() => {
+        obtenerProyectos(); // Llama a la función sin filtro al inicio
+    }, []);
 
-    const handleBusqueda = (texto)=> {
-        setConsulta(texto);
-        if(texto){
-            const filtroResultado=datosAleatorios.filter(item=> item.titulo.toLocaleLowerCase().includes(texto.toLocaleLowerCase()));
-            setResultado(filtroResultado);
-        }// fin if 
-        else{
-            setResultado(datosAleatorios);
-        }// fin else
-    }// fin handleBusqueda
+    // Manejar cambio en el campo de búsqueda
+    const manejarCambioBuscador = (e) => {
+        const valorFiltro = e.target.value;
+        setFiltro(valorFiltro);
+        obtenerProyectos(valorFiltro); // Filtrar por el único campo
+    };
 
-    const listarItem= ({item})=> (
-        <TouchableOpacity style={styles.item}>
-            <Text style={styles.titulo}> {item.titulo} </Text>
-        </TouchableOpacity>
-    );
-    
     return (
-        <View style={styles.container}>
-            <TextInput
-                style={styles.busquedaInput}
-                placeholder='buscando...'
-                value={consulta}
-                onChange={handleBusqueda}
-            ></TextInput>
-            <FlatList
-                data={resultado}
-                listarItem={listarItem}
-                keyExtractor={item =>item.id}
-                ListEmptyComponent={<Text style={styles.emptyText}> No hay resultados</Text>}
-            ></FlatList>
-        </View>
-    ); // fin return
+        <div className="buscar-oferta">
+            <h1 className="text-2xl font-bold mb-4">Buscar Ofertas</h1>
 
-};// fin busqueda 
+            {/* Input para buscar por título o requerimiento */}
+            <div className="relative mb-4">
+                <input
+                    type="text"
+                    placeholder="Buscar por título o requerimiento..."
+                    className="border p-2 w-full pl-10" // Espaciado para la lupa
+                    value={filtro}
+                    onChange={manejarCambioBuscador}
+                />
+                <FaSearch className="absolute left-2 top-2 text-gray-500" /> {/* Icono de lupa */}
+            </div>
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: '#f5f5f5',
-  },
-  busquedaInput: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    marginBottom: 20,
-  },
-  item: {
-    backgroundColor: 'white',
-    padding: 20,
-    marginVertical: 8,
-    borderRadius: 5,
-  },
-  titulo: {
-    fontSize: 16,
-  },
-  emptyText: {
-    textAlign: 'center',
-    marginTop: 20,
-    fontSize: 16,
-    color: 'gray',
-  },
-});
+            {/* Listado de proyectos */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {proyectos.length > 0 ? (
+                    proyectos.map((proyecto) => (
+                        <ProyectoCard key={proyecto.id} proyecto={proyecto} />
+                    ))
+                ) : (
+                    <p>No se encontraron proyectos.</p>
+                )}
+            </div>
+        </div>
+    );
+};
 
-export default busqueda;
+export default BuscarOferta;

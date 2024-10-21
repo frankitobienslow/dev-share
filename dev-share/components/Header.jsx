@@ -62,6 +62,9 @@ const Header = () => {
           <Pressable onPress={handleLogout}>
             <Text className="text-white text-lg">Cerrar sesión</Text>
           </Pressable>
+          <Pressable onPress={() => handleOptionPress("/ofertas")}>
+            <Text className="text-white text-lg">Ofertas</Text>
+          </Pressable>
         </View>
       )}
     </LinearGradient>

@@ -10,6 +10,9 @@ const equipoDesarrolladorRoutes=require('./routes/equipoDesarrolladorRoutes');
 const proyectoRoutes=require('./routes/proyectoRoutes');
 const feedbackRoutes=require('./routes/feedbackRoutes');
 const feedbackUsuarioRoutes=require('./routes/feedbackUsuarioRoutes');
+const requerimiento=require('./routes/requerimientoRoutes');
+const requerimientoRol = require('./routes/requerimientoRolRoutes');
+const proyectoEtapa = require('./routes/proyectoEtapaRoutes');
 
 const router = express.Router();
 
@@ -21,6 +24,9 @@ router.use('/usuarios', usuarioRoutes); // Ahora todas las rutas de usuario est√
 router.use('/gpt', gptRoutes); 
 router.use('/proyectos', proyectoRoutes); 
 router.use('/feedback', feedbackRoutes); 
-router.use('/feedbackUsuario', feedbackUsuarioRoutes); 
+router.use('/feedbackUsuario', feedbackUsuarioRoutes);
+router.use('/requerimiento', requerimiento);
+router.use('/requerimientoRol', requerimientoRol);
+router.use('/proyectoEtapa', proyectoEtapa);
 
 module.exports = router;

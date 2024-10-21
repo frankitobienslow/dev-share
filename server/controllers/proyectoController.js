@@ -1,19 +1,49 @@
-const Proyecto = require("../models/Proyecto"); // Asegúrate de que esta línea sea correcta
-const Cliente = require("../models/Cliente"); // Asegúrate de que esta línea sea correcta
-const Equipo = require("../models/Equipo"); // Asegúrate de que esta línea sea correcta
-const EquipoDesarrollador = require("../models/EquipoDesarrollador"); // Asegúrate de que esta línea sea correcta
-const Usuario = require("../models/Usuario"); // Asegúrate de que esta línea sea correcta
+const { Op } = require('sequelize');
+const Proyecto = require("../models/Proyecto");
+const Cliente = require("../models/Cliente");
+const Equipo = require("../models/Equipo");
+const Requerimiento = require("../models/Requerimiento"); // Asegúrate de que este modelo esté bien
+const RequerimientoRol = require("../models/RequerimientoRol"); // Asegúrate de que este modelo esté bien
+const Rol = require("../models/Rol"); // Asegúrate de que este modelo esté bien
 
 const ProyectoController = {
-  // Obtener todos los proyectos
   getAllProyectos: async (req, res) => {
     try {
+      const { titulo, requerimiento, rol } = req.query; // Obtener los parámetros de búsqueda
+
+      let whereCondition = {}; // Condiciones de búsqueda para el título
+
+      if (titulo) {
+        whereCondition.titulo = {
+          [Op.like]: `%${titulo}%`, // Filtro por título (insensible a mayúsculas)
+        };
+      }
+
+      let includeCondition = [
+        { model: Cliente, attributes: ["id", "nombre"] },
+        { model: Equipo, attributes: ["id", "nombre"] },
+      ];
+
+      if (requerimiento || rol) {
+        // Incluir los requerimientos y roles en la búsqueda
+        includeCondition.push({
+          model: Requerimiento,
+          include: [
+            {
+              model: Rol,
+              attributes: ["id", "nombre"], // Filtro de roles asociados a los requerimientos
+              where: rol ? { nombre: { [Op.like]: `%${rol}%` } } : undefined,
+            },
+          ],
+          where: requerimiento ? { nombre: { [Op.like]: `%${requerimiento}%` } } : undefined,
+        });
+      }
+
       const proyectos = await Proyecto.findAll({
-        include: [
-          { model: Cliente, attributes: ["id", "nombre"] },
-          { model: Equipo, attributes: ["id", "nombre"] },
-        ],
+        where: whereCondition,
+        include: includeCondition,
       });
+
       res.json(proyectos);
     } catch (error) {
       res.status(500).json({ message: error.message });

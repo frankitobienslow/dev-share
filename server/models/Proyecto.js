@@ -40,6 +40,10 @@ Proyecto.init(
         key: "id",
       },
     },
+    disponible: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true
+    }
   },
   {
     sequelize,

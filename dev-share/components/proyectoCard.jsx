@@ -32,6 +32,7 @@ const ProyectoCard = ({ proyecto }) => {
 
         <Text className={`text-sm ${proyecto.disponible ? 'text-green-600' : 'text-red-600'}`}>
           Estado: {proyecto.disponible ? 'Activo' : 'Inactivo'}
+          {console.log(proyecto.disponible)};
         </Text>
       </View>
     </Pressable>

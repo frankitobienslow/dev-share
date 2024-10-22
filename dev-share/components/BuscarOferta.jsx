@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import ProyectoCard from './proyectoCard'; // Importa el nuevo componente para mostrar los proyectos
 import { FaSearch } from 'react-icons/fa'; // Asegúrate de instalar react-icons
 
@@ -10,8 +11,14 @@ const BuscarOferta = () => {
     // Función para obtener proyectos desde el backend con el filtro
     const obtenerProyectos = async (filtro = '') => {
         try {
-            const response = await axios.get('/api/proyectos', {
-                params: { filtro }
+            const token = await AsyncStorage.getItem("token");
+            const response = await axios.get('http://localhost:3000/api/proyectos/', {
+                
+                params: { filtro },
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                  },
             });
             console.log('Datos de la API:', response.data); // Verifica la respuesta
             // Asegúrate de que sea un arreglo

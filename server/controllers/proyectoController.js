@@ -20,7 +20,7 @@ const ProyectoController = {
       }
 
       let includeCondition = [
-        { model: Cliente, attributes: ["id", "nombre"] },
+        { model: Cliente, attributes: ["id"] },
         { model: Equipo, attributes: ["id", "nombre"] },
       ];
 

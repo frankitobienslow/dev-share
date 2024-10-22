@@ -9,13 +9,13 @@ const Rol = require("../models/Rol"); // Asegúrate de que este modelo esté bie
 const ProyectoController = {
   getAllProyectos: async (req, res) => {
     try {
-      const { titulo, requerimiento, rol } = req.query; // Obtener los parámetros de búsqueda
+      const { filtro, requerimiento, rol } = req.query; // Cambio de 'titulo' a 'filtro'
 
-      let whereCondition = {}; // Condiciones de búsqueda para el título
+      let whereCondition = {};
 
-      if (titulo) {
+      if (filtro) {
         whereCondition.titulo = {
-          [Op.like]: `%${titulo}%`, // Filtro por título (insensible a mayúsculas)
+          [Op.like]: `%${filtro}%`, // Filtro por título
         };
       }
 
@@ -25,13 +25,12 @@ const ProyectoController = {
       ];
 
       if (requerimiento || rol) {
-        // Incluir los requerimientos y roles en la búsqueda
         includeCondition.push({
           model: Requerimiento,
           include: [
             {
               model: Rol,
-              attributes: ["id", "nombre"], // Filtro de roles asociados a los requerimientos
+              attributes: ["id", "nombre"],
               where: rol ? { nombre: { [Op.like]: `%${rol}%` } } : undefined,
             },
           ],

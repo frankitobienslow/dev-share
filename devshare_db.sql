@@ -297,6 +297,8 @@ CREATE TABLE `proyecto` (
 
 INSERT INTO `proyecto` (`id`, `duracion_estimada`, `titulo`, `descripcion`, `id_cliente`, `id_equipo`, `disponible`) VALUES
 (1, '2024-10-19', 'PROYECTO PRUEBA', 'Este es un proyecto de prueba', 22, 1, 1);
+(2, '2024-10-23', 'developer', 'Este es un proyecto de prueba2', 26, 1, 1);
+(3, '2024-10-29', 'runner', 'Este es un proyecto de prueba3', 27, 1, 1);
 
 -- --------------------------------------------------------
 

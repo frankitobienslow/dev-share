@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 20-10-2024 a las 21:03:43
+-- Tiempo de generación: 22-10-2024 a las 23:03:00
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -120,6 +120,16 @@ CREATE TABLE `etapa` (
   `nombre` varchar(255) NOT NULL,
   `duracion_estimada` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `etapa`
+--
+
+INSERT INTO `etapa` (`id`, `nombre`, `duracion_estimada`) VALUES
+(1, 'Planificación', '2024-10-15'),
+(2, 'Desarrollo', '2024-12-15'),
+(3, 'Pruebas', '2025-01-15'),
+(4, 'Despliegue', '2025-02-15');
 
 -- --------------------------------------------------------
 
@@ -296,9 +306,10 @@ CREATE TABLE `proyecto` (
 --
 
 INSERT INTO `proyecto` (`id`, `duracion_estimada`, `titulo`, `descripcion`, `id_cliente`, `id_equipo`, `disponible`) VALUES
-(1, '2024-10-19', 'PROYECTO PRUEBA', 'Este es un proyecto de prueba', 22, 1, 1);
-(2, '2024-10-23', 'developer', 'Este es un proyecto de prueba2', 26, 1, 1);
-(3, '2024-10-29', 'runner', 'Este es un proyecto de prueba3', 27, 1, 1);
+(1, '2024-10-19', 'PROYECTO PRUEBA', 'Este es un proyecto de prueba', 22, 1, 1),
+(2, '2024-12-31', 'Desarrollo de Plataforma Web', 'Creación de una plataforma web para gestión de proyectos.', 22, NULL, 1),
+(3, '2025-06-30', 'Aplicación Móvil', 'Desarrollo de una aplicación móvil para seguimiento de tareas.', 22, NULL, 1),
+(4, '2024-09-15', 'Sistema de Gestión', 'Implementación de un sistema de gestión empresarial integral.', 22, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -314,6 +325,24 @@ CREATE TABLE `proyecto_etapa` (
   `fecha_fin` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `proyecto_etapa`
+--
+
+INSERT INTO `proyecto_etapa` (`id`, `id_proyecto`, `id_etapa`, `fecha_inicio`, `fecha_fin`) VALUES
+(1, 1, 1, '2024-10-16', '2024-10-31'),
+(2, 1, 2, '2024-11-01', '2024-12-15'),
+(3, 1, 3, '2024-12-16', '2025-01-15'),
+(4, 1, 4, '2025-01-16', '2025-02-15'),
+(5, 2, 1, '2024-10-16', '2024-10-31'),
+(6, 2, 2, '2024-11-01', '2025-06-15'),
+(7, 2, 3, '2025-06-16', '2025-07-15'),
+(8, 2, 4, '2025-07-16', '2025-08-15'),
+(9, 3, 1, '2024-09-16', '2024-09-30'),
+(10, 3, 2, '2024-10-01', '2024-12-15'),
+(11, 3, 3, '2024-12-16', '2025-01-15'),
+(12, 3, 4, '2025-01-16', '2025-02-15');
+
 -- --------------------------------------------------------
 
 --
@@ -326,6 +355,18 @@ CREATE TABLE `requerimiento` (
   `id_proyecto_etapa` int(11) DEFAULT NULL,
   `descripcion` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `requerimiento`
+--
+
+INSERT INTO `requerimiento` (`id`, `nombre`, `id_proyecto_etapa`, `descripcion`) VALUES
+(1, 'Definir Alcance', 1, 'Establecer los objetivos y alcance del proyecto.'),
+(2, 'Diseñar UI/UX', 1, 'Crear los diseños de interfaz y experiencia de usuario.'),
+(3, 'Desarrollar Backend', 2, 'Implementar la lógica del servidor y base de datos.'),
+(4, 'Desarrollar Frontend', 2, 'Crear la interfaz de usuario y la interacción.'),
+(5, 'Realizar Pruebas Unitarias', 3, 'Verificar el funcionamiento de componentes individuales.'),
+(6, 'Desplegar Aplicación', 4, 'Lanzar la aplicación en el entorno de producción.');
 
 -- --------------------------------------------------------
 
@@ -340,6 +381,18 @@ CREATE TABLE `requerimiento_rol` (
   `id_habilidad` int(11) DEFAULT NULL,
   `id_nivel` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `requerimiento_rol`
+--
+
+INSERT INTO `requerimiento_rol` (`id`, `id_requerimiento`, `cantidad_desarrolladores`, `id_habilidad`, `id_nivel`) VALUES
+(1, 1, 1, 15, 1),
+(2, 2, 2, 29, 2),
+(3, 3, 2, 9, 3),
+(4, 4, 2, 8, 2),
+(5, 5, 1, 11, 2),
+(6, 6, 1, 24, 3);
 
 -- --------------------------------------------------------
 
@@ -572,7 +625,7 @@ ALTER TABLE `equipo_desarrollador`
 -- AUTO_INCREMENT de la tabla `etapa`
 --
 ALTER TABLE `etapa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `evaluacion`
@@ -620,25 +673,25 @@ ALTER TABLE `postulacion`
 -- AUTO_INCREMENT de la tabla `proyecto`
 --
 ALTER TABLE `proyecto`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `proyecto_etapa`
 --
 ALTER TABLE `proyecto_etapa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `requerimiento`
 --
 ALTER TABLE `requerimiento`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `requerimiento_rol`
 --
 ALTER TABLE `requerimiento_rol`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `rol`

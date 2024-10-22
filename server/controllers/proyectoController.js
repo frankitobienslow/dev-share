@@ -7,17 +7,18 @@ const Equipo = require("../models/Equipo");
 const Requerimiento = require("../models/Requerimiento"); // Asegúrate de que este modelo esté bien
 const RequerimientoRol = require("../models/RequerimientoRol"); // Asegúrate de que este modelo esté bien
 const Rol = require("../models/Rol"); // Asegúrate de que este modelo esté bien
+const Usuario = require("../models/Usuario");
 
 const ProyectoController = {
   getAllProyectos: async (req, res) => {
     try {
-      const { titulo, requerimiento, rol } = req.query; // Obtener los parámetros de búsqueda
+      const { filtro, requerimiento, rol } = req.query; // Cambio de 'titulo' a 'filtro'
 
-      let whereCondition = {}; // Condiciones de búsqueda para el título
+      let whereCondition = {};
 
-      if (titulo) {
+      if (filtro) {
         whereCondition.titulo = {
-          [Op.like]: `%${titulo}%`, // Filtro por título (insensible a mayúsculas)
+          [Op.like]: `%${filtro}%`, // Filtro por título
         };
       }
 
@@ -27,13 +28,12 @@ const ProyectoController = {
       ];
 
       if (requerimiento || rol) {
-        // Incluir los requerimientos y roles en la búsqueda
         includeCondition.push({
           model: Requerimiento,
           include: [
             {
               model: Rol,
-              attributes: ["id", "nombre"], // Filtro de roles asociados a los requerimientos
+              attributes: ["id", "nombre"],
               where: rol ? { nombre: { [Op.like]: `%${rol}%` } } : undefined,
             },
           ],
@@ -124,20 +124,24 @@ const ProyectoController = {
     }
   },
 
-  getProyectosByUsuario : async (req, res) => {
-    const { id_usuario } = req.params; // Obtener el ID del usuario de los parámetros
+  getProyectosByUsuario: async (req, res) => {
+    const { id_usuario } = req.params;
+    console.log('ID Usuario:', id_usuario); // Log para verificar ID de usuario
     try {
         // Verifica que el usuario esté autenticado
         if (!req.usuarioId) {
+            console.log('Usuario no autenticado');
             return res.status(401).json({ message: "Usuario no autenticado" });
         }
 
         // Opcionalmente, verifica si el ID del usuario que hace la solicitud coincide con el id_usuario
         if (req.usuarioId !== parseInt(id_usuario, 10)) {
+            console.log('Acceso no permitido:', req.usuarioId, id_usuario);
             return res.status(403).json({ message: "No tienes permiso para acceder a estos proyectos" });
         }
 
-        const { rol } = req; // Aquí puedes obtener el rol que has adjuntado
+        const { rol } = req;
+        console.log('Rol del usuario:', rol); // Log para verificar el rol
         let proyectos;
 
         if (rol === "cliente") {
@@ -146,7 +150,7 @@ const ProyectoController = {
                 include: [
                     {
                         model: Cliente,
-                        include: [{ model: Usuario, attributes: ["id", "nombre", "apellido"] }] // Incluir Usuario aquí
+                        include: [{ model: Usuario, attributes: ["id", "nombre", "apellido"] }]
                     },
                     { model: Equipo, attributes: ["id", "nombre"] },
                 ],
@@ -157,10 +161,13 @@ const ProyectoController = {
                 attributes: ["id_equipo"],
             });
 
+            console.log('Equipos del desarrollador:', equiposDelDesarrollador);
+
             const idsEquipos = equiposDelDesarrollador.map((ed) => ed.id_equipo);
 
             if (idsEquipos.length === 0) {
-                return res.json([]); // Si no hay equipos, retorna un array vacío
+                console.log('No hay equipos asociados al desarrollador');
+                return res.json([]);
             }
 
             proyectos = await Proyecto.findAll({
@@ -168,21 +175,24 @@ const ProyectoController = {
                 include: [
                     {
                         model: Cliente,
-                        include: [{ model: Usuario, attributes: ["id", "nombre", "apellido"] }] // Incluir Usuario aquí
+                        include: [{ model: Usuario, attributes: ["id", "nombre", "apellido"] }]
                     },
                     { model: Equipo, attributes: ["id", "nombre"] },
                 ],
             });
         } else {
+            console.log('Rol de usuario no válido:', rol);
             return res.status(400).json({ message: "Rol de usuario no válido" });
         }
 
+        console.log('Proyectos obtenidos:', proyectos);
         res.json(proyectos);
     } catch (error) {
-        console.error(error);
+        console.error('Error al obtener los proyectos del usuario:', error);
         res.status(500).json({ message: "Error al obtener los proyectos del usuario" });
     }
 }
+
 };
 
 module.exports = ProyectoController;

@@ -1,14 +1,27 @@
-// app/Ofertas.jsx
 import React from 'react';
-import BuscarOferta from '../components/BuscarOferta'; 
+import { View, Text, StyleSheet } from 'react-native';
+import BuscarOferta from '../components/BuscarOferta'; // Asegúrate de que BuscarOferta también esté adaptado a React Native
 
 const Ofertas = () => {
     return (
-        <div className="ofertas-page">
-            <h1 className="text-2xl font-bold mb-4">Ofertas</h1>
+        <View style={styles.container}>
+            <Text style={styles.title}>Ofertas</Text>
             <BuscarOferta />
-        </div>
+        </View>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 16,
+        backgroundColor: '#fff',
+    },
+    title: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginBottom: 16,
+    },
+});
 
 export default Ofertas;

@@ -1,27 +1,26 @@
 import React, { useEffect, useState } from 'react';
+import { View, Text, TextInput, FlatList, StyleSheet } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import ProyectoCard from './proyectoCard'; // Importa el nuevo componente para mostrar los proyectos
-import { FaSearch } from 'react-icons/fa'; // Asegúrate de instalar react-icons
+import ProyectoCard from './proyectoCard'; // Importa el componente de proyecto modificado para React Native
+import Icon from 'react-native-vector-icons/FontAwesome'; // Instala react-native-vector-icons si no lo tienes: `npm install react-native-vector-icons`
 
 const BuscarOferta = () => {
     const [proyectos, setProyectos] = useState([]);
-    const [filtro, setFiltro] = useState(''); // Un solo estado para el filtro
+    const [filtro, setFiltro] = useState('');
 
     // Función para obtener proyectos desde el backend con el filtro
     const obtenerProyectos = async (filtro = '') => {
         try {
             const token = await AsyncStorage.getItem("token");
             const response = await axios.get('http://localhost:3000/api/proyectos/', {
-                
                 params: { filtro },
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
-                  },
+                },
             });
-            console.log('Datos de la API:', response.data); // Verifica la respuesta
-            // Asegúrate de que sea un arreglo
+            console.log('Datos de la API:', response.data);
             setProyectos(Array.isArray(response.data) ? response.data : []);
         } catch (error) {
             console.error('Error al obtener proyectos:', error.response || error.message);
@@ -34,40 +33,65 @@ const BuscarOferta = () => {
     }, []);
 
     // Manejar cambio en el campo de búsqueda
-    const manejarCambioBuscador = (e) => {
-        const valorFiltro = e.target.value;
-        setFiltro(valorFiltro);
-        obtenerProyectos(valorFiltro); // Filtrar por el único campo
+    const manejarCambioBuscador = (valor) => {
+        setFiltro(valor);
+        obtenerProyectos(valor);
     };
 
     return (
-        <div className="buscar-oferta">
-            <h1 className="text-2xl font-bold mb-4">Buscar Ofertas</h1>
+        <View style={styles.container}>
+            <Text style={styles.title}>Buscar Ofertas</Text>
 
             {/* Input para buscar por título o requerimiento */}
-            <div className="relative mb-4">
-                <input
-                    type="text"
+            <View style={styles.searchContainer}>
+                <Icon name="search" size={20} color="#888" style={styles.icon} />
+                <TextInput
+                    style={styles.input}
                     placeholder="Buscar por título o requerimiento..."
-                    className="border p-2 w-full pl-10" // Espaciado para la lupa
                     value={filtro}
-                    onChange={manejarCambioBuscador}
+                    onChangeText={manejarCambioBuscador} // Manejar el cambio en el input
                 />
-                <FaSearch className="absolute left-2 top-2 text-gray-500" /> {/* Icono de lupa */}
-            </div>
+            </View>
 
             {/* Listado de proyectos */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {proyectos.length > 0 ? (
-                    proyectos.map((proyecto) => (
-                        <ProyectoCard key={proyecto.id} proyecto={proyecto} />
-                    ))
-                ) : (
-                    <p>No se encontraron proyectos.</p>
-                )}
-            </div>
-        </div>
+            <FlatList
+                data={proyectos}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => <ProyectoCard proyecto={item} />}
+                ListEmptyComponent={<Text>No se encontraron proyectos.</Text>}
+            />
+        </View>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 16,
+        backgroundColor: '#fff',
+    },
+    title: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginBottom: 16,
+    },
+    searchContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 16,
+    },
+    icon: {
+        position: 'absolute',
+        left: 10,
+    },
+    input: {
+        flex: 1,
+        height: 40,
+        borderColor: '#ccc',
+        borderWidth: 1,
+        borderRadius: 8,
+        paddingLeft: 40, // Deja espacio para el icono
+    },
+});
 
 export default BuscarOferta;

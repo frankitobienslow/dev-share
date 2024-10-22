@@ -17,9 +17,9 @@ const Dashboard = () => {
   const { user } = useUser(); // Extraer el usuario del UserContext
   const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
-  const { datos, cargar, error } = peticiones(
-    "http://localhost:3000/api/usuarios"
-  );
+  // const { datos, cargar, error } = peticiones(
+  //   "http://localhost:3000/api/usuarios"
+  // );
 
   const esDesarrollador = user?.rol === "desarrollador"; // El rol se toma del UserContext
 
@@ -35,13 +35,13 @@ const Dashboard = () => {
     return <Text className="text-center text-lg">Cargando...</Text>; // Muestra esto mientras se redirige o carga la info
   }
 
-  if (cargar) {
-    return <ActivityIndicator size="large" color="#0000ff" />;
-  }
+  // if (cargar) {
+  //   return <ActivityIndicator size="large" color="#0000ff" />;
+  // }
 
-  if (error) {
-    return <Text className="text-red-500">{error}</Text>;
-  }
+  // if (error) {
+  //   return <Text className="text-red-500">{error}</Text>;
+  // }
 
   return (
     <ScrollView className="h-auto">

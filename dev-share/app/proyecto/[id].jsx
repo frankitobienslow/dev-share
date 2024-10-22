@@ -53,7 +53,7 @@ const Proyecto = () => {
 
   const handleEditar = () => {
     // Redirigir a una página de edición del proyecto
-    router.push(`/editar-proyecto/${id}`);
+    router.push(`/abm-proyecto/${id}`);
   };
 
   if (cargando) {

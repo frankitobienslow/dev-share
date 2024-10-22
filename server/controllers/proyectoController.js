@@ -1,5 +1,7 @@
 const { Op } = require('sequelize');
 const Proyecto = require("../models/Proyecto");
+const EquipoDesarrollador = require("../models/EquipoDesarrollador");
+const Usuario = require("../models/Usuario");
 const Cliente = require("../models/Cliente");
 const Equipo = require("../models/Equipo");
 const Requerimiento = require("../models/Requerimiento"); // Asegúrate de que este modelo esté bien

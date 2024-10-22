@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, ActivityIndicator, ScrollView, Button, Alert } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import AsyncStorage from '@react-native-async-storage/async-storage'; // Para gestionar el token de autenticación
-import { useUser } from '../../context/UserContext'; // Asumiendo que tienes un UserContext para obtener el usuario
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useUser } from '../../context/UserContext';
+import FeedbackModal from '../../components/FeedbackModal'; // Asegúrate de importar tu componente FeedbackModal
 
 const Proyecto = () => {
-  const { id } = useLocalSearchParams(); // Obtener el parámetro id desde la URL
-  const { user } = useUser(); // Obtener el usuario logueado desde el contexto
+  const { id } = useLocalSearchParams();
+  const { user } = useUser();
   const [proyecto, setProyecto] = useState(null);
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState('');
-  const router = useRouter(); // Usar para la navegación
+  const [modalVisible, setModalVisible] = useState(false); // Estado para el modal
+  const router = useRouter();
 
   const fetchProyecto = async () => {
     setCargando(true);
     try {
-      const token = await AsyncStorage.getItem("token"); // Obtener el token del almacenamiento local
+      const token = await AsyncStorage.getItem("token");
       const response = await fetch(`http://localhost:3000/api/proyectos/${id}`, {
         method: 'GET',
         headers: {
@@ -31,7 +33,7 @@ const Proyecto = () => {
       }
 
       const data = await response.json();
-      setProyecto(data); // Guardar los datos del proyecto en el estado
+      setProyecto(data);
     } catch (error) {
       console.error('Error fetching proyecto:', error.message);
       setError(`Error: ${error.message}`);
@@ -47,13 +49,8 @@ const Proyecto = () => {
   }, [id]);
 
   const handleRenunciar = () => {
-    // Implementar la lógica para renunciar al proyecto
-    Alert.alert("Renuncia", "Has renunciado al proyecto.");
-  };
-
-  const handleEditar = () => {
-    // Redirigir a una página de edición del proyecto
-    router.push(`/abm-proyecto/${id}`);
+    // Mostrar el modal
+    setModalVisible(true);
   };
 
   if (cargando) {
@@ -79,12 +76,18 @@ const Proyecto = () => {
           Estado: {proyecto.disponible ? 'Activo' : 'Inactivo'}
         </Text>
 
-        {/* Mostrar botón basado en el rol */}
-        {user?.rol === "desarrollador" ? (
+        {user?.rol === "desarrollador" && (
           <Button title="Renunciar" onPress={handleRenunciar} color="red" />
-        ) : user?.rol === "cliente" ? (
-          <Button title="Editar" onPress={handleEditar} color="blue" />
-        ) : null}
+        )}
+
+        {/* Modal de Feedback */}
+        <FeedbackModal
+          visible={modalVisible}
+          onClose={() => setModalVisible(false)} // Cerrar el modal
+          destino={proyecto?.Cliente?.Usuario?.nombre || 'el proyecto'} // Nombre del cliente o proyecto
+          idAutor={user?.id} // ID del usuario logueado
+          idDestino={proyecto?.Cliente?.Usuario?.id} // ID del cliente
+        />
       </View>
     </ScrollView>
   );

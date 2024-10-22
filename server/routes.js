@@ -9,10 +9,10 @@ const equipoRoutes=require('./routes/equipoRoutes');
 const equipoDesarrolladorRoutes=require('./routes/equipoDesarrolladorRoutes');
 const proyectoRoutes=require('./routes/proyectoRoutes');
 const feedbackRoutes=require('./routes/feedbackRoutes');
-const feedbackUsuarioRoutes=require('./routes/feedbackUsuarioRoutes');
 const requerimiento=require('./routes/requerimientoRoutes');
 const requerimientoRol = require('./routes/requerimientoRolRoutes');
 const proyectoEtapa = require('./routes/proyectoEtapaRoutes');
+const feedbackUsuarioRoutes = require('./routes/feedbackUsuarioRoutes');
 
 const router = express.Router();
 
@@ -28,5 +28,6 @@ router.use('/feedbackUsuario', feedbackUsuarioRoutes);
 router.use('/requerimiento', requerimiento);
 router.use('/requerimientoRol', requerimientoRol);
 router.use('/proyectoEtapa', proyectoEtapa);
+router.use('/equipos', equipoDesarrolladorRoutes);
 
 module.exports = router;

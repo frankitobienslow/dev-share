@@ -6,6 +6,7 @@ const verificarToken = require("../middleware/authMiddleware"); // Importa tu mi
 // Ruta para crear un nuevo feedback de usuario
 router.post('/',verificarToken(), feedbackUsuarioController.createFeedbackUsuario);
 
+router.post('/', verificarToken(), feedbackUsuarioController.createFeedbackUsuario);
 // Ruta para obtener feedbacks de un usuario destino
 router.get('/:id_destino',verificarToken(), feedbackUsuarioController.getFeedbacksByDestino);
 

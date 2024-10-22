@@ -7,7 +7,6 @@ const Equipo = require("../models/Equipo");
 const Requerimiento = require("../models/Requerimiento"); // Asegúrate de que este modelo esté bien
 const RequerimientoRol = require("../models/RequerimientoRol"); // Asegúrate de que este modelo esté bien
 const Rol = require("../models/Rol"); // Asegúrate de que este modelo esté bien
-const Usuario = require("../models/Usuario");
 
 const ProyectoController = {
   getAllProyectos: async (req, res) => {

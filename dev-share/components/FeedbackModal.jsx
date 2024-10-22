@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, Modal, Pressable, TextInput } from 'react-native';
+import { View, Text, Modal, Pressable, TextInput, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios'; // Para manejar peticiones HTTP
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const FeedbackModal = ({ visible, onClose, destino, idAutor, idDestino }) => {
   const [rating, setRating] = useState(0); // Valor de las estrellas seleccionadas
@@ -9,24 +10,37 @@ const FeedbackModal = ({ visible, onClose, destino, idAutor, idDestino }) => {
 
   const handleSubmit = async () => {
     if (rating === 0) {
-      alert("Por favor selecciona una calificación de estrellas.");
+      Alert.alert("Error", "Por favor selecciona una calificación de estrellas.");
       return;
     }
-
+  
     try {
-      // Petición POST para guardar el feedback en feedback_usuario
-      await axios.post('http://localhost:3000/api/feedback', {
-        id_feedback: rating, // Relacionar la calificación con la tabla feedback (de 1 a 5)
+      const token = await AsyncStorage.getItem("token");
+  
+      // Log para verificar valores antes de la petición
+      console.log("Enviando feedback:", {
+        id_feedback: rating,
         id_autor: idAutor,
         id_destino: idDestino,
         detalle: detalle,
       });
-
-      alert('Gracias por tu feedback!');
-      onClose(); // Cerrar el modal tras el envío
+  
+      await axios.post('http://localhost:3000/api/feedbackUsuario', {
+        id_feedback: rating,
+        id_autor: idAutor,
+        id_destino: idDestino,
+        detalle: detalle,
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+  
+      Alert.alert('Gracias por tu feedback!');
+      onClose();
     } catch (error) {
       console.error("Error al enviar el feedback:", error);
-      alert("Hubo un problema al enviar el feedback. Intenta nuevamente.");
+      Alert.alert("Error", "Hubo un problema al enviar el feedback. Intenta nuevamente.");
     }
   };
 

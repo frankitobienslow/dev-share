@@ -9,7 +9,10 @@ const equipoDesarrolladorController = {
       const { id_equipo } = req.params;
       const desarrolladores = await EquipoDesarrollador.findAll({
         where: { id_equipo },
-        include: [{ model: Desarrollador }],
+        include: [{
+          model: Desarrollador,
+          as: 'Desarrollador', // El alias que definiste en la asociación
+        }],
       });
       res.json(desarrolladores);
     } catch (error) {

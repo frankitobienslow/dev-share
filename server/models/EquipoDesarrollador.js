@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const db = require('../db'); // Conexión a la base de datos
+const Desarrollador=require("./Desarrollador");
 
 const EquipoDesarrollador = db.define('EquipoDesarrollador', {
   id: {
@@ -30,5 +31,10 @@ const EquipoDesarrollador = db.define('EquipoDesarrollador', {
   tableName: 'equipo_desarrollador',
   timestamps: false,  // No tenemos campos createdAt o updatedAt
 });
+
+EquipoDesarrollador.belongsTo(Desarrollador, {
+    foreignKey: 'id_desarrollador',
+    as: 'Desarrollador', // Alias que usarás al hacer eager loading
+  });
 
 module.exports = EquipoDesarrollador;

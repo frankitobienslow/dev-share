@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Pressable, ScrollView, ActivityIndicator, Modal } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router'; // Hook para obtener el ID y para la navegación
 import { styled } from 'nativewind';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Test = () => {
   const { id } = useLocalSearchParams(); // Obtiene el ID del test desde los parámetros de la URL
@@ -11,19 +12,28 @@ const Test = () => {
   const [puntaje, setPuntaje] = useState(null); // Estado para almacenar el puntaje
   const [modalVisible, setModalVisible] = useState(false); // Estado para el modal
   const [feedback, setFeedback] = useState(null); // Almacena el feedback del examen
-  const router = useRouter(); // Para navegar de vuelta a /skills
+  const router = useRouter(); // Para navegar de vuelta a /skill
 
   // Fetch para obtener las preguntas basadas en el ID del test
   useEffect(() => {
     const fetchPreguntas = async () => {
       try {
+        // Obtener el token de AsyncStorage
+        const token = await AsyncStorage.getItem("token");
+
         const res = await fetch(`http://localhost:3000/api/gpt/generate-questions`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`, // Agregar el token a los headers
           },
           body: JSON.stringify({ id }), // Solo pasamos el ID del test al backend
         });
+
+        if (!res.ok) {
+          throw new Error('Error en la respuesta del servidor');
+        }
+
         const data = await res.json();
         setPreguntas(data.preguntas); // Guardamos las preguntas recibidas en el estado
       } catch (error) {
@@ -47,16 +57,23 @@ const Test = () => {
   // Enviar respuestas para validar el examen
   const handleSubmit = async () => {
     try {
+      const token = await AsyncStorage.getItem("token"); // Obtener el token
+
       const res = await fetch('http://localhost:3000/api/gpt/validate-answers', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`, // Agregar el token a los headers
         },
         body: JSON.stringify({
           id,
           respuestasUsuario: respuestas,
         }),
       });
+
+      if (!res.ok) {
+        throw new Error('Error en la respuesta del servidor');
+      }
 
       const data = await res.json();
       setPuntaje(data.puntaje);

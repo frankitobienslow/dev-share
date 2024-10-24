@@ -1,42 +1,55 @@
 import React from 'react';
-import { View, Text, Pressable } from 'react-native';
-import { useRouter } from 'expo-router';
+import { View, Text, Button, StyleSheet } from 'react-native';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProyectoCard = ({ proyecto }) => {
-  const router = useRouter();
 
-  const handlePress = () => {
-    // Navegar a la ruta /proyecto/:id
-    router.push(`/proyecto/${proyecto.id}`);
-  };
+    // Función para postularse al proyecto
+    const postularse = async () => {
+        try {
+            const token = await AsyncStorage.getItem("token");
+            const response = await axios.post('http://localhost:3000/api/postulacion', {
+                id_desarrollador: 1,  // Reemplazar con el ID del desarrollador logueado
+                id_requerimiento_rol: proyecto.id_requerimiento_rol // Debe coincidir con el requerimiento
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+            console.log('Postulación exitosa:', response.data);
+        } catch (error) {
+            console.error('Error al postularse:', error.response || error.message);
+        }
+    };
 
-  return (
-    <Pressable onPress={handlePress}>
-      <View className="border p-4 mb-4 rounded-lg bg-gray-100">
-        <Text className="text-lg font-bold">{proyecto.titulo}</Text>
-        <Text className="text-sm text-gray-600">{proyecto.descripcion}</Text>
-
-        {/* Mostrar roles requeridos */}
-        {proyecto.roles && proyecto.roles.length > 0 && (
-          <View className="mt-2">
-            <Text className="text-sm font-semibold">Roles requeridos:</Text>
-            <View className="flex flex-row flex-wrap">
-              {proyecto.roles.map((rol, index) => (
-                <Text key={index} className="text-sm mr-2">
-                  {rol.nombre}
-                </Text>
-              ))}
-            </View>
-          </View>
-        )}
-
-        <Text className={`text-sm ${proyecto.disponible ? 'text-green-600' : 'text-red-600'}`}>
-          Estado: {proyecto.disponible ? 'Activo' : 'Inactivo'}
-          {console.log(proyecto.disponible)};
-        </Text>
-      </View>
-    </Pressable>
-  );
+    return (
+        <View style={styles.card}>
+            <Text style={styles.title}>{proyecto.titulo}</Text>
+            <Text>{proyecto.descripcion}</Text>
+            <Button title="Postularse" onPress={postularse} />
+        </View>
+    );
 };
+
+const styles = StyleSheet.create({
+    card: {
+        padding: 16,
+        marginBottom: 16,
+        borderRadius: 8,
+        backgroundColor: '#f9f9f9',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 3,
+    },
+    title: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 8,
+    },
+});
 
 export default ProyectoCard;

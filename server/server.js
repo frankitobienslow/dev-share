@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const cors = require("cors"); // Importar cors
 const routes = require("./routes"); // Asegúrate de tener este archivo
 const sequelize = require("./db.js");
+const soapService = require("./soap/soapService"); // Importar el servicio SOAP
 
 dotenv.config();
 
@@ -30,8 +31,11 @@ app.use(
 // Middleware para parsear JSON
 app.use(express.json());
 
-// Usa el enrutador de routes.js
-app.use("/api", routes); // Ahora todas las rutas se manejarán desde aquí
+// Usa el enrutador de routes.js para las rutas REST
+app.use("/api", routes);
+
+// Monta el servicio SOAP en una ruta específica
+soapService(app); // Asegúrate de que soapService está configurado para recibir la instancia de Express
 
 // Manejar errores 404
 app.use((req, res, next) => {
@@ -49,6 +53,7 @@ app.listen(port, () => {
   console.log(`Servidor corriendo en http://localhost:${port}`);
 });
 
+// Conexión a la base de datos con Sequelize
 sequelize
   .authenticate()
   .then(() => {

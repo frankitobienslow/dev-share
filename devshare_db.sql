@@ -124,11 +124,11 @@ CREATE TABLE `etapa` (
 -- Volcado de datos para la tabla `etapa`
 --
 
-INSERT INTO `etapa` (`id`, `nombre`, `duracion_estimada`) VALUES
-(1, 'Planificación', '2024-10-15'),
-(2, 'Desarrollo', '2024-12-15'),
-(3, 'Pruebas', '2025-01-15'),
-(4, 'Despliegue', '2025-02-15');
+INSERT INTO `etapa` (`id`, `nombre`) VALUES
+(1, 'Planificación'),
+(2, 'Desarrollo'),
+(3, 'Pruebas'),
+(4, 'Despliegue');
 
 -- --------------------------------------------------------
 
@@ -301,10 +301,10 @@ CREATE TABLE `proyecto` (
 -- Volcado de datos para la tabla `proyecto`
 --
 
-INSERT INTO `proyecto` (`id`, `duracion_estimada`, `titulo`, `descripcion`, `id_cliente`, `id_equipo`) VALUES
-(1, 'PROYECTO PRUEBA', 'Este es un proyecto de prueba', 22);
-(2, 'developer', 'Este es un proyecto de prueba2', 26);
-(3, 'runner', 'Este es un proyecto de prueba3', 27);
+INSERT INTO `proyecto` (`id`, `titulo`, `descripcion`, `id_cliente`, `id_equipo`) VALUES
+(1, 'PROYECTO PRUEBA', 'Este es un proyecto de prueba', 22, 1);
+(2, 'developer', 'Este es un proyecto de prueba2', 26, 1);
+(3, 'runner', 'Este es un proyecto de prueba3', 27, 1);
 
 -- --------------------------------------------------------
 
@@ -356,13 +356,13 @@ CREATE TABLE `requerimiento` (
 -- Volcado de datos para la tabla `requerimiento`
 --
 
-INSERT INTO `requerimiento` (`id`, `nombre`, `id_proyecto_etapa`, `descripcion`) VALUES
-(1, 'Definir Alcance', 1, 'Establecer los objetivos y alcance del proyecto.'),
-(2, 'Diseñar UI/UX', 1, 'Crear los diseños de interfaz y experiencia de usuario.'),
-(3, 'Desarrollar Backend', 2, 'Implementar la lógica del servidor y base de datos.'),
-(4, 'Desarrollar Frontend', 2, 'Crear la interfaz de usuario y la interacción.'),
-(5, 'Realizar Pruebas Unitarias', 3, 'Verificar el funcionamiento de componentes individuales.'),
-(6, 'Desplegar Aplicación', 4, 'Lanzar la aplicación en el entorno de producción.');
+INSERT INTO `requerimiento` (`id`, `nombre`, `id_proyecto_etapa`, `descripcion`,`disponible`) VALUES
+(1, 'Definir Alcance', 1, 'Establecer los objetivos y alcance del proyecto.', 1),
+(2, 'Diseñar UI/UX', 1, 'Crear los diseños de interfaz y experiencia de usuario.', 1),
+(3, 'Desarrollar Backend', 2, 'Implementar la lógica del servidor y base de datos.', 1),
+(4, 'Desarrollar Frontend', 2, 'Crear la interfaz de usuario y la interacción.', 1),
+(5, 'Realizar Pruebas Unitarias', 3, 'Verificar el funcionamiento de componentes individuales.', 1),
+(6, 'Desplegar Aplicación', 4, 'Lanzar la aplicación en el entorno de producción.', 1);
 
 -- --------------------------------------------------------
 
@@ -381,13 +381,13 @@ CREATE TABLE `requerimiento_habilidad` (
 -- Volcado de datos para la tabla `requerimiento_habilidad`
 --
 
-INSERT INTO `requerimiento_habilidad` (`id`, `id_requerimiento`, `cantidad_desarrolladores`, `id_habilidad`, `id_nivel`) VALUES
-(1, 1, 1, 15, 1),
-(2, 2, 2, 29, 2),
-(3, 3, 2, 9, 3),
-(4, 4, 2, 8, 2),
-(5, 5, 1, 11, 2),
-(6, 6, 1, 24, 3);
+INSERT INTO `requerimiento_habilidad` (`id`, `id_requerimiento`, `id_habilidad`, `id_nivel`) VALUES
+(1, 1, 15, 1),
+(2, 2, 29, 2),
+(3, 3, 9, 3),
+(4, 4, 8, 2),
+(5, 5, 11, 2),
+(6, 6, 24, 3);
 
 -- --------------------------------------------------------
 

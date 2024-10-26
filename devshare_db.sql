@@ -367,7 +367,7 @@ INSERT INTO `requerimiento` (`id`, `nombre`, `id_proyecto_etapa`, `descripcion`)
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `requerimiento_rol`
+-- Estructura de tabla para la tabla `requerimiento_habilidad`
 --
 
 CREATE TABLE `requerimiento_habilidad` (
@@ -378,10 +378,10 @@ CREATE TABLE `requerimiento_habilidad` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `requerimiento_rol`
+-- Volcado de datos para la tabla `requerimiento_habilidad`
 --
 
-INSERT INTO `requerimiento_rol` (`id`, `id_requerimiento`, `cantidad_desarrolladores`, `id_habilidad`, `id_nivel`) VALUES
+INSERT INTO `requerimiento_habilidad` (`id`, `id_requerimiento`, `cantidad_desarrolladores`, `id_habilidad`, `id_nivel`) VALUES
 (1, 1, 1, 15, 1),
 (2, 2, 2, 29, 2),
 (3, 3, 2, 9, 3),
@@ -562,7 +562,7 @@ ALTER TABLE `requerimiento`
   ADD KEY `id_proyecto_etapa` (`id_proyecto_etapa`);
 
 --
--- Indices de la tabla `requerimiento_rol`
+-- Indices de la tabla `requerimiento_habilidad`
 --
 ALTER TABLE `requerimiento_habilidad`
   ADD PRIMARY KEY (`id`),
@@ -683,9 +683,9 @@ ALTER TABLE `requerimiento`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT de la tabla `requerimiento_rol`
+-- AUTO_INCREMENT de la tabla `requerimiento_habilidad`
 --
-ALTER TABLE `requerimiento_rol`
+ALTER TABLE `requerimiento_habilidad`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
@@ -763,7 +763,7 @@ ALTER TABLE `habilidad`
 --
 ALTER TABLE `postulacion`
   ADD CONSTRAINT `postulacion_ibfk_1` FOREIGN KEY (`id_desarrollador`) REFERENCES `desarrollador` (`id`),
-  ADD CONSTRAINT `postulacion_ibfk_2` FOREIGN KEY (`id_requerimiento_rol`) REFERENCES `requerimiento_rol` (`id`);
+  ADD CONSTRAINT `postulacion_ibfk_2` FOREIGN KEY (`id_requerimiento_habilidad`) REFERENCES `requerimiento_habilidad` (`id`);
 
 --
 -- Filtros para la tabla `proyecto`
@@ -786,9 +786,9 @@ ALTER TABLE `requerimiento`
   ADD CONSTRAINT `requerimiento_ibfk_1` FOREIGN KEY (`id_proyecto_etapa`) REFERENCES `proyecto_etapa` (`id`);
 
 --
--- Filtros para la tabla `requerimiento_rol`
+-- Filtros para la tabla `requerimiento_habilidad`
 --
-ALTER TABLE `requerimiento_rol`
+ALTER TABLE `requerimiento_habilidad`
   ADD CONSTRAINT `requerimiento_habilidad_ibfk_1` FOREIGN KEY (`id_requerimiento`) REFERENCES `requerimiento` (`id`),
   ADD CONSTRAINT `requerimiento_habilidad_ibfk_habilidad` FOREIGN KEY (`id_habilidad`) REFERENCES `habilidad` (`id`),
   ADD CONSTRAINT `requerimiento_habilidad_ibfk_nivel` FOREIGN KEY (`id_nivel`) REFERENCES `nivel` (`id`);

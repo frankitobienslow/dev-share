@@ -117,8 +117,7 @@ INSERT INTO `equipo_desarrollador` (`id`, `id_desarrollador`, `id_equipo`) VALUE
 
 CREATE TABLE `etapa` (
   `id` int(11) NOT NULL,
-  `nombre` varchar(255) NOT NULL,
-  `duracion_estimada` date DEFAULT NULL
+  `nombre` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -281,8 +280,7 @@ INSERT INTO `nivel` (`id`, `nombre`) VALUES
 CREATE TABLE `postulacion` (
   `id` int(11) NOT NULL,
   `id_desarrollador` int(11) DEFAULT NULL,
-  `id_requerimiento_rol` int(11) DEFAULT NULL,
-  `activa` tinyint(1) DEFAULT NULL
+  `id_requerimiento_habilidad` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -293,23 +291,20 @@ CREATE TABLE `postulacion` (
 
 CREATE TABLE `proyecto` (
   `id` int(11) NOT NULL,
-  `duracion_estimada` date DEFAULT NULL,
   `titulo` varchar(255) DEFAULT NULL,
   `descripcion` text DEFAULT NULL,
   `id_cliente` int(11) NOT NULL,
   `id_equipo` int(11) DEFAULT NULL,
-  `disponible` tinyint(1) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `proyecto`
 --
 
-INSERT INTO `proyecto` (`id`, `duracion_estimada`, `titulo`, `descripcion`, `id_cliente`, `id_equipo`, `disponible`) VALUES
-(1, '2024-10-19', 'PROYECTO PRUEBA', 'Este es un proyecto de prueba', 22, 1, 1),
-(2, '2024-12-31', 'Desarrollo de Plataforma Web', 'Creación de una plataforma web para gestión de proyectos.', 22, NULL, 1),
-(3, '2025-06-30', 'Aplicación Móvil', 'Desarrollo de una aplicación móvil para seguimiento de tareas.', 22, NULL, 1),
-(4, '2024-09-15', 'Sistema de Gestión', 'Implementación de un sistema de gestión empresarial integral.', 22, NULL, 1);
+INSERT INTO `proyecto` (`id`, `duracion_estimada`, `titulo`, `descripcion`, `id_cliente`, `id_equipo`) VALUES
+(1, 'PROYECTO PRUEBA', 'Este es un proyecto de prueba', 22);
+(2, 'developer', 'Este es un proyecto de prueba2', 26);
+(3, 'runner', 'Este es un proyecto de prueba3', 27);
 
 -- --------------------------------------------------------
 
@@ -353,7 +348,8 @@ CREATE TABLE `requerimiento` (
   `id` int(11) NOT NULL,
   `nombre` varchar(255) NOT NULL,
   `id_proyecto_etapa` int(11) DEFAULT NULL,
-  `descripcion` text DEFAULT NULL
+  `descripcion` text DEFAULT NULL,
+  `disponible` tinyint(1) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -374,10 +370,9 @@ INSERT INTO `requerimiento` (`id`, `nombre`, `id_proyecto_etapa`, `descripcion`)
 -- Estructura de tabla para la tabla `requerimiento_rol`
 --
 
-CREATE TABLE `requerimiento_rol` (
+CREATE TABLE `requerimiento_habilidad` (
   `id` int(11) NOT NULL,
   `id_requerimiento` int(11) DEFAULT NULL,
-  `cantidad_desarrolladores` int(11) DEFAULT NULL,
   `id_habilidad` int(11) DEFAULT NULL,
   `id_nivel` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -541,7 +536,7 @@ ALTER TABLE `nivel`
 ALTER TABLE `postulacion`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_desarrollador` (`id_desarrollador`),
-  ADD KEY `id_requerimiento_rol` (`id_requerimiento_rol`);
+  ADD KEY `id_requerimiento_habilidad` (`id_requerimiento_habilidad`);
 
 --
 -- Indices de la tabla `proyecto`
@@ -569,11 +564,11 @@ ALTER TABLE `requerimiento`
 --
 -- Indices de la tabla `requerimiento_rol`
 --
-ALTER TABLE `requerimiento_rol`
+ALTER TABLE `requerimiento_habilidad`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_requerimiento` (`id_requerimiento`),
-  ADD KEY `requerimiento_rol_ibfk_habilidad` (`id_habilidad`),
-  ADD KEY `requerimiento_rol_ibfk_nivel` (`id_nivel`);
+  ADD KEY `requerimiento_habilidad_ibfk_habilidad` (`id_habilidad`),
+  ADD KEY `requerimiento_habilidad_ibfk_nivel` (`id_nivel`);
 
 --
 -- Indices de la tabla `rol`
@@ -794,9 +789,9 @@ ALTER TABLE `requerimiento`
 -- Filtros para la tabla `requerimiento_rol`
 --
 ALTER TABLE `requerimiento_rol`
-  ADD CONSTRAINT `requerimiento_rol_ibfk_1` FOREIGN KEY (`id_requerimiento`) REFERENCES `requerimiento` (`id`),
-  ADD CONSTRAINT `requerimiento_rol_ibfk_habilidad` FOREIGN KEY (`id_habilidad`) REFERENCES `habilidad` (`id`),
-  ADD CONSTRAINT `requerimiento_rol_ibfk_nivel` FOREIGN KEY (`id_nivel`) REFERENCES `nivel` (`id`);
+  ADD CONSTRAINT `requerimiento_habilidad_ibfk_1` FOREIGN KEY (`id_requerimiento`) REFERENCES `requerimiento` (`id`),
+  ADD CONSTRAINT `requerimiento_habilidad_ibfk_habilidad` FOREIGN KEY (`id_habilidad`) REFERENCES `habilidad` (`id`),
+  ADD CONSTRAINT `requerimiento_habilidad_ibfk_nivel` FOREIGN KEY (`id_nivel`) REFERENCES `nivel` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

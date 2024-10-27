@@ -106,12 +106,18 @@ INSERT INTO `equipo_desarrollador` (`id`, `id_desarrollador`, `id_equipo`, `acti
 CREATE TABLE `etapa` (
   `id` int(11) NOT NULL,
   `nombre` varchar(255) NOT NULL
+  `nombre` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `etapa`
 --
 
+INSERT INTO `etapa` (`id`, `nombre`) VALUES
+(1, 'Planificación'),
+(2, 'Desarrollo'),
+(3, 'Pruebas'),
+(4, 'Despliegue');
 INSERT INTO `etapa` (`id`, `nombre`) VALUES
 (1, 'Planificación'),
 (2, 'Desarrollo'),
@@ -285,6 +291,7 @@ CREATE TABLE `postulacion` (
   `id` int(11) NOT NULL,
   `id_desarrollador` int(11) DEFAULT NULL,
   `id_requerimiento_habilidad` int(11) DEFAULT NULL
+  `id_requerimiento_habilidad` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -295,7 +302,6 @@ CREATE TABLE `postulacion` (
 
 CREATE TABLE `proyecto` (
   `id` int(11) NOT NULL,
-  `duracion_estimada` date DEFAULT NULL,
   `titulo` varchar(255) DEFAULT NULL,
   `descripcion` text DEFAULT NULL,
   `id_cliente` int(11) NOT NULL,
@@ -374,8 +380,10 @@ INSERT INTO `requerimiento` (`id`, `nombre`, `id_proyecto_etapa`, `descripcion`,
 
 --
 -- Estructura de tabla para la tabla `requerimiento_habilidad`
+-- Estructura de tabla para la tabla `requerimiento_habilidad`
 --
 
+CREATE TABLE `requerimiento_habilidad` (
 CREATE TABLE `requerimiento_habilidad` (
   `id` int(11) NOT NULL,
   `id_requerimiento` int(11) DEFAULT NULL,
@@ -385,6 +393,7 @@ CREATE TABLE `requerimiento_habilidad` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Volcado de datos para la tabla `requerimiento_habilidad`
 -- Volcado de datos para la tabla `requerimiento_habilidad`
 --
 
@@ -562,7 +571,9 @@ ALTER TABLE `requerimiento`
 
 --
 -- Indices de la tabla `requerimiento_habilidad`
+-- Indices de la tabla `requerimiento_habilidad`
 --
+ALTER TABLE `requerimiento_habilidad`
 ALTER TABLE `requerimiento_habilidad`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_requerimiento` (`id_requerimiento`),
@@ -678,7 +689,9 @@ ALTER TABLE `requerimiento`
 
 --
 -- AUTO_INCREMENT de la tabla `requerimiento_habilidad`
+-- AUTO_INCREMENT de la tabla `requerimiento_habilidad`
 --
+ALTER TABLE `requerimiento_habilidad`
 ALTER TABLE `requerimiento_habilidad`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
@@ -751,6 +764,7 @@ ALTER TABLE `habilidad`
 ALTER TABLE `postulacion`
   ADD CONSTRAINT `postulacion_ibfk_1` FOREIGN KEY (`id_desarrollador`) REFERENCES `desarrollador` (`id`),
   ADD CONSTRAINT `postulacion_ibfk_2` FOREIGN KEY (`id_requerimiento_habilidad`) REFERENCES `requerimiento_habilidad` (`id`);
+  ADD CONSTRAINT `postulacion_ibfk_2` FOREIGN KEY (`id_requerimiento_habilidad`) REFERENCES `requerimiento_habilidad` (`id`);
 
 --
 -- Filtros para la tabla `proyecto`
@@ -773,6 +787,7 @@ ALTER TABLE `requerimiento`
   ADD CONSTRAINT `requerimiento_ibfk_1` FOREIGN KEY (`id_proyecto_etapa`) REFERENCES `proyecto_etapa` (`id`);
 
 --
+-- Filtros para la tabla `requerimiento_habilidad`
 -- Filtros para la tabla `requerimiento_habilidad`
 --
 ALTER TABLE `requerimiento_habilidad`

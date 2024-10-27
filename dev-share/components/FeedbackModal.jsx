@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios'; // Para manejar peticiones HTTP
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const FeedbackModal = ({ visible, onClose, destino, idAutor, idDestino }) => {
+const FeedbackModal = ({ visible, onClose, destino, idAutor, idDestino, onFeedbackSuccess }) => {
   const [rating, setRating] = useState(0); // Valor de las estrellas seleccionadas
   const [detalle, setDetalle] = useState(''); // Comentario opcional
 
@@ -17,14 +17,6 @@ const FeedbackModal = ({ visible, onClose, destino, idAutor, idDestino }) => {
     try {
       const token = await AsyncStorage.getItem("token");
   
-      // Log para verificar valores antes de la petición
-      console.log("Enviando feedback:", {
-        id_feedback: rating,
-        id_autor: idAutor,
-        id_destino: idDestino,
-        detalle: detalle,
-      });
-  
       await axios.post('http://localhost:3000/api/feedbackUsuario', {
         id_feedback: rating,
         id_autor: idAutor,
@@ -36,8 +28,9 @@ const FeedbackModal = ({ visible, onClose, destino, idAutor, idDestino }) => {
         }
       });
   
-      Alert.alert('Gracias por tu feedback!');
-      onClose();
+      // Llamar a la función onFeedbackSuccess para mostrar la alerta de éxito
+      onFeedbackSuccess();
+      onClose(); // Cerrar el modal de feedback después de enviar el formulario
     } catch (error) {
       console.error("Error al enviar el feedback:", error);
       Alert.alert("Error", "Hubo un problema al enviar el feedback. Intenta nuevamente.");

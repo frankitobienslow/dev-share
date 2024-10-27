@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../db'); // Importa tu configuración de Sequelize
-const Usuario = require('./Usuario'); // Importa tu modelo de usuario
-const Feedback = require('./Feedback'); // Importa el modelo de feedback
+const sequelize = require('../db');
+const Usuario = require('./Usuario');
+const Feedback = require('./Feedback');
 
 const FeedbackUsuario = sequelize.define('FeedbackUsuario', {
   id: {
@@ -32,14 +32,17 @@ const FeedbackUsuario = sequelize.define('FeedbackUsuario', {
   },
   detalle: {
     type: DataTypes.TEXT,
-    allowNull: true, // Campo opcional para el comentario
+    allowNull: true,
+  },
+  fecha: {
+    type: DataTypes.DATE,
+    allowNull: true,
   },
 }, {
   tableName: 'feedback_usuario',
-  timestamps: false, // Si no quieres campos de timestamps (createdAt, updatedAt)
+  timestamps: false,
 });
 
-// Establecer las relaciones entre las tablas
 FeedbackUsuario.belongsTo(Feedback, { foreignKey: 'id_feedback' });
 FeedbackUsuario.belongsTo(Usuario, { foreignKey: 'id_autor', as: 'Autor' });
 FeedbackUsuario.belongsTo(Usuario, { foreignKey: 'id_destino', as: 'Destino' });

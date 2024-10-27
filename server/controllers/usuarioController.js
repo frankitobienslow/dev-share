@@ -98,7 +98,7 @@ exports.loginUsuario = async (req, res) => {
         const token = jwt.sign(
             { id: usuario.id, email: usuario.email, rol:rol },
             process.env.JWT_SECRET,
-            { expiresIn: '1h' }
+            { expiresIn: '8h' }
         );
 
         res.status(200).json({
@@ -107,7 +107,7 @@ exports.loginUsuario = async (req, res) => {
                 id: usuario.id,
                 nombre: usuario.nombre,
                 email: usuario.email,
-                rol, // Aquí devolvemos el rol directamente
+                rol,
             },
             token
         });

@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const db = require('../db'); // Conexión a la base de datos
-const Desarrollador=require("./Desarrollador");
+const Desarrollador = require("./Desarrollador");
 
 const EquipoDesarrollador = db.define('EquipoDesarrollador', {
   id: {
@@ -27,14 +27,20 @@ const EquipoDesarrollador = db.define('EquipoDesarrollador', {
     },
     onDelete: 'CASCADE',  // En caso de eliminar el equipo, elimina la relación
   },
+  activo: { // Nueva columna booleana
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: true, // Valor por defecto
+  },
 }, {
   tableName: 'equipo_desarrollador',
   timestamps: false,  // No tenemos campos createdAt o updatedAt
 });
 
+// Relación con Desarrollador
 EquipoDesarrollador.belongsTo(Desarrollador, {
-    foreignKey: 'id_desarrollador',
-    as: 'Desarrollador', // Alias que usarás al hacer eager loading
-  });
+  foreignKey: 'id_desarrollador',
+  as: 'Desarrollador', // Alias que usarás al hacer eager loading
+});
 
 module.exports = EquipoDesarrollador;

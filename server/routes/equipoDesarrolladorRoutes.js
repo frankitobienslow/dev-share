@@ -7,5 +7,6 @@ const verificarToken = require("../middleware/authMiddleware"); // Importa tu mi
 router.get('/:id_equipo/desarrolladores',verificarToken(), equipoDesarrolladorController.obtenerDesarrolladoresPorEquipo);
 router.post('/',verificarToken("cliente"), equipoDesarrolladorController.agregarDesarrolladorAEquipo);
 router.delete('/:id_equipo/:id_desarrollador',verificarToken(), equipoDesarrolladorController.eliminarDesarrolladorDeEquipo);
+router.put('/:id_equipo/desarrolladores/:id_desarrollador/renunciar',verificarToken(), equipoDesarrolladorController.bajaEquipo);
 
 module.exports = router;

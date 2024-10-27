@@ -1,7 +1,7 @@
-// models/ProyectoEtapa.js
-
 const { DataTypes } = require('sequelize');
-const sequelize = require('../db'); // Asegúrate de importar tu instancia de Sequelize
+const sequelize = require('../db');
+const Proyecto = require("./Proyecto");
+const Etapa = require("./Etapa");
 
 const ProyectoEtapa = sequelize.define('ProyectoEtapa', {
     id: {
@@ -13,7 +13,7 @@ const ProyectoEtapa = sequelize.define('ProyectoEtapa', {
         type: DataTypes.INTEGER,
         allowNull: true,
         references: {
-            model: 'proyecto', // nombre de la tabla referenciada
+            model: Proyecto,
             key: 'id',
         },
     },
@@ -21,7 +21,7 @@ const ProyectoEtapa = sequelize.define('ProyectoEtapa', {
         type: DataTypes.INTEGER,
         allowNull: true,
         references: {
-            model: 'etapa', // nombre de la tabla referenciada
+            model: Etapa,
             key: 'id',
         },
     },
@@ -34,8 +34,17 @@ const ProyectoEtapa = sequelize.define('ProyectoEtapa', {
         allowNull: true,
     },
 }, {
+    sequelize,
+    modelName: 'ProyectoEtapa',
     tableName: 'proyecto_etapa',
-    timestamps: false, // Cambia esto si tienes campos de createdAt y updatedAt
+    timestamps: false,
 });
+
+// Definir las relaciones
+ProyectoEtapa.belongsTo(Proyecto, { foreignKey: 'id_proyecto', as: 'proyecto' });
+ProyectoEtapa.belongsTo(Etapa, { foreignKey: 'id_etapa', as: 'etapa' });
+
+// Agregar la relación inversa en el modelo Proyecto
+Proyecto.hasMany(ProyectoEtapa, { foreignKey: 'id_proyecto', as: 'proyectoEtapas' });
 
 module.exports = ProyectoEtapa;

@@ -5,7 +5,7 @@ dotenv.config();
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY; // Asegúrate de tener tu clave en el archivo .env
 
 exports.generateQuestions = async (habilidad, nivel) => {
-  const prompt = `Genera un JSON con 10 preguntas de opción múltiple sobre ${habilidad} para el nivel ${nivel}. 
+  const prompt = `Genera un JSON con 8 preguntas de opción múltiple sobre ${habilidad} para el nivel ${nivel}. 
   Cada pregunta debe tener 5 opciones de respuesta, una de las cuales puede o no ser la correcta, 
   incluyendo siempre la opción "Ninguna de las anteriores". Si ninguna de las respuestas es correcta, 
   indícalo en la clave "correcta". Las preguntas y opciones deben estar en español. 
@@ -18,7 +18,7 @@ exports.generateQuestions = async (habilidad, nivel) => {
       "opciones": ["Opción 1", "Opción 2", "Opción 3", "Opción 4", "Ninguna de las anteriores"],
       "correcta": "Opción 3" // O si ninguna es correcta: "Ninguna de las anteriores"
     },
-    // Y así hasta 10 preguntas.
+    // Y así hasta 8 preguntas.
   ]`;
 
   try {

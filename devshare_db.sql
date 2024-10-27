@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 22-10-2024 a las 23:03:00
+-- Tiempo de generación: 27-10-2024 a las 07:55:03
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -42,21 +42,6 @@ INSERT INTO `cliente` (`id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `contrato`
---
-
-CREATE TABLE `contrato` (
-  `id` int(11) NOT NULL,
-  `monto` int(11) NOT NULL,
-  `id_cliente` int(11) DEFAULT NULL,
-  `id_desarrollador` int(11) DEFAULT NULL,
-  `detalle` text DEFAULT NULL,
-  `activo` tinyint(1) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `desarrollador`
 --
 
@@ -88,7 +73,8 @@ CREATE TABLE `equipo` (
 --
 
 INSERT INTO `equipo` (`id`, `nombre`) VALUES
-(1, 'EQUIPO LOCO');
+(1, 'EQUIPO LOCO'),
+(2, 'LOS MUERDE ALMOHADA');
 
 -- --------------------------------------------------------
 
@@ -99,15 +85,17 @@ INSERT INTO `equipo` (`id`, `nombre`) VALUES
 CREATE TABLE `equipo_desarrollador` (
   `id` int(11) NOT NULL,
   `id_desarrollador` int(11) NOT NULL,
-  `id_equipo` int(11) NOT NULL
+  `id_equipo` int(11) NOT NULL,
+  `activo` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `equipo_desarrollador`
 --
 
-INSERT INTO `equipo_desarrollador` (`id`, `id_desarrollador`, `id_equipo`) VALUES
-(1, 26, 1);
+INSERT INTO `equipo_desarrollador` (`id`, `id_desarrollador`, `id_equipo`, `activo`) VALUES
+(1, 26, 1, 1),
+(2, 26, 2, 0);
 
 -- --------------------------------------------------------
 
@@ -117,19 +105,18 @@ INSERT INTO `equipo_desarrollador` (`id`, `id_desarrollador`, `id_equipo`) VALUE
 
 CREATE TABLE `etapa` (
   `id` int(11) NOT NULL,
-  `nombre` varchar(255) NOT NULL,
-  `duracion_estimada` date DEFAULT NULL
+  `nombre` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `etapa`
 --
 
-INSERT INTO `etapa` (`id`, `nombre`, `duracion_estimada`) VALUES
-(1, 'Planificación', '2024-10-15'),
-(2, 'Desarrollo', '2024-12-15'),
-(3, 'Pruebas', '2025-01-15'),
-(4, 'Despliegue', '2025-02-15');
+INSERT INTO `etapa` (`id`, `nombre`) VALUES
+(1, 'Planificación'),
+(2, 'Desarrollo'),
+(3, 'Pruebas'),
+(4, 'Despliegue');
 
 -- --------------------------------------------------------
 
@@ -154,7 +141,9 @@ INSERT INTO `evaluacion` (`id`, `id_desarrollador`, `id_habilidad`, `id_nivel`, 
 (25, 26, 7, 1, 80, '2024-10-15'),
 (26, 26, 24, 0, 120, '2024-10-15'),
 (27, 26, 19, 2, 80, '2024-10-15'),
-(28, 26, 14, 2, 80, '2024-10-15');
+(28, 26, 14, 2, 80, '2024-10-15'),
+(29, 26, 14, 3, 60, '2024-10-22'),
+(30, 26, 16, 1, 80, '2024-10-22');
 
 -- --------------------------------------------------------
 
@@ -204,8 +193,22 @@ CREATE TABLE `feedback_usuario` (
   `id_feedback` int(11) DEFAULT NULL,
   `id_autor` int(11) DEFAULT NULL,
   `id_destino` int(11) DEFAULT NULL,
-  `detalle` text DEFAULT NULL
+  `detalle` text DEFAULT NULL,
+  `fecha` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `feedback_usuario`
+--
+
+INSERT INTO `feedback_usuario` (`id`, `id_feedback`, `id_autor`, `id_destino`, `detalle`, `fecha`) VALUES
+(1, 1, 26, 22, 'ss', NULL),
+(2, 1, 26, 22, 'puto', NULL),
+(3, 1, 26, 22, 'hdp', NULL),
+(4, 1, 26, 22, 'PUTIO', NULL),
+(5, 1, 26, 22, 'aaaaaaaaaa', NULL),
+(6, 1, 26, 22, 'HDP', NULL),
+(7, 1, 26, 22, 'HDP', NULL);
 
 -- --------------------------------------------------------
 
@@ -281,8 +284,7 @@ INSERT INTO `nivel` (`id`, `nombre`) VALUES
 CREATE TABLE `postulacion` (
   `id` int(11) NOT NULL,
   `id_desarrollador` int(11) DEFAULT NULL,
-  `id_requerimiento_rol` int(11) DEFAULT NULL,
-  `activa` tinyint(1) DEFAULT NULL
+  `id_requerimiento_habilidad` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -297,19 +299,18 @@ CREATE TABLE `proyecto` (
   `titulo` varchar(255) DEFAULT NULL,
   `descripcion` text DEFAULT NULL,
   `id_cliente` int(11) NOT NULL,
-  `id_equipo` int(11) DEFAULT NULL,
-  `disponible` tinyint(1) DEFAULT 1
+  `id_equipo` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `proyecto`
 --
 
-INSERT INTO `proyecto` (`id`, `duracion_estimada`, `titulo`, `descripcion`, `id_cliente`, `id_equipo`, `disponible`) VALUES
-(1, '2024-10-19', 'PROYECTO PRUEBA', 'Este es un proyecto de prueba', 22, 1, 1),
-(2, '2024-12-31', 'Desarrollo de Plataforma Web', 'Creación de una plataforma web para gestión de proyectos.', 22, NULL, 1),
-(3, '2025-06-30', 'Aplicación Móvil', 'Desarrollo de una aplicación móvil para seguimiento de tareas.', 22, NULL, 1),
-(4, '2024-09-15', 'Sistema de Gestión', 'Implementación de un sistema de gestión empresarial integral.', 22, NULL, 1);
+INSERT INTO `proyecto` (`id`, `duracion_estimada`, `titulo`, `descripcion`, `id_cliente`, `id_equipo`) VALUES
+(1, '2024-10-19', 'PROYECTO PRUEBA', 'Este es un proyecto de prueba', 22, 1),
+(2, '2024-12-31', 'Desarrollo de Plataforma Web', 'Creación de una plataforma web para gestión de proyectos.', 22, 2),
+(3, '2025-06-30', 'Aplicación Móvil', 'Desarrollo de una aplicación móvil para seguimiento de tareas.', 22, NULL),
+(4, '2024-09-15', 'Sistema de Gestión', 'Implementación de un sistema de gestión empresarial integral.', 22, NULL);
 
 -- --------------------------------------------------------
 
@@ -333,7 +334,7 @@ INSERT INTO `proyecto_etapa` (`id`, `id_proyecto`, `id_etapa`, `fecha_inicio`, `
 (1, 1, 1, '2024-10-16', '2024-10-31'),
 (2, 1, 2, '2024-11-01', '2024-12-15'),
 (3, 1, 3, '2024-12-16', '2025-01-15'),
-(4, 1, 4, '2025-01-16', '2025-02-15'),
+(4, 1, 4, '2025-01-16', NULL),
 (5, 2, 1, '2024-10-16', '2024-10-31'),
 (6, 2, 2, '2024-11-01', '2025-06-15'),
 (7, 2, 3, '2025-06-16', '2025-07-15'),
@@ -353,46 +354,47 @@ CREATE TABLE `requerimiento` (
   `id` int(11) NOT NULL,
   `nombre` varchar(255) NOT NULL,
   `id_proyecto_etapa` int(11) DEFAULT NULL,
-  `descripcion` text DEFAULT NULL
+  `descripcion` text DEFAULT NULL,
+  `disponible` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `requerimiento`
 --
 
-INSERT INTO `requerimiento` (`id`, `nombre`, `id_proyecto_etapa`, `descripcion`) VALUES
-(1, 'Definir Alcance', 1, 'Establecer los objetivos y alcance del proyecto.'),
-(2, 'Diseñar UI/UX', 1, 'Crear los diseños de interfaz y experiencia de usuario.'),
-(3, 'Desarrollar Backend', 2, 'Implementar la lógica del servidor y base de datos.'),
-(4, 'Desarrollar Frontend', 2, 'Crear la interfaz de usuario y la interacción.'),
-(5, 'Realizar Pruebas Unitarias', 3, 'Verificar el funcionamiento de componentes individuales.'),
-(6, 'Desplegar Aplicación', 4, 'Lanzar la aplicación en el entorno de producción.');
+INSERT INTO `requerimiento` (`id`, `nombre`, `id_proyecto_etapa`, `descripcion`, `disponible`) VALUES
+(1, 'Definir Alcance', 1, 'Establecer los objetivos y alcance del proyecto.', 0),
+(2, 'Diseñar UI/UX', 1, 'Crear los diseños de interfaz y experiencia de usuario.', 0),
+(3, 'Desarrollar Backend', 2, 'Implementar la lógica del servidor y base de datos.', 0),
+(4, 'Desarrollar Frontend', 2, 'Crear la interfaz de usuario y la interacción.', 0),
+(5, 'Realizar Pruebas Unitarias', 3, 'Verificar el funcionamiento de componentes individuales.', 0),
+(6, 'Desplegar Aplicación', 4, 'Lanzar la aplicación en el entorno de producción.', 0);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `requerimiento_rol`
+-- Estructura de tabla para la tabla `requerimiento_habilidad`
 --
 
-CREATE TABLE `requerimiento_rol` (
+CREATE TABLE `requerimiento_habilidad` (
   `id` int(11) NOT NULL,
   `id_requerimiento` int(11) DEFAULT NULL,
-  `cantidad_desarrolladores` int(11) DEFAULT NULL,
   `id_habilidad` int(11) DEFAULT NULL,
-  `id_nivel` int(11) DEFAULT NULL
+  `id_nivel` int(11) DEFAULT NULL,
+  `id_desarrollador` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `requerimiento_rol`
+-- Volcado de datos para la tabla `requerimiento_habilidad`
 --
 
-INSERT INTO `requerimiento_rol` (`id`, `id_requerimiento`, `cantidad_desarrolladores`, `id_habilidad`, `id_nivel`) VALUES
-(1, 1, 1, 15, 1),
-(2, 2, 2, 29, 2),
-(3, 3, 2, 9, 3),
-(4, 4, 2, 8, 2),
-(5, 5, 1, 11, 2),
-(6, 6, 1, 24, 3);
+INSERT INTO `requerimiento_habilidad` (`id`, `id_requerimiento`, `id_habilidad`, `id_nivel`, `id_desarrollador`) VALUES
+(1, 1, 15, 1, NULL),
+(2, 2, 29, 2, NULL),
+(3, 3, 9, 3, NULL),
+(4, 4, 8, 2, NULL),
+(5, 5, 11, 2, NULL),
+(6, 6, 24, 3, NULL);
 
 -- --------------------------------------------------------
 
@@ -456,14 +458,6 @@ INSERT INTO `usuario` (`id`, `nombre`, `apellido`, `password`, `email`, `dni`) V
 --
 ALTER TABLE `cliente`
   ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `contrato`
---
-ALTER TABLE `contrato`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id_cliente` (`id_cliente`),
-  ADD KEY `id_desarrollador` (`id_desarrollador`);
 
 --
 -- Indices de la tabla `desarrollador`
@@ -541,7 +535,7 @@ ALTER TABLE `nivel`
 ALTER TABLE `postulacion`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_desarrollador` (`id_desarrollador`),
-  ADD KEY `id_requerimiento_rol` (`id_requerimiento_rol`);
+  ADD KEY `id_requerimiento_rol` (`id_requerimiento_habilidad`);
 
 --
 -- Indices de la tabla `proyecto`
@@ -567,13 +561,14 @@ ALTER TABLE `requerimiento`
   ADD KEY `id_proyecto_etapa` (`id_proyecto_etapa`);
 
 --
--- Indices de la tabla `requerimiento_rol`
+-- Indices de la tabla `requerimiento_habilidad`
 --
-ALTER TABLE `requerimiento_rol`
+ALTER TABLE `requerimiento_habilidad`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_requerimiento` (`id_requerimiento`),
   ADD KEY `requerimiento_rol_ibfk_habilidad` (`id_habilidad`),
-  ADD KEY `requerimiento_rol_ibfk_nivel` (`id_nivel`);
+  ADD KEY `requerimiento_rol_ibfk_nivel` (`id_nivel`),
+  ADD KEY `fk_requerimiento_habilidad_desarrollador` (`id_desarrollador`);
 
 --
 -- Indices de la tabla `rol`
@@ -598,12 +593,6 @@ ALTER TABLE `cliente`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
--- AUTO_INCREMENT de la tabla `contrato`
---
-ALTER TABLE `contrato`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT de la tabla `desarrollador`
 --
 ALTER TABLE `desarrollador`
@@ -613,13 +602,13 @@ ALTER TABLE `desarrollador`
 -- AUTO_INCREMENT de la tabla `equipo`
 --
 ALTER TABLE `equipo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `equipo_desarrollador`
 --
 ALTER TABLE `equipo_desarrollador`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `etapa`
@@ -631,7 +620,7 @@ ALTER TABLE `etapa`
 -- AUTO_INCREMENT de la tabla `evaluacion`
 --
 ALTER TABLE `evaluacion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT de la tabla `experiencia`
@@ -649,7 +638,7 @@ ALTER TABLE `feedback`
 -- AUTO_INCREMENT de la tabla `feedback_usuario`
 --
 ALTER TABLE `feedback_usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `habilidad`
@@ -688,9 +677,9 @@ ALTER TABLE `requerimiento`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT de la tabla `requerimiento_rol`
+-- AUTO_INCREMENT de la tabla `requerimiento_habilidad`
 --
-ALTER TABLE `requerimiento_rol`
+ALTER TABLE `requerimiento_habilidad`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
@@ -714,13 +703,6 @@ ALTER TABLE `usuario`
 --
 ALTER TABLE `cliente`
   ADD CONSTRAINT `fk_cliente_usuario` FOREIGN KEY (`id`) REFERENCES `usuario` (`id`);
-
---
--- Filtros para la tabla `contrato`
---
-ALTER TABLE `contrato`
-  ADD CONSTRAINT `contrato_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id`),
-  ADD CONSTRAINT `contrato_ibfk_2` FOREIGN KEY (`id_desarrollador`) REFERENCES `desarrollador` (`id`);
 
 --
 -- Filtros para la tabla `desarrollador`
@@ -768,7 +750,7 @@ ALTER TABLE `habilidad`
 --
 ALTER TABLE `postulacion`
   ADD CONSTRAINT `postulacion_ibfk_1` FOREIGN KEY (`id_desarrollador`) REFERENCES `desarrollador` (`id`),
-  ADD CONSTRAINT `postulacion_ibfk_2` FOREIGN KEY (`id_requerimiento_rol`) REFERENCES `requerimiento_rol` (`id`);
+  ADD CONSTRAINT `postulacion_ibfk_2` FOREIGN KEY (`id_requerimiento_habilidad`) REFERENCES `requerimiento_habilidad` (`id`);
 
 --
 -- Filtros para la tabla `proyecto`
@@ -791,12 +773,13 @@ ALTER TABLE `requerimiento`
   ADD CONSTRAINT `requerimiento_ibfk_1` FOREIGN KEY (`id_proyecto_etapa`) REFERENCES `proyecto_etapa` (`id`);
 
 --
--- Filtros para la tabla `requerimiento_rol`
+-- Filtros para la tabla `requerimiento_habilidad`
 --
-ALTER TABLE `requerimiento_rol`
-  ADD CONSTRAINT `requerimiento_rol_ibfk_1` FOREIGN KEY (`id_requerimiento`) REFERENCES `requerimiento` (`id`),
-  ADD CONSTRAINT `requerimiento_rol_ibfk_habilidad` FOREIGN KEY (`id_habilidad`) REFERENCES `habilidad` (`id`),
-  ADD CONSTRAINT `requerimiento_rol_ibfk_nivel` FOREIGN KEY (`id_nivel`) REFERENCES `nivel` (`id`);
+ALTER TABLE `requerimiento_habilidad`
+  ADD CONSTRAINT `fk_requerimiento_habilidad_desarrollador` FOREIGN KEY (`id_desarrollador`) REFERENCES `desarrollador` (`id`),
+  ADD CONSTRAINT `requerimiento_habilidad_ibfk_1` FOREIGN KEY (`id_requerimiento`) REFERENCES `requerimiento` (`id`),
+  ADD CONSTRAINT `requerimiento_habilidad_ibfk_habilidad` FOREIGN KEY (`id_habilidad`) REFERENCES `habilidad` (`id`),
+  ADD CONSTRAINT `requerimiento_habilidad_ibfk_nivel` FOREIGN KEY (`id_nivel`) REFERENCES `nivel` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

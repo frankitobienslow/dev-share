@@ -19,9 +19,7 @@ const ProyectoItem = ({ proyecto }) => {
           Cliente: {proyecto.Cliente?.Usuario?.nombre + ' ' + proyecto.Cliente?.Usuario?.apellido || 'Sin asignar'}
         </Text>
         <Text className="text-sm">Equipo: {proyecto.Equipo?.nombre || 'Sin asignar'}</Text>
-        <Text className={`text-sm ${proyecto.disponible ? 'text-green-600' : 'text-red-600'}`}>
-          Estado: {proyecto.disponible ? 'Activo' : 'Inactivo'}
-        </Text>
+        <Text className="text-sm">Etapa actual: {proyecto.etapaActual}</Text>
       </View>
     </Pressable>
   );

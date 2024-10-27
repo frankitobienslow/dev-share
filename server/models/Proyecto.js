@@ -1,10 +1,10 @@
 const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../db.js");
-const Cliente = require("./Cliente"); // Importa el modelo Cliente
-const Equipo = require("./Equipo"); // Importa el modelo Equipo
+const Cliente = require("./Cliente");
+const Equipo = require("./Equipo");
 
 class Proyecto extends Model {}
-// init ( atributos , opcion  )
+
 Proyecto.init(
   {
     id: {
@@ -39,17 +39,13 @@ Proyecto.init(
         model: Equipo,
         key: "id",
       },
-    },
-    disponible: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: true
     }
   },
   {
     sequelize,
     modelName: "Proyecto",
     tableName: "proyecto",
-    timestamps: false, // Asumiendo que no necesitas campos createdAt y updatedAt
+    timestamps: false,
   }
 );
 

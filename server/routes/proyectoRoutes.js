@@ -8,6 +8,7 @@ const {
   updateProyecto,
   deleteProyecto,
   getProyectosByUsuario,
+  getProyectosActivosByDesarrollador,
 } = require("../controllers/proyectoController");
 
 const router = express.Router();
@@ -26,5 +27,6 @@ router.post("/", verificarToken("cliente"), createProyecto);
 router.delete("/:id", verificarToken("cliente"), deleteProyecto);
 
 router.get("/usuario/:id_usuario", verificarToken(), getProyectosByUsuario);
+
 
 module.exports = router;

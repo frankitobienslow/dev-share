@@ -1,8 +1,8 @@
-// models/RequerimientoRol.js
+// models/RequerimientoHabilidad.js
 const { DataTypes } = require('sequelize');
 const sequelize  = require('../db'); // Conexión a la base de datos
 
-const RequerimientoRol = sequelize.define('RequerimientoRol', {
+const RequerimientoHabilidad = sequelize.define('RequerimientoHabilidad', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -15,10 +15,6 @@ const RequerimientoRol = sequelize.define('RequerimientoRol', {
       model: 'requerimiento', // Nombre de la tabla referenciada
       key: 'id',
     },
-  },
-  cantidad_desarrolladores: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
   },
   id_habilidad: {
     type: DataTypes.INTEGER,
@@ -36,9 +32,17 @@ const RequerimientoRol = sequelize.define('RequerimientoRol', {
       key: 'id',
     },
   },
+  id_desarrollador: { // Nueva columna
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: 'desarrollador', // Nombre de la tabla referenciada
+      key: 'id',
+    },
+  },
 }, {
-  tableName: 'requerimiento_rol',
+  tableName: 'requerimiento_habilidad',
   timestamps: false, // Cambiar a true si deseas utilizar createdAt y updatedAt
 });
 
-module.exports = RequerimientoRol;
+module.exports = RequerimientoHabilidad;

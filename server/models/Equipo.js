@@ -25,9 +25,10 @@ Equipo.init({
 
 // Relación de muchos a muchos entre Equipo y Desarrollador a través de la tabla intermedia
 Equipo.belongsToMany(Desarrollador, {
-  through: EquipoDesarrollador,  // Tabla intermedia
-  foreignKey: 'id_equipo',       // Llave foránea que apunta a `Equipo`
-  otherKey: 'id_desarrollador',  // Llave foránea que apunta a `Desarrollador`
-});
+    through: EquipoDesarrollador,  // Tabla intermedia
+    foreignKey: 'id_equipo',       // Llave foránea que apunta a `Equipo`
+    otherKey: 'id_desarrollador',  // Llave foránea que apunta a `Desarrollador`
+    as: 'desarrolladores'           // Asegúrate de definir el alias aquí
+  });
 
 module.exports = Equipo;

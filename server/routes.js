@@ -10,7 +10,7 @@ const equipoDesarrolladorRoutes=require('./routes/equipoDesarrolladorRoutes');
 const proyectoRoutes=require('./routes/proyectoRoutes');
 const feedbackRoutes=require('./routes/feedbackRoutes');
 const requerimiento=require('./routes/requerimientoRoutes');
-const requerimientoRol = require('./routes/requerimientoRolRoutes');
+const requerimientoHabilidad = require('./routes/requerimientoHabilidadRoutes');
 const proyectoEtapa = require('./routes/proyectoEtapaRoutes');
 const feedbackUsuarioRoutes = require('./routes/feedbackUsuarioRoutes');
 
@@ -26,7 +26,7 @@ router.use('/proyectos', proyectoRoutes);
 router.use('/feedback', feedbackRoutes); 
 router.use('/feedbackUsuario', feedbackUsuarioRoutes);
 router.use('/requerimiento', requerimiento);
-router.use('/requerimientoRol', requerimientoRol);
+router.use('/requerimientoHabilidad', requerimientoHabilidad);
 router.use('/proyectoEtapa', proyectoEtapa);
 router.use('/equipos', equipoDesarrolladorRoutes);
 

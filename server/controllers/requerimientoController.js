@@ -1,4 +1,3 @@
-// controllers/requerimientoController.js
 const Requerimiento = require("../models/Requerimiento");
 
 // Obtener todos los requerimientos
@@ -27,7 +26,8 @@ exports.getRequerimientoById = async (req, res) => {
 // Crear un nuevo requerimiento
 exports.createRequerimiento = async (req, res) => {
   try {
-    const newRequerimiento = await Requerimiento.create(req.body);
+    const { nombre, id_proyecto_etapa, descripcion, disponible } = req.body;
+    const newRequerimiento = await Requerimiento.create({ nombre, id_proyecto_etapa, descripcion, disponible });
     res.status(201).json(newRequerimiento);
   } catch (error) {
     res.status(500).json({ message: "Error al crear requerimiento", error });
@@ -41,7 +41,8 @@ exports.updateRequerimiento = async (req, res) => {
     if (!requerimiento) {
       return res.status(404).json({ message: "Requerimiento no encontrado" });
     }
-    await requerimiento.update(req.body);
+    const { nombre, id_proyecto_etapa, descripcion, disponible } = req.body;
+    await requerimiento.update({ nombre, id_proyecto_etapa, descripcion, disponible });
     res.status(200).json(requerimiento);
   } catch (error) {
     res.status(500).json({ message: "Error al actualizar requerimiento", error });
@@ -56,7 +57,7 @@ exports.deleteRequerimiento = async (req, res) => {
       return res.status(404).json({ message: "Requerimiento no encontrado" });
     }
     await requerimiento.destroy();
-    res.status(204).send(); // No content
+    res.status(204).send();
   } catch (error) {
     res.status(500).json({ message: "Error al eliminar requerimiento", error });
   }

@@ -25,5 +25,9 @@ Desarrollador.init({
 
 // Relacionar Desarrollador con Usuario
 Desarrollador.belongsTo(Usuario, { foreignKey: 'id', onDelete: 'RESTRICT' });
+Desarrollador.associate = (models) => {
+    // Un desarrollador puede trabajar en muchos proyectos
+    Desarrollador.hasMany(models.EquipoDesarrollador, { foreignKey: 'id_desarrollador' });
+};
 
 module.exports = Desarrollador;

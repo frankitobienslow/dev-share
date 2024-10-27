@@ -14,7 +14,7 @@ const Login = () => {
   const handleLogin = async () => {
     try {
       console.log("Intentando iniciar sesión con:", { email, password });
-      
+
       const response = await fetch("http://localhost:3000/api/usuarios/login", {
         method: "POST",
         headers: {
@@ -28,7 +28,7 @@ const Login = () => {
 
       if (response.status === 200) {
         console.log("Inicio de sesión exitoso, guardando token...");
-        
+
         await AsyncStorage.setItem("token", data.token);
 
         // Verificar si el token se guardó correctamente

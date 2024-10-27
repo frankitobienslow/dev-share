@@ -19,7 +19,7 @@ Requerimiento.init(
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
-        model: 'proyectoEtapa', // Referencia al modelo ProyectoEtapa
+        model: 'proyectoEtapa',
         key: "id",
       },
     },
@@ -27,12 +27,17 @@ Requerimiento.init(
       type: DataTypes.TEXT,
       allowNull: true,
     },
+    disponible: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
   },
   {
     sequelize,
     modelName: "Requerimiento",
     tableName: "requerimiento",
-    timestamps: false, // Asumiendo que no necesitas createdAt ni updatedAt
+    timestamps: false,
   }
 );
 

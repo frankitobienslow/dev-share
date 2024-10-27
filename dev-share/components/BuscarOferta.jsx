@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, FlatList, StyleSheet } from 'react-native';
+import { View, Text, TextInput, FlatList, StyleSheet, Button, Alert } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ProyectoCard from './proyectoCard'; // Importa el componente de proyecto modificado para React Native
@@ -38,6 +38,24 @@ const BuscarOferta = () => {
         obtenerProyectos(valor);
     };
 
+    // Función para manejar la postulación a un proyecto
+    const postularseProyecto = async (idProyecto) => {
+        try {
+            const token = await AsyncStorage.getItem("token");
+            const response = await axios.post(`http://localhost:3000/api/proyectos/${idProyecto}/postularse`, {}, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+            Alert.alert("Postulación exitosa", "Te has postulado correctamente al proyecto.");
+            console.log('Postulación:', response.data);
+        } catch (error) {
+            console.error('Error al postularse al proyecto:', error.response || error.message);
+            Alert.alert("Error", "No se pudo completar la postulación.");
+        }
+    };
+
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Buscar Ofertas</Text>
@@ -57,7 +75,12 @@ const BuscarOferta = () => {
             <FlatList
                 data={proyectos}
                 keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => <ProyectoCard proyecto={item} />}
+                renderItem={({ item }) => (
+                    <ProyectoCard 
+                        proyecto={item} 
+                        postularse={() => postularseProyecto(item.id)} // Pasa la función de postulación
+                    />
+                )}
                 ListEmptyComponent={<Text>No se encontraron proyectos.</Text>}
             />
         </View>

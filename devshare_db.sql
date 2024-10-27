@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-10-2024 a las 07:55:03
+-- Tiempo de generación: 27-10-2024 a las 08:06:54
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -106,18 +106,12 @@ INSERT INTO `equipo_desarrollador` (`id`, `id_desarrollador`, `id_equipo`, `acti
 CREATE TABLE `etapa` (
   `id` int(11) NOT NULL,
   `nombre` varchar(255) NOT NULL
-  `nombre` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `etapa`
 --
 
-INSERT INTO `etapa` (`id`, `nombre`) VALUES
-(1, 'Planificación'),
-(2, 'Desarrollo'),
-(3, 'Pruebas'),
-(4, 'Despliegue');
 INSERT INTO `etapa` (`id`, `nombre`) VALUES
 (1, 'Planificación'),
 (2, 'Desarrollo'),
@@ -291,7 +285,6 @@ CREATE TABLE `postulacion` (
   `id` int(11) NOT NULL,
   `id_desarrollador` int(11) DEFAULT NULL,
   `id_requerimiento_habilidad` int(11) DEFAULT NULL
-  `id_requerimiento_habilidad` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -312,11 +305,11 @@ CREATE TABLE `proyecto` (
 -- Volcado de datos para la tabla `proyecto`
 --
 
-INSERT INTO `proyecto` (`id`, `duracion_estimada`, `titulo`, `descripcion`, `id_cliente`, `id_equipo`) VALUES
-(1, '2024-10-19', 'PROYECTO PRUEBA', 'Este es un proyecto de prueba', 22, 1),
-(2, '2024-12-31', 'Desarrollo de Plataforma Web', 'Creación de una plataforma web para gestión de proyectos.', 22, 2),
-(3, '2025-06-30', 'Aplicación Móvil', 'Desarrollo de una aplicación móvil para seguimiento de tareas.', 22, NULL),
-(4, '2024-09-15', 'Sistema de Gestión', 'Implementación de un sistema de gestión empresarial integral.', 22, NULL);
+INSERT INTO `proyecto` (`id`, `titulo`, `descripcion`, `id_cliente`, `id_equipo`) VALUES
+(1, 'PROYECTO PRUEBA', 'Este es un proyecto de prueba', 22, 1),
+(2, 'Desarrollo de Plataforma Web', 'Creación de una plataforma web para gestión de proyectos.', 22, 2),
+(3, 'Aplicación Móvil', 'Desarrollo de una aplicación móvil para seguimiento de tareas.', 22, NULL),
+(4, 'Sistema de Gestión', 'Implementación de un sistema de gestión empresarial integral.', 22, NULL);
 
 -- --------------------------------------------------------
 
@@ -380,10 +373,8 @@ INSERT INTO `requerimiento` (`id`, `nombre`, `id_proyecto_etapa`, `descripcion`,
 
 --
 -- Estructura de tabla para la tabla `requerimiento_habilidad`
--- Estructura de tabla para la tabla `requerimiento_habilidad`
 --
 
-CREATE TABLE `requerimiento_habilidad` (
 CREATE TABLE `requerimiento_habilidad` (
   `id` int(11) NOT NULL,
   `id_requerimiento` int(11) DEFAULT NULL,
@@ -393,7 +384,6 @@ CREATE TABLE `requerimiento_habilidad` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `requerimiento_habilidad`
 -- Volcado de datos para la tabla `requerimiento_habilidad`
 --
 
@@ -571,9 +561,7 @@ ALTER TABLE `requerimiento`
 
 --
 -- Indices de la tabla `requerimiento_habilidad`
--- Indices de la tabla `requerimiento_habilidad`
 --
-ALTER TABLE `requerimiento_habilidad`
 ALTER TABLE `requerimiento_habilidad`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_requerimiento` (`id_requerimiento`),
@@ -689,9 +677,7 @@ ALTER TABLE `requerimiento`
 
 --
 -- AUTO_INCREMENT de la tabla `requerimiento_habilidad`
--- AUTO_INCREMENT de la tabla `requerimiento_habilidad`
 --
-ALTER TABLE `requerimiento_habilidad`
 ALTER TABLE `requerimiento_habilidad`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
@@ -764,7 +750,6 @@ ALTER TABLE `habilidad`
 ALTER TABLE `postulacion`
   ADD CONSTRAINT `postulacion_ibfk_1` FOREIGN KEY (`id_desarrollador`) REFERENCES `desarrollador` (`id`),
   ADD CONSTRAINT `postulacion_ibfk_2` FOREIGN KEY (`id_requerimiento_habilidad`) REFERENCES `requerimiento_habilidad` (`id`);
-  ADD CONSTRAINT `postulacion_ibfk_2` FOREIGN KEY (`id_requerimiento_habilidad`) REFERENCES `requerimiento_habilidad` (`id`);
 
 --
 -- Filtros para la tabla `proyecto`
@@ -787,7 +772,6 @@ ALTER TABLE `requerimiento`
   ADD CONSTRAINT `requerimiento_ibfk_1` FOREIGN KEY (`id_proyecto_etapa`) REFERENCES `proyecto_etapa` (`id`);
 
 --
--- Filtros para la tabla `requerimiento_habilidad`
 -- Filtros para la tabla `requerimiento_habilidad`
 --
 ALTER TABLE `requerimiento_habilidad`

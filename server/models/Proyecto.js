@@ -12,10 +12,6 @@ Proyecto.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    duracion_estimada: {
-      type: DataTypes.DATE,
-      allowNull: true,
-    },
     titulo: {
       type: DataTypes.STRING(255),
       allowNull: true,

@@ -17,17 +17,13 @@ const Postulacion = sequelize.define('Postulacion', {
             key: 'id'
         }
     },
-    id_requerimiento_rol: {
+    id_requerimiento_habilidad: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
             model: RequerimientoHabilidad,
             key: 'id'
         }
-    },
-    activa: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: true
     }
 }, {
     tableName: 'postulacion',

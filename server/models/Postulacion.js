@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require("../db.js"); // Asegúrate de que tienes la configuración de la base de datos
 const Desarrollador = require('./Desarrollador'); // Asegúrate de que este modelo esté configurado
-const RequerimientoRol = require('./RequerimientoRol'); // Asegúrate de que este modelo esté configurado
+const RequerimientoHabilidad = require('./RequerimientoHabilidad'); // Asegúrate de que este modelo esté configurado
 
 const Postulacion = sequelize.define('Postulacion', {
     id: {
@@ -21,7 +21,7 @@ const Postulacion = sequelize.define('Postulacion', {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: RequerimientoRol,
+            model: RequerimientoHabilidad,
             key: 'id'
         }
     },

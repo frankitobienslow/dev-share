@@ -27,7 +27,7 @@ router.use('/proyectos', proyectoRoutes);
 router.use('/feedback', feedbackRoutes); 
 router.use('/feedbackUsuario', feedbackUsuarioRoutes);
 router.use('/requerimiento', requerimiento);
-router.use('/requerimientoHabilidad', requerimientoHabilidad);
+router.use('/requerimiento-habilidad', requerimientoHabilidad);
 router.use('/proyectoEtapa', proyectoEtapa);
 router.use('/equipos', equipoDesarrolladorRoutes);
 router.use('/postulacion', postulacion);

@@ -1,6 +1,8 @@
-// models/RequerimientoHabilidad.js
 const { DataTypes } = require('sequelize');
-const sequelize  = require('../db'); // Conexión a la base de datos
+const sequelize = require('../db');
+const Habilidad = require('./Habilidad');
+const Nivel = require('./Nivel');
+const Requerimiento=require('./Requerimiento')
 
 const RequerimientoHabilidad = sequelize.define('RequerimientoHabilidad', {
   id: {
@@ -12,7 +14,7 @@ const RequerimientoHabilidad = sequelize.define('RequerimientoHabilidad', {
     type: DataTypes.INTEGER,
     allowNull: true,
     references: {
-      model: 'requerimiento', // Nombre de la tabla referenciada
+      model: 'requerimiento',
       key: 'id',
     },
   },
@@ -20,7 +22,7 @@ const RequerimientoHabilidad = sequelize.define('RequerimientoHabilidad', {
     type: DataTypes.INTEGER,
     allowNull: true,
     references: {
-      model: 'habilidad', // Nombre de la tabla referenciada
+      model: 'habilidad',
       key: 'id',
     },
   },
@@ -28,21 +30,57 @@ const RequerimientoHabilidad = sequelize.define('RequerimientoHabilidad', {
     type: DataTypes.INTEGER,
     allowNull: true,
     references: {
-      model: 'nivel', // Nombre de la tabla referenciada
+      model: 'nivel',
       key: 'id',
     },
   },
-  id_desarrollador: { // Nueva columna
+  id_desarrollador: {
     type: DataTypes.INTEGER,
     allowNull: true,
     references: {
-      model: 'desarrollador', // Nombre de la tabla referenciada
+      model: 'desarrollador',
       key: 'id',
     },
   },
+  terminado: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
 }, {
   tableName: 'requerimiento_habilidad',
-  timestamps: false, // Cambiar a true si deseas utilizar createdAt y updatedAt
+  timestamps: false,
 });
+
+// Definir todas las asociaciones en una sola función
+RequerimientoHabilidad.associate = (models) => {
+  RequerimientoHabilidad.belongsTo(models.Habilidad, {
+    foreignKey: 'id_habilidad',
+    as: 'habilidad',
+  });
+  RequerimientoHabilidad.belongsTo(models.Nivel, {
+    foreignKey: 'id_nivel',
+    as: 'nivel',
+  });
+  RequerimientoHabilidad.belongsTo(models.Requerimiento, {
+    foreignKey: 'id_requerimiento',
+    as: 'requerimiento',
+  });
+  // Asegúrate de incluir aquí cualquier otra asociación necesaria
+};
+
+
+
+// Crear objeto de modelos
+const models = { Habilidad, Nivel, RequerimientoHabilidad, Requerimiento };
+
+// Ejecutar asociaciones
+Object.values(models).forEach((model) => {
+  if (model.associate) {
+    model.associate(models);
+  }
+});
+
+module.exports = models;
 
 module.exports = RequerimientoHabilidad;

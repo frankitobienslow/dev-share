@@ -12,6 +12,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useUser } from "../../context/UserContext";
 import FeedbackModal from "../../components/FeedbackModal";
 import AlertModal from "../../components/AlertModal"; // Importa AlertModal
+import ListaRequerimientosHabilidad from "../../components/ListaRequerimientosHabilidad";
 
 const Proyecto = () => {
   const { id } = useLocalSearchParams();
@@ -64,24 +65,27 @@ const Proyecto = () => {
     try {
       // Suponiendo que tienes el id del equipo y el id del usuario
       const token = await AsyncStorage.getItem("token");
-      const response = await fetch(`http://localhost:3000/api/equipos/${ proyecto?.Equipo?.id}/desarrolladores/${user.id}/renunciar`, {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-  
+      const response = await fetch(
+        `http://localhost:3000/api/equipos/${proyecto?.Equipo?.id}/desarrolladores/${user.id}/renunciar`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
       if (response.ok) {
         // Si la renuncia es exitosa, mostramos el FeedbackModal
         setModalVisible(true);
       } else {
         const errorData = await response.json();
-        console.error('Error al renunciar:', errorData);
+        console.error("Error al renunciar:", errorData);
         // Manejar el error en la UI si es necesario
       }
     } catch (error) {
-      console.error('Error al renunciar:', error);
+      console.error("Error al renunciar:", error);
       // Manejar el error en la UI si es necesario
     }
   };
@@ -120,18 +124,20 @@ const Proyecto = () => {
         <Text className="text-sm mb-2">
           Equipo: {proyecto.Equipo?.nombre || "Sin asignar"}
         </Text>
-        <Text
-          className={`text-sm mb-2`}
-        >
-          Estado: {proyecto.etapaActual }
-        </Text>
+        <Text className={`text-sm mb-2`}>Estado: {proyecto.etapaActual}</Text>
 
         {user?.rol === "desarrollador" &&
           proyecto?.Equipo?.desarrolladores?.some(
             (dev) =>
               dev.id === user?.id && dev.EquipoDesarrollador?.activo === true // Verificación del estado activo
           ) && (
-            <Button title="Renunciar" onPress={handleRenunciar} color="red" />
+            <>
+              <ListaRequerimientosHabilidad
+                id_proyecto={proyecto.id}
+                id_desarrollador={user.id}
+              />
+              <Button title="Renunciar" onPress={handleRenunciar} color="red" />
+            </>
           )}
         {/* Modal de Feedback */}
         <FeedbackModal
@@ -148,7 +154,7 @@ const Proyecto = () => {
           visible={alertVisible}
           onClose={() => {
             setAlertVisible(false); // Ocultar el modal
-            router.push('/dashboard'); // Redirigir al dashboard
+            router.push("/dashboard"); // Redirigir al dashboard
           }}
           message="¡Muchas gracias por registrar su experiencia!"
         />

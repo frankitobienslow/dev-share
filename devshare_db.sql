@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-10-2024 a las 08:06:54
+-- Tiempo de generación: 28-10-2024 a las 08:47:51
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -380,20 +380,21 @@ CREATE TABLE `requerimiento_habilidad` (
   `id_requerimiento` int(11) DEFAULT NULL,
   `id_habilidad` int(11) DEFAULT NULL,
   `id_nivel` int(11) DEFAULT NULL,
-  `id_desarrollador` int(11) DEFAULT NULL
+  `id_desarrollador` int(11) DEFAULT NULL,
+  `terminado` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `requerimiento_habilidad`
 --
 
-INSERT INTO `requerimiento_habilidad` (`id`, `id_requerimiento`, `id_habilidad`, `id_nivel`, `id_desarrollador`) VALUES
-(1, 1, 15, 1, NULL),
-(2, 2, 29, 2, NULL),
-(3, 3, 9, 3, NULL),
-(4, 4, 8, 2, NULL),
-(5, 5, 11, 2, NULL),
-(6, 6, 24, 3, NULL);
+INSERT INTO `requerimiento_habilidad` (`id`, `id_requerimiento`, `id_habilidad`, `id_nivel`, `id_desarrollador`, `terminado`) VALUES
+(1, 1, 15, 1, 26, 0),
+(2, 2, 29, 2, NULL, 0),
+(3, 3, 9, 3, 26, 0),
+(4, 4, 8, 2, NULL, 0),
+(5, 5, 11, 2, NULL, 0),
+(6, 6, 24, 3, NULL, 0);
 
 -- --------------------------------------------------------
 

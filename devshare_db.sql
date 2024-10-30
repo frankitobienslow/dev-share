@@ -354,7 +354,6 @@ CREATE TABLE `requerimiento` (
   `nombre` varchar(255) NOT NULL,
   `id_proyecto_etapa` int(11) DEFAULT NULL,
   `descripcion` text DEFAULT NULL,
-  `disponible` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -362,12 +361,12 @@ CREATE TABLE `requerimiento` (
 --
 
 INSERT INTO `requerimiento` (`id`, `nombre`, `id_proyecto_etapa`, `descripcion`, `disponible`) VALUES
-(1, 'Definir Alcance', 1, 'Establecer los objetivos y alcance del proyecto.', 0),
-(2, 'Diseñar UI/UX', 1, 'Crear los diseños de interfaz y experiencia de usuario.', 0),
-(3, 'Desarrollar Backend', 2, 'Implementar la lógica del servidor y base de datos.', 0),
-(4, 'Desarrollar Frontend', 2, 'Crear la interfaz de usuario y la interacción.', 0),
-(5, 'Realizar Pruebas Unitarias', 3, 'Verificar el funcionamiento de componentes individuales.', 0),
-(6, 'Desplegar Aplicación', 4, 'Lanzar la aplicación en el entorno de producción.', 0);
+(1, 'Definir Alcance', 1, 'Establecer los objetivos y alcance del proyecto.'),
+(2, 'Diseñar UI/UX', 1, 'Crear los diseños de interfaz y experiencia de usuario.'),
+(3, 'Desarrollar Backend', 2, 'Implementar la lógica del servidor y base de datos.'),
+(4, 'Desarrollar Frontend', 2, 'Crear la interfaz de usuario y la interacción.'),
+(5, 'Realizar Pruebas Unitarias', 3, 'Verificar el funcionamiento de componentes individuales.'),
+(6, 'Desplegar Aplicación', 4, 'Lanzar la aplicación en el entorno de producción.');
 
 -- --------------------------------------------------------
 

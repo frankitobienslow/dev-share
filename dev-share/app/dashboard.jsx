@@ -8,9 +8,6 @@ import {
 } from "react-native";
 import { useUser } from "../context/UserContext"; // Asegúrate de que la ruta sea correcta
 import { useRouter } from "expo-router";
-import peticiones from "../components/Peticiones";
-import Dev from "../components/Dev";
-import Client from "../components/Client";
 import ListaProyectos from "../components/ListaProyectos"; // Importa el componente de Proyectos
 
 const Dashboard = () => {

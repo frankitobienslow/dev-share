@@ -1,26 +1,26 @@
-const dbService = require("../services/dbService");
+const dbService = require('../services/dbService');
 
-const getRecordById = async (args) => {
+const getEvaluationByDeveloperSkill = async (args) => {
+  const { developerId, skillId } = args;
+  
   try {
-    const record = await dbService.getRecordById(args.id);
-    return record ? { ...record } : { error: "Record not found" };
+    const evaluation = await dbService.getDeveloperEvaluation(developerId, skillId);
+    
+    if (evaluation) {
+      return {
+        status: evaluation.status,
+        result: evaluation.resultado,
+        skillName: evaluation.skillName,
+        levelName: evaluation.levelName,
+        date: evaluation.fecha,
+      };
+    } else {
+      return { message: "No evaluation found for this developer and skill." };
+    }
   } catch (error) {
-    console.error("Error in getRecordById:", error);
-    return { error: "Database error" };
+    console.error("Error in SOAP getEvaluationByDeveloperSkill:", error);
+    throw new Error("Failed to retrieve evaluation data");
   }
 };
 
-const getAllRecords = async () => {
-  try {
-    const records = await dbService.getAllRecords();
-    return { records };
-  } catch (error) {
-    console.error("Error in getAllRecords:", error);
-    return { error: "Database error" };
-  }
-};
-
-module.exports = {
-  getRecordById,
-  getAllRecords,
-};
+module.exports = { getEvaluationByDeveloperSkill };

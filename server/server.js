@@ -4,7 +4,7 @@ const dotenv = require("dotenv");
 const cors = require("cors"); // Importar cors
 const routes = require("./routes"); // Asegúrate de tener este archivo
 const sequelize = require("./db.js");
-const soapService = require("./soap/soapService"); // Importar el servicio SOAP
+const soapService = require("./soap/wsdl/soapService.js"); // Importar el servicio SOAP
 
 dotenv.config();
 
@@ -41,7 +41,10 @@ soapService(app); // Asegúrate de que soapService está configurado para recibi
 app.use((req, res, next) => {
   res.status(404).json({ message: "Ruta no encontrada" });
 });
-
+app.post("/soap", (req, res) => {
+  console.log("Solicitud recibida en /soap");
+  res.send("Conexión SOAP establecida correctamente.");
+});
 // Manejar errores generales
 app.use((err, req, res, next) => {
   console.error(err.stack);

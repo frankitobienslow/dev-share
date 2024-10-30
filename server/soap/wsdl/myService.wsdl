@@ -1,51 +1,44 @@
-<definitions name="MyDatabaseService"
-             targetNamespace="http://www.example.org/mydatabaseservice"
-             xmlns:tns="http://www.example.org/mydatabaseservice"
-             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-             xmlns="http://schemas.xmlsoap.org/wsdl/">
+<definitions name="EvaluationService" targetNamespace="http://www.devshare.com/soap/evaluation"
+  xmlns:tns="http://www.devshare.com/soap/evaluation"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns="http://schemas.xmlsoap.org/wsdl/">
 
-  <message name="GetRecordByIdRequest">
-    <part name="id" type="xsd:int"/>
+  <message name="getEvaluationRequest">
+    <part name="developerId" type="xsd:int"/>
+    <part name="skillId" type="xsd:int"/>
   </message>
 
-  <message name="GetRecordByIdResponse">
-    <part name="record" type="xsd:string"/>
+  <message name="getEvaluationResponse">
+    <part name="status" type="xsd:string"/>
+    <part name="result" type="xsd:int"/>
+    <part name="skillName" type="xsd:string"/>
+    <part name="levelName" type="xsd:string"/>
+    <part name="date" type="xsd:date"/>
   </message>
 
-  <message name="GetAllRecordsRequest"/>
-  
-  <message name="GetAllRecordsResponse">
-    <part name="records" type="xsd:string"/>
-  </message>
-
-  <portType name="MyDatabasePortType">
-    <operation name="getRecordById">
-      <input message="tns:GetRecordByIdRequest"/>
-      <output message="tns:GetRecordByIdResponse"/>
-    </operation>
-    <operation name="getAllRecords">
-      <input message="tns:GetAllRecordsRequest"/>
-      <output message="tns:GetAllRecordsResponse"/>
+  <portType name="EvaluationPortType">
+    <operation name="getEvaluation">
+      <input message="tns:getEvaluationRequest"/>
+      <output message="tns:getEvaluationResponse"/>
     </operation>
   </portType>
 
-  <binding name="MyDatabaseBinding" type="tns:MyDatabasePortType">
-    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
-    <operation name="getRecordById">
-      <soap:operation soapAction="getRecordById"/>
-      <input><soap:body use="encoded" namespace="urn:mydatabaseservice" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
-      <output><soap:body use="encoded" namespace="urn:mydatabaseservice" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
-    </operation>
-    <operation name="getAllRecords">
-      <soap:operation soapAction="getAllRecords"/>
-      <input><soap:body use="encoded" namespace="urn:mydatabaseservice" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
-      <output><soap:body use="encoded" namespace="urn:mydatabaseservice" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+  <binding name="EvaluationBinding" type="tns:EvaluationPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="getEvaluation">
+      <soap:operation soapAction="http://www.devshare.com/soap/evaluation#getEvaluation"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
     </operation>
   </binding>
 
-  <service name="MyDatabaseService">
-    <port name="MyDatabasePort" binding="tns:MyDatabaseBinding">
+  <service name="EvaluationService">
+    <port name="EvaluationPort" binding="tns:EvaluationBinding">
       <soap:address location="http://localhost:3000/soap"/>
     </port>
   </service>

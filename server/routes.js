@@ -14,6 +14,7 @@ const requerimientoHabilidad = require('./routes/requerimientoHabilidadRoutes');
 const proyectoEtapa = require('./routes/proyectoEtapaRoutes');
 const feedbackUsuarioRoutes = require('./routes/feedbackUsuarioRoutes');
 const postulacion = require('./routes/postulacionRoutes');
+const etapaRoutes = require('./routes/etapaRoutes');
 
 const router = express.Router();
 
@@ -31,5 +32,7 @@ router.use('/requerimiento-habilidad', requerimientoHabilidad);
 router.use('/proyectoEtapa', proyectoEtapa);
 router.use('/equipos', equipoDesarrolladorRoutes);
 router.use('/postulacion', postulacion);
+router.use('/etapa',etapaRoutes);
+
 
 module.exports = router;

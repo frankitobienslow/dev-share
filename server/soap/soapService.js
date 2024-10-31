@@ -15,7 +15,7 @@ const myService = {
 
 
 // Ruta al archivo WSDL
-const wsdlPath = path.join(__dirname, 'wsdl', 'myService.wsdl');
+const wsdlPath = path.resolve(__dirname, 'wsdl', 'myService.wsdl');
 
 // Función para configurar el servicio SOAP en la app de Express
 module.exports = (app) => {

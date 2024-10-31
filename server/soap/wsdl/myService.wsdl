@@ -1,4 +1,4 @@
-<definitions name="SimpleService" targetNamespace="http://www.devshare.com/soap/evaluation"
+<definitions name="EvaluationService" targetNamespace="http://www.devshare.com/soap/evaluation"
   xmlns:tns="http://www.devshare.com/soap/evaluation"
   xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
   xmlns:xsd="http://www.w3.org/2001/XMLSchema"

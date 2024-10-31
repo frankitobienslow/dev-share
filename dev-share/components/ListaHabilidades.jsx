@@ -3,7 +3,7 @@ import { View, Text, ScrollView, ActivityIndicator } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Picker } from '@react-native-picker/picker';
 
-const ListaHabilidades =(selectValue,onValueChange)=>{
+const ListaHabilidades =()=>{
     const [habilidades,setHabilidades]=useState([]);
     //const [habilidadSelect,setHabilidadeSelect]=useState('');
     
@@ -35,16 +35,10 @@ const ListaHabilidades =(selectValue,onValueChange)=>{
 
     return (
         <View>
-            <Picker
-            selectedValue={selectValue}
-            onValueChange={onValueChange}
-            >
                 <Picker.Item label='Seleccione una habilidad' value='' />
                 {habilidades.map((unaHab)=>
                 <Picker.Item key={unaHab.nombre} label={unaHab.nombre} value={unaHab.nombre} />
                 )}
-
-            </Picker>
         </View>
 
     )

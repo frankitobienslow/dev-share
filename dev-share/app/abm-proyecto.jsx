@@ -582,11 +582,7 @@ export default function CrearProyecto() {
                                       handleChange(`etapas.${index}.requerimientos.${indexR}.habilidades.${indexH}`)(itemValue)
                                     }
                                   >
-                                    <ListaHabilidades
-                                    selectedValue={values.option}
-                                    onValueChange={handleChange}
-                                    
-                                    />
+                                    <ListaHabilidades/>
                                   </Picker>
 
                                   <TouchableOpacity

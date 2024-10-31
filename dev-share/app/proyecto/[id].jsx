@@ -6,6 +6,7 @@ import {
   ScrollView,
   Button,
   Alert,
+  Pressable,
 } from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -90,6 +91,9 @@ const Proyecto = () => {
     }
   };
 
+  const handlePress =()=>{
+    router.push('../equipoDev');
+  }
   const handleFeedbackSuccess = () => {
     setAlertVisible(true); // Mostrar el AlertModal cuando el feedback es exitoso
   };
@@ -154,10 +158,13 @@ const Proyecto = () => {
           visible={alertVisible}
           onClose={() => {
             setAlertVisible(false); // Ocultar el modal
-            router.push("/dashboard"); // Redirigir al dashboard
+            router.push("/dashboard"); // Redirigir al dashboardDesarrolladores
           }}
           message="¡Muchas gracias por registrar su experiencia!"
         />
+        <Pressable className='bg-blue-700 rounded w-52 mt-5 shadow-gray-900' onPress={handlePress}>
+          <Text className='text-lg font-sans text-white text-center'>Buscar Desarrolladores</Text>
+        </Pressable>
       </View>
     </ScrollView>
   );

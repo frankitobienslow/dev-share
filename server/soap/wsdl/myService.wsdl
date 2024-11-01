@@ -1,33 +1,28 @@
-<definitions name="EvaluationService" targetNamespace="http://www.devshare.com/soap/evaluation"
+<definitions name="SimpleService" targetNamespace="http://www.devshare.com/soap/evaluation"
   xmlns:tns="http://www.devshare.com/soap/evaluation"
   xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
   xmlns:xsd="http://www.w3.org/2001/XMLSchema"
   xmlns="http://schemas.xmlsoap.org/wsdl/">
 
-  <message name="getEvaluationRequest">
-    <part name="developerId" type="xsd:int"/>
-    <part name="skillId" type="xsd:int"/>
+  <message name="simpleRequest">
+    <part name="input" type="xsd:string"/>
   </message>
 
-  <message name="getEvaluationResponse">
-    <part name="status" type="xsd:string"/>
-    <part name="result" type="xsd:int"/>
-    <part name="skillName" type="xsd:string"/>
-    <part name="levelName" type="xsd:string"/>
-    <part name="date" type="xsd:date"/>
+  <message name="simpleResponse">
+    <part name="output" type="xsd:string"/>
   </message>
 
-  <portType name="EvaluationPortType">
-    <operation name="getEvaluation">
-      <input message="tns:getEvaluationRequest"/>
-      <output message="tns:getEvaluationResponse"/>
+  <portType name="SimplePortType">
+    <operation name="simpleOperation">
+      <input message="tns:simpleRequest"/>
+      <output message="tns:simpleResponse"/>
     </operation>
   </portType>
 
-  <binding name="EvaluationBinding" type="tns:EvaluationPortType">
+  <binding name="SimpleBinding" type="tns:SimplePortType">
     <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
-    <operation name="getEvaluation">
-      <soap:operation soapAction="http://www.devshare.com/soap/evaluation#getEvaluation"/>
+    <operation name="simpleOperation">
+      <soap:operation soapAction="http://www.devshare.com/soap/evaluation#simpleOperation"/>
       <input>
         <soap:body use="literal"/>
       </input>
@@ -37,9 +32,9 @@
     </operation>
   </binding>
 
-  <service name="EvaluationService">
-    <port name="EvaluationPort" binding="tns:EvaluationBinding">
-      <soap:address location="http://localhost:3000/soap"/>
+  <service name="SimpleService">
+    <port name="SimplePort" binding="tns:SimpleBinding">
+      <soap:address location="http://localhost:3000/soap/evaluation"/>
     </port>
   </service>
 </definitions>

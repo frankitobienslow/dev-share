@@ -1,4 +1,4 @@
-const db = require('../../db'); // Asegúrate de que esta es la conexión a la base de datos
+const db = require('../../db'); 
 
 const getDeveloperEvaluation = async (developerId, skillId) => {
   const query = `

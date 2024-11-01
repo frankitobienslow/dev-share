@@ -1,6 +1,6 @@
 const soap = require('soap');
 const path = require('path');
-const dbService = require('../services/dbService'); // Servicio para consultas a la BD
+const dbService = require('./services/dbService'); // Servicio para consultas a la BD
 
 // Definición del servicio SOAP
 const myService = {
@@ -13,8 +13,9 @@ const myService = {
   }
 };
 
+
 // Ruta al archivo WSDL
-const wsdlPath = path.resolve(__dirname, 'wsdl', 'myService.wsdl');
+const wsdlPath = path.join(__dirname, 'wsdl', 'myService.wsdl');
 
 // Función para configurar el servicio SOAP en la app de Express
 module.exports = (app) => {
@@ -23,7 +24,7 @@ module.exports = (app) => {
     if (err) {
       console.error("Error al montar el servicio SOAP:", err);
     } else {
-      console.log("Servicio SOAP corriendo en http://localhost:3000/soap");
+      console.log("Servicio SOAP corriendo en http://localhost:3000/soap/evaluation");
     }
   });
 };

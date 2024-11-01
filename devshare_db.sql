@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-10-2024 a las 08:47:51
+-- Tiempo de generación: 01-11-2024 a las 03:09:11
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -379,7 +379,6 @@ CREATE TABLE `requerimiento_habilidad` (
   `id_requerimiento` int(11) DEFAULT NULL,
   `id_habilidad` int(11) DEFAULT NULL,
   `id_nivel` int(11) DEFAULT NULL,
-  `id_desarrollador` int(11) DEFAULT NULL,
   `terminado` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -387,13 +386,13 @@ CREATE TABLE `requerimiento_habilidad` (
 -- Volcado de datos para la tabla `requerimiento_habilidad`
 --
 
-INSERT INTO `requerimiento_habilidad` (`id`, `id_requerimiento`, `id_habilidad`, `id_nivel`, `id_desarrollador`, `terminado`) VALUES
-(1, 1, 15, 1, 26, 0),
-(2, 2, 29, 2, NULL, 0),
-(3, 3, 9, 3, 26, 0),
-(4, 4, 8, 2, NULL, 0),
-(5, 5, 11, 2, NULL, 0),
-(6, 6, 24, 3, NULL, 0);
+INSERT INTO `requerimiento_habilidad` (`id`, `id_requerimiento`, `id_habilidad`, `id_nivel`, `terminado`) VALUES
+(1, 1, 15, 1, 0),
+(2, 2, 29, 2, 0),
+(3, 3, 9, 3, 0),
+(4, 4, 8, 2, 0),
+(5, 5, 11, 2, 0),
+(6, 6, 24, 3, 0);
 
 -- --------------------------------------------------------
 
@@ -566,8 +565,7 @@ ALTER TABLE `requerimiento_habilidad`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_requerimiento` (`id_requerimiento`),
   ADD KEY `requerimiento_rol_ibfk_habilidad` (`id_habilidad`),
-  ADD KEY `requerimiento_rol_ibfk_nivel` (`id_nivel`),
-  ADD KEY `fk_requerimiento_habilidad_desarrollador` (`id_desarrollador`);
+  ADD KEY `requerimiento_rol_ibfk_nivel` (`id_nivel`);
 
 --
 -- Indices de la tabla `rol`
@@ -775,7 +773,6 @@ ALTER TABLE `requerimiento`
 -- Filtros para la tabla `requerimiento_habilidad`
 --
 ALTER TABLE `requerimiento_habilidad`
-  ADD CONSTRAINT `fk_requerimiento_habilidad_desarrollador` FOREIGN KEY (`id_desarrollador`) REFERENCES `desarrollador` (`id`),
   ADD CONSTRAINT `requerimiento_habilidad_ibfk_1` FOREIGN KEY (`id_requerimiento`) REFERENCES `requerimiento` (`id`),
   ADD CONSTRAINT `requerimiento_habilidad_ibfk_habilidad` FOREIGN KEY (`id_habilidad`) REFERENCES `habilidad` (`id`),
   ADD CONSTRAINT `requerimiento_habilidad_ibfk_nivel` FOREIGN KEY (`id_nivel`) REFERENCES `nivel` (`id`);

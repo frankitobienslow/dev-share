@@ -353,14 +353,14 @@ CREATE TABLE `requerimiento` (
   `id` int(11) NOT NULL,
   `nombre` varchar(255) NOT NULL,
   `id_proyecto_etapa` int(11) DEFAULT NULL,
-  `descripcion` text DEFAULT NULL,
+  `descripcion` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `requerimiento`
 --
 
-INSERT INTO `requerimiento` (`id`, `nombre`, `id_proyecto_etapa`, `descripcion`, `disponible`) VALUES
+INSERT INTO `requerimiento` (`id`, `nombre`, `id_proyecto_etapa`, `descripcion`) VALUES
 (1, 'Definir Alcance', 1, 'Establecer los objetivos y alcance del proyecto.'),
 (2, 'Diseñar UI/UX', 1, 'Crear los diseños de interfaz y experiencia de usuario.'),
 (3, 'Desarrollar Backend', 2, 'Implementar la lógica del servidor y base de datos.'),

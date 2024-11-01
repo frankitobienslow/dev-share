@@ -4,14 +4,10 @@ const dotenv = require("dotenv");
 const cors = require("cors"); // Importar cors
 const routes = require("./routes"); // Asegúrate de tener este archivo
 const sequelize = require("./db.js");
-<<<<<<< HEAD
-const soapService = require("./soap/soapService.js"); // Importar el servicio SOAP
-=======
 const soapService = require("./soap/wsdl/soapService.js"); // Importar el servicio SOAP
 const {createServer} =require('node:httpp');
 const { Server } = require("socket.io");
 const {join} = require('node:path');
->>>>>>> e68460d (Probando chatBot con socketIO)
 
 dotenv.config();
 

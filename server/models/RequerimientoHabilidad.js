@@ -34,19 +34,6 @@ const RequerimientoHabilidad = sequelize.define('RequerimientoHabilidad', {
       key: 'id',
     },
   },
-  id_desarrollador: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
-    references: {
-      model: 'desarrollador',
-      key: 'id',
-    },
-  },
-  terminado: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-    defaultValue: false,
-  },
 }, {
   tableName: 'requerimiento_habilidad',
   timestamps: false,

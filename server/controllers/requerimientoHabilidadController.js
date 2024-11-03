@@ -13,15 +13,13 @@ const RequerimientoHabilidadController = {
         id_requerimiento,
         id_habilidad,
         id_nivel,
-        id_desarrollador,
-        terminado,
+
       } = req.body;
       const newRequerimientoHabilidad = await RequerimientoHabilidad.create({
         id_requerimiento,
         id_habilidad,
         id_nivel,
-        id_desarrollador,
-        terminado, // Incluye el campo terminado
+
       });
       res.status(201).json(newRequerimientoHabilidad);
     } catch (error) {
@@ -77,15 +75,11 @@ const RequerimientoHabilidadController = {
         id_requerimiento,
         id_habilidad,
         id_nivel,
-        id_desarrollador,
-        terminado,
       } = req.body;
       await requerimientoHabilidad.update({
         id_requerimiento,
         id_habilidad,
         id_nivel,
-        id_desarrollador,
-        terminado, // Incluye el campo terminado en la actualización
       });
       res.status(200).json(requerimientoHabilidad);
     } catch (error) {

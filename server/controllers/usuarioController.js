@@ -130,6 +130,7 @@ exports.getUsuarios = async (req, res) => {
 // Obtener usuario por ID
 exports.getUsuarioById = async (req, res) => {
     try {
+        console.log(req);
         const usuario = await Usuario.findByPk(req.params.id);
         if (usuario) {
             res.status(200).json(usuario);

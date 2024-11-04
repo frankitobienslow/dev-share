@@ -5,20 +5,14 @@ const cors = require("cors"); // Importar cors
 const routes = require("./routes"); // Asegúrate de tener este archivo
 const sequelize = require("./db.js");
 const soapService = require("./soap/wsdl/soapService.js"); // Importar el servicio SOAP
-const {createServer} =require('node:httpp');
-const { Server } = require("socket.io");
-const {join} = require('node:path');
+const { default: socket } = require("../dev-share/utils/socket.js");
+// const {createServer} =require('node:httpp');
+// const { Server } = require("socket.io");
+// const {join} = require('node:path');
+const socketIO=require ('socket.io')(http,{cors:{origin:"<http://localhost:3000>"}});
+
 
 dotenv.config();
-
-const app1 = express();
-const server = createServer(app1);
-app1.get('/',(req,res)=>{res.sendFile(join(__dirname,'chatForm.html'))});
-server.listen(3000,()=>{
-  console.log('Servidr corriendo en puerto 3300');
-})
-
-
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -38,7 +32,7 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-
+app.use(express.urlencoded({extended:true}));
 // Middleware para parsear JSON
 app.use(express.json());
 
@@ -52,6 +46,19 @@ soapService(app); // Asegúrate de que soapService está configurado para recibi
 app.use((req, res, next) => {
   res.status(404).json({ message: "Ruta no encontrada" });
 });
+
+socketIO.on('connection',(socket)=>{
+  console.log(`@: ${socket.id} usuario conectado!`);
+  socket.on('disconnect',()=>{
+    socket.disconnect()
+    console.log('@ usuario desconectado');
+  })
+})
+
+app.get("/api",(req,res)=>{
+  res.json({message:"Hello Word"});
+})
+
 app.post("/soap", (req, res) => {
   console.log("Solicitud recibida en /soap");
   res.send("Conexión SOAP establecida correctamente.");

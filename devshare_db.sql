@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 01-11-2024 a las 03:09:11
+-- Tiempo de generación: 04-11-2024 a las 03:30:33
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -95,7 +95,7 @@ CREATE TABLE `equipo_desarrollador` (
 
 INSERT INTO `equipo_desarrollador` (`id`, `id_desarrollador`, `id_equipo`, `activo`) VALUES
 (1, 26, 1, 1),
-(2, 26, 2, 0);
+(2, 26, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -143,7 +143,9 @@ INSERT INTO `evaluacion` (`id`, `id_desarrollador`, `id_habilidad`, `id_nivel`, 
 (27, 26, 19, 2, 80, '2024-10-15'),
 (28, 26, 14, 2, 80, '2024-10-15'),
 (29, 26, 14, 3, 60, '2024-10-22'),
-(30, 26, 16, 1, 80, '2024-10-22');
+(30, 26, 16, 1, 80, '2024-10-22'),
+(31, 26, 18, 2, NULL, NULL),
+(32, 26, 14, 2, 20, '2024-10-30');
 
 -- --------------------------------------------------------
 
@@ -353,20 +355,21 @@ CREATE TABLE `requerimiento` (
   `id` int(11) NOT NULL,
   `nombre` varchar(255) NOT NULL,
   `id_proyecto_etapa` int(11) DEFAULT NULL,
-  `descripcion` text DEFAULT NULL
+  `descripcion` text DEFAULT NULL,
+  `disponible` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `requerimiento`
 --
 
-INSERT INTO `requerimiento` (`id`, `nombre`, `id_proyecto_etapa`, `descripcion`) VALUES
-(1, 'Definir Alcance', 1, 'Establecer los objetivos y alcance del proyecto.'),
-(2, 'Diseñar UI/UX', 1, 'Crear los diseños de interfaz y experiencia de usuario.'),
-(3, 'Desarrollar Backend', 2, 'Implementar la lógica del servidor y base de datos.'),
-(4, 'Desarrollar Frontend', 2, 'Crear la interfaz de usuario y la interacción.'),
-(5, 'Realizar Pruebas Unitarias', 3, 'Verificar el funcionamiento de componentes individuales.'),
-(6, 'Desplegar Aplicación', 4, 'Lanzar la aplicación en el entorno de producción.');
+INSERT INTO `requerimiento` (`id`, `nombre`, `id_proyecto_etapa`, `descripcion`, `disponible`) VALUES
+(1, 'Definir Alcance', 1, 'Establecer los objetivos y alcance del proyecto.', 0),
+(2, 'Diseñar UI/UX', 1, 'Crear los diseños de interfaz y experiencia de usuario.', 0),
+(3, 'Desarrollar Backend', 2, 'Implementar la lógica del servidor y base de datos.', 0),
+(4, 'Desarrollar Frontend', 2, 'Crear la interfaz de usuario y la interacción.', 0),
+(5, 'Realizar Pruebas Unitarias', 3, 'Verificar el funcionamiento de componentes individuales.', 0),
+(6, 'Desplegar Aplicación', 4, 'Lanzar la aplicación en el entorno de producción.', 0);
 
 -- --------------------------------------------------------
 
@@ -379,6 +382,7 @@ CREATE TABLE `requerimiento_habilidad` (
   `id_requerimiento` int(11) DEFAULT NULL,
   `id_habilidad` int(11) DEFAULT NULL,
   `id_nivel` int(11) DEFAULT NULL,
+  `id_desarrollador` int(11) DEFAULT NULL,
   `terminado` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -386,13 +390,13 @@ CREATE TABLE `requerimiento_habilidad` (
 -- Volcado de datos para la tabla `requerimiento_habilidad`
 --
 
-INSERT INTO `requerimiento_habilidad` (`id`, `id_requerimiento`, `id_habilidad`, `id_nivel`, `terminado`) VALUES
-(1, 1, 15, 1, 0),
-(2, 2, 29, 2, 0),
-(3, 3, 9, 3, 0),
-(4, 4, 8, 2, 0),
-(5, 5, 11, 2, 0),
-(6, 6, 24, 3, 0);
+INSERT INTO `requerimiento_habilidad` (`id`, `id_requerimiento`, `id_habilidad`, `id_nivel`, `id_desarrollador`, `terminado`) VALUES
+(1, 1, 15, 1, 26, 0),
+(2, 2, 29, 2, NULL, 0),
+(3, 3, 9, 3, 26, 0),
+(4, 4, 8, 2, NULL, 0),
+(5, 5, 11, 2, NULL, 0),
+(6, 6, 24, 3, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -565,7 +569,8 @@ ALTER TABLE `requerimiento_habilidad`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_requerimiento` (`id_requerimiento`),
   ADD KEY `requerimiento_rol_ibfk_habilidad` (`id_habilidad`),
-  ADD KEY `requerimiento_rol_ibfk_nivel` (`id_nivel`);
+  ADD KEY `requerimiento_rol_ibfk_nivel` (`id_nivel`),
+  ADD KEY `fk_requerimiento_habilidad_desarrollador` (`id_desarrollador`);
 
 --
 -- Indices de la tabla `rol`
@@ -617,7 +622,7 @@ ALTER TABLE `etapa`
 -- AUTO_INCREMENT de la tabla `evaluacion`
 --
 ALTER TABLE `evaluacion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT de la tabla `experiencia`
@@ -773,6 +778,7 @@ ALTER TABLE `requerimiento`
 -- Filtros para la tabla `requerimiento_habilidad`
 --
 ALTER TABLE `requerimiento_habilidad`
+  ADD CONSTRAINT `fk_requerimiento_habilidad_desarrollador` FOREIGN KEY (`id_desarrollador`) REFERENCES `desarrollador` (`id`),
   ADD CONSTRAINT `requerimiento_habilidad_ibfk_1` FOREIGN KEY (`id_requerimiento`) REFERENCES `requerimiento` (`id`),
   ADD CONSTRAINT `requerimiento_habilidad_ibfk_habilidad` FOREIGN KEY (`id_habilidad`) REFERENCES `habilidad` (`id`),
   ADD CONSTRAINT `requerimiento_habilidad_ibfk_nivel` FOREIGN KEY (`id_nivel`) REFERENCES `nivel` (`id`);

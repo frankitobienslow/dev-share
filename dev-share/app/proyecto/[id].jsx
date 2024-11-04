@@ -162,9 +162,6 @@ const Proyecto = () => {
           }}
           message="¡Muchas gracias por registrar su experiencia!"
         />
-        <Pressable className='bg-blue-700 rounded w-52 mt-5 shadow-gray-900' onPress={handlePress}>
-          <Text className='text-lg font-sans text-white text-center'>Buscar Desarrolladores</Text>
-        </Pressable>
       </View>
     </ScrollView>
   );

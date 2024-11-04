@@ -5,6 +5,7 @@ const requerimientoController = require("../controllers/requerimientoController"
 
 // Rutas para requerimientos
 router.get("/", requerimientoController.getAllRequerimientos); // Obtener todos
+router.get("/?", requerimientoController.getAllReqByEtapas); // Obtener todos
 router.get("/:id", requerimientoController.getRequerimientoById); // Obtener por ID
 router.post("/", requerimientoController.createRequerimiento); // Crear
 router.put("/:id", requerimientoController.updateRequerimiento); // Actualizar

@@ -383,6 +383,7 @@ CREATE TABLE `requerimiento_habilidad` (
   `id_habilidad` int(11) DEFAULT NULL,
   `id_nivel` int(11) DEFAULT NULL,
   `id_desarrollador` int(11) DEFAULT NULL,
+  `id_desarrollador` int(11) DEFAULT NULL,
   `terminado` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -782,6 +783,7 @@ ALTER TABLE `requerimiento_habilidad`
   ADD CONSTRAINT `requerimiento_habilidad_ibfk_1` FOREIGN KEY (`id_requerimiento`) REFERENCES `requerimiento` (`id`),
   ADD CONSTRAINT `requerimiento_habilidad_ibfk_habilidad` FOREIGN KEY (`id_habilidad`) REFERENCES `habilidad` (`id`),
   ADD CONSTRAINT `requerimiento_habilidad_ibfk_nivel` FOREIGN KEY (`id_nivel`) REFERENCES `nivel` (`id`);
+  ADD CONSTRAINT `requerimiento_habilidad_ibfk_desarrollador` FOREIGN KEY (`id_desarrollador`) REFERENCES `desarrollador` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

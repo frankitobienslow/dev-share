@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, ScrollView, TouchableOpacity ,Alert} from 'react-native';
 import { Formik, FieldArray, isInteger } from 'formik';
 import * as Yup from 'yup';
@@ -108,6 +108,7 @@ export default function CrearProyecto() {
   // const {user} = useUser();
   // console.log(user.id);
   const {user} = useUser();
+
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContainer}>
       <Formik
@@ -397,6 +398,7 @@ export default function CrearProyecto() {
           //         for(let i=0; i<cantEtapasProyect.length;i++){
           //           const id_proyecto_etapa = cantEtapasProyect[i].id;
           //           const reqPorEtapas = restoValores.etapas[i].requerimientos;
+          //
           //           // RECORRIDO DE LOS REQUERIMIENTO DE UNA ETAPA
           //           for(let k=0; k<reqPorEtapas.length;k++){
           //             const nombre=reqPorEtapas[k].nombre;
@@ -410,6 +412,7 @@ export default function CrearProyecto() {
           //                   nombre:nombre,
           //                   id_proyecto_etapa:id_proyecto_etapa,
           //                   descripcion:descripcion,
+          //                   disponible:0, 
           //                 })
 
           //               }); // fin metodo POST
@@ -418,6 +421,18 @@ export default function CrearProyecto() {
           //                 const exitoReq = await resReq.json();
           //                 console.log(exitoReq);
           //                 /** HACER LA LLAMADA A REQ-HABILIDAD */
+                             /**  const getRequerimientos = async (idProyectoEtapa) => {
+    const response = await fetch(
+        `http://localhost:3000/api/requerimientos?id_proyecto_etapa=${idProyectoEtapa}`,
+        {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        }
+    );
+    return await response.json();
+}; */     
           //               }
           //               else{
           //                 const errorMensaje = await resReq.text();
@@ -435,7 +450,7 @@ export default function CrearProyecto() {
           //         }// fin for 
 
                   /** ***************** CREACION DEREQUERIMIENTO HABILIDAD ************************** */
-
+                  
 
             
 
@@ -575,15 +590,12 @@ export default function CrearProyecto() {
                             <View>
                               {requerimiento.habilidades?.map((habilidad, indexH) =>(
                                 <View key={indexH} style={styles.habilidadItem}>
-                                  <Picker
-                                    selectedValue={habilidad}
-                                    style={styles.picker} // Añade estilos específicos para el Picker
-                                    onValueChange={(itemValue) =>
-                                      handleChange(`etapas.${index}.requerimientos.${indexR}.habilidades.${indexH}`)(itemValue)
-                                    }
-                                  >
-                                    <ListaHabilidades/>
-                                  </Picker>
+                                  <ListaHabilidades
+                                    selectValue={habilidad}
+                                    onHabilidadSelect={(itemValue)=>{
+                                      setFieldValue(`etapas.${index}.requerimientos.${indexR}.habilidades.${indexH}`,itemValue)
+                                    }}
+                                  />
 
                                   <TouchableOpacity
                                     style={styles.deleteHabilidadButton}

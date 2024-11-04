@@ -37,7 +37,7 @@ CREATE TABLE `cliente` (
 
 INSERT INTO `cliente` (`id`) VALUES
 (22),
-(23);
+(27);
 
 -- --------------------------------------------------------
 

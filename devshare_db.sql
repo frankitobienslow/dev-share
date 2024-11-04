@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-11-2024 a las 03:30:33
+-- Tiempo de generación: 04-11-2024 a las 21:03:25
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -383,7 +383,6 @@ CREATE TABLE `requerimiento_habilidad` (
   `id_habilidad` int(11) DEFAULT NULL,
   `id_nivel` int(11) DEFAULT NULL,
   `id_desarrollador` int(11) DEFAULT NULL,
-  `id_desarrollador` int(11) DEFAULT NULL,
   `terminado` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -393,11 +392,11 @@ CREATE TABLE `requerimiento_habilidad` (
 
 INSERT INTO `requerimiento_habilidad` (`id`, `id_requerimiento`, `id_habilidad`, `id_nivel`, `id_desarrollador`, `terminado`) VALUES
 (1, 1, 15, 1, 26, 0),
-(2, 2, 29, 2, NULL, 0),
+(2, 2, 29, 2, 26, 0),
 (3, 3, 9, 3, 26, 0),
-(4, 4, 8, 2, NULL, 0),
-(5, 5, 11, 2, NULL, 0),
-(6, 6, 24, 3, NULL, 0);
+(4, 4, 8, 2, 26, 0),
+(5, 5, 11, 2, 26, 0),
+(6, 6, 24, 3, 26, 0);
 
 -- --------------------------------------------------------
 
@@ -783,7 +782,6 @@ ALTER TABLE `requerimiento_habilidad`
   ADD CONSTRAINT `requerimiento_habilidad_ibfk_1` FOREIGN KEY (`id_requerimiento`) REFERENCES `requerimiento` (`id`),
   ADD CONSTRAINT `requerimiento_habilidad_ibfk_habilidad` FOREIGN KEY (`id_habilidad`) REFERENCES `habilidad` (`id`),
   ADD CONSTRAINT `requerimiento_habilidad_ibfk_nivel` FOREIGN KEY (`id_nivel`) REFERENCES `nivel` (`id`);
-  ADD CONSTRAINT `requerimiento_habilidad_ibfk_desarrollador` FOREIGN KEY (`id_desarrollador`) REFERENCES `desarrollador` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

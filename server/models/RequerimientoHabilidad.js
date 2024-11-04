@@ -2,8 +2,7 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
 const Habilidad = require('./Habilidad');
 const Nivel = require('./Nivel');
-const Requerimiento=require('./Requerimiento');
-const Desarrollador=require('./Desarrollador');
+const Requerimiento=require('./Requerimiento')
 
 const RequerimientoHabilidad = sequelize.define('RequerimientoHabilidad', {
   id: {
@@ -35,14 +34,6 @@ const RequerimientoHabilidad = sequelize.define('RequerimientoHabilidad', {
       key: 'id',
     },
   },
-  id_desarrollador: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
-    references: {
-      model: 'desarrollador',
-      key: 'id',
-    },
-  },
 }, {
   tableName: 'requerimiento_habilidad',
   timestamps: false,
@@ -61,10 +52,6 @@ RequerimientoHabilidad.associate = (models) => {
   RequerimientoHabilidad.belongsTo(models.Requerimiento, {
     foreignKey: 'id_requerimiento',
     as: 'requerimiento',
-  });
-  RequerimientoHabilidad.belongsTo(models.Desarrollador, {
-    foreignKey: 'id_desarrollador',
-    as: 'desarrollador',
   });
   // Asegúrate de incluir aquí cualquier otra asociación necesaria
 };

@@ -10,6 +10,23 @@ exports.getAllRequerimientos = async (req, res) => {
   }
 };
 
+// obtencion de los requerimientos con el mismo ID proyecto etapa
+exports.getAllReqByEtapas = async(req,res)=>{
+  try{
+    const {id_proyecto_etapa} = req.query;
+    const requerimientos = await Requerimiento.findAll({
+      where:{
+        id_proyecto_etapa:id_proyecto_etapa
+      }
+    });
+    res.json(requerimientos);
+
+  }
+  catch(error){
+    res.status(500).json({message:"Error al obtener los requerimiento de la etapa"})
+  }
+}
+
 // Obtener un requerimiento por ID
 exports.getRequerimientoById = async (req, res) => {
   try {

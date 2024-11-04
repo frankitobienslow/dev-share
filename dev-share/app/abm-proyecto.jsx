@@ -398,6 +398,7 @@ export default function CrearProyecto() {
           //         for(let i=0; i<cantEtapasProyect.length;i++){
           //           const id_proyecto_etapa = cantEtapasProyect[i].id;
           //           const reqPorEtapas = restoValores.etapas[i].requerimientos;
+          //
           //           // RECORRIDO DE LOS REQUERIMIENTO DE UNA ETAPA
           //           for(let k=0; k<reqPorEtapas.length;k++){
           //             const nombre=reqPorEtapas[k].nombre;
@@ -420,6 +421,18 @@ export default function CrearProyecto() {
           //                 const exitoReq = await resReq.json();
           //                 console.log(exitoReq);
           //                 /** HACER LA LLAMADA A REQ-HABILIDAD */
+                             /**  const getRequerimientos = async (idProyectoEtapa) => {
+    const response = await fetch(
+        `http://localhost:3000/api/requerimientos?id_proyecto_etapa=${idProyectoEtapa}`,
+        {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        }
+    );
+    return await response.json();
+}; */     
           //               }
           //               else{
           //                 const errorMensaje = await resReq.text();

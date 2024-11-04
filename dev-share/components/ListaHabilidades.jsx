@@ -50,7 +50,7 @@ const ListaHabilidades =({onHabilidadSelect,selectValue})=>{
             <Picker selectedValue={selectValue} onValueChange={onHabilidadSelect}>
                 <Picker.Item label='Seleccione una Habilidad' value=''></Picker.Item>
                 {habilidades.map((unHab)=>(
-                    <Picker.Item key={unHab.nombre} label={unHab.nombre} value={unHab.nombre}></Picker.Item>
+                    <Picker.Item key={unHab.id} label={unHab.nombre} value={unHab.id}></Picker.Item>
                 ))}
 
             </Picker>

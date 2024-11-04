@@ -1,0 +1,39 @@
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:tns="http://localhost:3000/wsdl"
+             targetNamespace="http://localhost:3000/wsdl">
+  
+    <message name="GetDataRequest">
+        <part name="id" type="xsd:string"/> <!-- Asegúrate de que el tipo sea correcto -->
+    </message>
+  
+    <message name="GetDataResponse">
+        <part name="data" type="xsd:string"/> <!-- Respuesta de los datos -->
+    </message>
+
+    <portType name="MyServicePortType">
+        <operation name="getData">
+            <input message="tns:GetDataRequest"/> <!-- Asegúrate de que este nombre coincida -->
+            <output message="tns:GetDataResponse"/>
+        </operation>
+    </portType>
+
+    <binding name="MyServiceBinding" type="tns:MyServicePortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="getData">
+            <soap:operation soapAction="http://localhost:3000/wsdl/getData"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+
+    <service name="MyService">
+        <port name="MyServicePort" binding="tns:MyServiceBinding">
+            <soap:address location="http://localhost:3000/wsdl"/> <!-- Asegúrate de que esta URL sea correcta -->
+        </port>
+    </service>
+</definitions>

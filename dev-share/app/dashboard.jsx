@@ -9,6 +9,8 @@ import {
 import { useUser } from "../context/UserContext"; // Asegúrate de que la ruta sea correcta
 import { useRouter } from "expo-router";
 import ListaProyectos from "../components/ListaProyectos"; // Importa el componente de Proyectos
+import ProjectSearch from "../components/ProjectSearch";
+import { SafeAreaView } from 'react-native';
 
 const Dashboard = () => {
   const { user } = useUser(); // Extraer el usuario del UserContext
@@ -53,6 +55,9 @@ const Dashboard = () => {
         <View className="p-4">
           <ListaProyectos  mostrarActivos={true}/> {/* Mostrar lista de proyectos del usuario */}
           <ListaProyectos  mostrarActivos={false}/> {/* Mostrar lista de proyectos del usuario */}
+          <SafeAreaView style={{ flex: 1 }}>
+      <ProjectSearch />
+    </SafeAreaView>
         </View>
       ) : (
         <View className="p-4">

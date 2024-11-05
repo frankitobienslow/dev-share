@@ -71,16 +71,5 @@ RequerimientoHabilidad.associate = (models) => {
 
 
 
-// Crear objeto de modelos
-const models = { Habilidad, Nivel, RequerimientoHabilidad, Requerimiento };
-
-// Ejecutar asociaciones
-Object.values(models).forEach((model) => {
-  if (model.associate) {
-    model.associate(models);
-  }
-});
-
-module.exports = models;
 
 module.exports = RequerimientoHabilidad;

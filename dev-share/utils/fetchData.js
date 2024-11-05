@@ -4,17 +4,17 @@ const fetchData = async (id) => {
   // Crear la solicitud XML
   const xmlData = `
     <?xml version="1.0" encoding="UTF-8"?>
-    <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://localhost:3000/wsdl">
-        <soapenv:Header/>
-        <soapenv:Body>
-            <ws:getDataRequest>
-                <id>${id}</id>
-            </ws:getDataRequest>
+    <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://localhost:3001/wsdl">
+            <soapenv:Header/>
+                    <soapenv:Body>
+            <ws:GetDataRequest> <!-- Asegúrate de que este nombre coincida con el definido en el WSDL -->
+                <id>${id}</id> <!-- Cambia el valor de ID según sea necesario -->
+            </ws:GetDataRequest>
         </soapenv:Body>
     </soapenv:Envelope>`;
 
   try {
-    const response = await axios.post('http://localhost:3000/wsdl', xmlData, {
+    const response = await axios.post('http://localhost:3001/wsdl', xmlData, {
       headers: {
         'Content-Type': 'text/xml',
       },

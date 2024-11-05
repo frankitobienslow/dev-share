@@ -30,7 +30,7 @@ const fetchData = async (id) => {
     // Convertir de JSON string a objeto
     return JSON.parse(data);
   } catch (error) {
-    console.error('Error al obtener los datos:', error);
+    console.error('Error al obtener los datos :', error);
   }
 };
 

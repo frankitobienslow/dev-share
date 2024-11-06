@@ -12,6 +12,7 @@ import ListaProyectos from "../components/ListaProyectos"; // Importa el compone
 import ProjectSearch from "../components/ProjectSearch";
 import { SafeAreaView } from 'react-native';
 import CalendarificHolidays from '../components/CalendarificHolidays';  // Importa el componente
+import DateNagerHolidays from '../components/DateNagerHolidays';
 
 const Dashboard = () => {
   const { user } = useUser(); // Extraer el usuario del UserContext

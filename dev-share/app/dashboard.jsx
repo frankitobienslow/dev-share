@@ -11,6 +11,7 @@ import { useRouter } from "expo-router";
 import ListaProyectos from "../components/ListaProyectos"; // Importa el componente de Proyectos
 import ProjectSearch from "../components/ProjectSearch";
 import { SafeAreaView } from 'react-native';
+import CalendarificHolidays from '../components/CalendarificHolidays';  // Importa el componente
 
 const Dashboard = () => {
   const { user } = useUser(); // Extraer el usuario del UserContext
@@ -56,7 +57,8 @@ const Dashboard = () => {
           <ListaProyectos  mostrarActivos={true}/> {/* Mostrar lista de proyectos del usuario */}
           <ListaProyectos  mostrarActivos={false}/> {/* Mostrar lista de proyectos del usuario */}
           <SafeAreaView style={{ flex: 1 }}>
-      <ProjectSearch />
+        <ProjectSearch />
+        <CalendarificHolidays/>
     </SafeAreaView>
         </View>
       ) : (

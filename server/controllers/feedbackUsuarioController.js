@@ -34,7 +34,7 @@ const getFeedbacksByDestino = async (req, res) => {
       where: { id_destino },
       include: [
         { model: Feedback, attributes: ['descripcion'] },
-        { model: Usuario, as: 'Autor', attributes: ['nombre'] },
+        { model: Usuario, as: 'Autor', attributes: ['nombre', 'apellido'] },
       ],
     });
 

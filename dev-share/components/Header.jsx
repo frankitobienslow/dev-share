@@ -10,7 +10,7 @@ const Header = () => {
   const [showOptions, setShowOptions] = useState(false);
 
   const handleProfilePress = () => {
-    setShowOptions(prev => !prev); // Alterna el estado
+    setShowOptions((prev) => !prev); // Alterna el estado
   };
 
   const handleOptionPress = (path) => {
@@ -51,9 +51,6 @@ const Header = () => {
           <Pressable onPress={() => handleOptionPress("/perfil")}>
             <Text className="text-white text-lg">Mi perfil</Text>
           </Pressable>
-          <Pressable onPress={() => handleOptionPress("/experiencia")}>
-            <Text className="text-white text-lg">Experiencia</Text>
-          </Pressable>
           {user && user.rol === "desarrollador" && (
             <Pressable onPress={() => handleOptionPress("/skills")}>
               <Text className="text-white text-lg">Conocimientos</Text>
@@ -62,9 +59,11 @@ const Header = () => {
           <Pressable onPress={handleLogout}>
             <Text className="text-white text-lg">Cerrar sesión</Text>
           </Pressable>
-          <Pressable onPress={() => handleOptionPress("/ofertas")}>
-            <Text className="text-white text-lg">Ofertas</Text>
-          </Pressable>
+          {user && user.rol === "desarrollador" && (
+            <Pressable onPress={() => handleOptionPress("/ofertas")}>
+              <Text className="text-white text-lg">Ofertas</Text>
+            </Pressable>
+          )}
         </View>
       )}
     </LinearGradient>

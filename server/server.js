@@ -5,12 +5,7 @@ const cors = require("cors"); // Importar cors
 const routes = require("./routes"); // Asegúrate de tener este archivo
 const sequelize = require("./db.js");
 const soapService = require("./soap/wsdl/soapService.js"); // Importar el servicio SOAP
-const { default: socket } = require("../dev-share/utils/socket.js");
-// const {createServer} =require('node:httpp');
-// const { Server } = require("socket.io");
-// const {join} = require('node:path');
-const socketIO=require ('socket.io')(http,{cors:{origin:"<http://localhost:3000>"}});
-
+//const { default: socket } = require("../dev-share/utils/socket.js");
 
 dotenv.config();
 const app = express();
@@ -23,6 +18,8 @@ const connection = mysql.createConnection({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
 });
+
+// const generatedID=()=>Math.random().toString(36).substring(2,10);
 
 // Middleware para habilitar CORS
 app.use(
@@ -46,14 +43,6 @@ soapService(app); // Asegúrate de que soapService está configurado para recibi
 app.use((req, res, next) => {
   res.status(404).json({ message: "Ruta no encontrada" });
 });
-
-socketIO.on('connection',(socket)=>{
-  console.log(`@: ${socket.id} usuario conectado!`);
-  socket.on('disconnect',()=>{
-    socket.disconnect()
-    console.log('@ usuario desconectado');
-  })
-})
 
 app.get("/api",(req,res)=>{
   res.json({message:"Hello Word"});

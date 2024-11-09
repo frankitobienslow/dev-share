@@ -10,6 +10,7 @@ import { useUser } from '../context/UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Picker } from '@react-native-picker/picker';
 import ListaHabilidades from '../components/ListaHabilidades';
+import ListaNiveles from '../components/ListaNivel';
 
 
 
@@ -112,346 +113,366 @@ export default function CrearProyecto() {
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContainer}>
       <Formik
-        initialValues={{
-          nombre: 'ropaL',
-          descripcion: 'descripcion proyecto',
-          equipo: 'tubirones',
-          etapas: [{
-            nombre: 'etapa1',
-            fechaInicio: new Date('2024-10-28'),
-            fechaFin: new Date('2024-11-05'),
-            requerimientos: [
+        initialValues={
+          {
+            nombre:'nombre',
+            descripcion:'descripcion',
+            equipo:'equipo',
+            etapas: [
               {
-                nombre:'nombre1',
-                descripcion: 'req1',
-                nivel: 'nivel1',
-                habilidades: ['hab1', 'hab2', 'hab3']
-              },
-              {
-                nombre:'nombre2',
-                descripcion: 'req2',
-                nivel: 'nivel1',
-                habilidades: ['hab1']
-              },
-              {
-                nombre:'nombre3',
-                descripcion: 'req3',
-                nivel: 'nivel1',
-                habilidades: ['hab1', 'hab2']
+                nombre:'etapa',
+                fechaInicio:new Date(),
+                fechaFin:new Date(),
+                requerimientos:[
+                  {
+                    nombre:'requerimiento',
+                    descripcion:'descripcion',
+                    nivel:"",
+                    habilidades:[""]
+                  }
+                ]
               }
-            ]},
-      {nombre: 'etapa2',
-        fechaInicio: new Date('2024-11-06'),
-        fechaFin: new Date('2024-11-15'),
-        requerimientos: [
-          {
-            nombre:'nombre1-2',
-            descripcion: 'req1-2',
-            nivel: 'nivel2',
-            habilidades: ['hab1-2', 'hab2-2']
-          },
-          {
-            nombre:'nombre2-2',
-            descripcion: 'req2',
-            nivel: 'nivel2',
-            habilidades: ['hab1-2', 'hab2-2', 'hab2-3']
-          },
-          {
-            nombre:'nombre3-2',
-            descripcion: 'req3',
-            nivel: 'nivel2',
-            habilidades: ['hab1']
+            ]
           }
-        ]
-      }
-  ]}}
+        }
         validationSchema={validationSchema}
         onSubmit={async (values) => {
           //ENVIO DE DATOS A LA BD
           
           const {nombre,descripcion,equipo,...restoValores}=values;
           const token = await AsyncStorage.getItem("token");
-          console.log(restoValores);
+          //console.log(restoValores.etapas[0].requerimientos);
           // 
           // console.log('Resto de los Valores : ');
+          console.log('REQUERIMIENTOS : ');
+          console.log(restoValores.etapas[0].requerimientos);
+          console.log('HABILIDADES DE UN REQUERIMIENTOS: ');
+          console.log(restoValores.etapas[0].requerimientos[0].habilidades);
+          console.log('fECHA INICIO DE UNA ETAPA');
+          console.log(restoValores.etapas[0].fechaInicio);
+          console.log('FECHA FIN DE UNA ETAPA');
+          console.log(restoValores.etapas[0].fechaFin);
+          console.log('REQUERIMIENTOS DE UNA ETAPA');
+          console.log(restoValores.etapas[0].requerimientos);
+          console.log('Nivel del requerimiento');
+          console.log(restoValores.etapas[0].requerimientos[0].nivel);
           // //  OBTENER TODOS LAS HABILIDADES DE UN REQUERIMIENTO;
-          // console.log('HABILIDADES DE UN REQUERIMIENTOS: ')
-          // console.log(restoValores.etapas[0].requerimientos[0].habilidades);
-          // console.log('fECHA INICIO DE UNA ETAPA')
-          // console.log(restoValores.etapas[0].fechaInicio);
-          // console.log('FECHA FIN DE UNA ETAPA')
-          // console.log(restoValores.etapas[0].fechaFin);
-          // console.log('REQUERIMIENTOS DE UNA ETAPA')
-          // console.log(restoValores.etapas[0].requerimientos);
+
 
           /** CONFIGURACION DE LA VARIABLES PARA LOS METODOS POST */
 
           /***********CREACION DEL EQUIPO DEL PROYECTO*************/ 
-          // const nombreEquipo = {"nombre":equipo};
-          // try{
-          //     if(!token){
-          //         throw new Error('No hay token de vaidacion');
-          //       }
-          //       if(typeof(nombreEquipo)!=='object'){
-          //           throw new Error('Datos de equipo invalidos');
-          //         }
-          //         const response = await fetch ('http://localhost:3000/api/equipo',{
-          //             method:'POST',
-          //             headers:{'Content-Type':'application/json',
-          //               'Authorization':`Bearer ${token}`,
-          //         },
-          //         body: JSON.stringify(nombreEquipo),
-          //       }); 
-          //       console.log("Status =>  ", response.status);
-          //       console.log("HEADERS  =>  ", response.headers);
+           const nombreEquipo = {"nombre":equipo};
+           try{
+               if(!token){
+                   throw new Error('No hay token de vaidacion');
+                 }
+                 if(typeof(nombreEquipo)!=='object'){
+                     throw new Error('Datos de equipo invalidos');
+                   }
+                   const response = await fetch ('http://localhost:3000/api/equipo',{
+                       method:'POST',
+                       headers:{'Content-Type':'application/json',
+                         'Authorization':`Bearer ${token}`,
+                   },
+                   body: JSON.stringify(nombreEquipo),
+                 }); 
+                 console.log("Status =>  ", response.status);
+                 console.log("HEADERS  =>  ", response.headers);
 
-          //       if(!response.ok){
-          //           const errorData = await response.json();
-          //           throw new Error(errorData.menssage || `Error ${response.status}: ${response.statusText}`);
+                 if(!response.ok){
+                     const errorData = await response.json();
+                     throw new Error(errorData.menssage || `Error ${response.status}: ${response.statusText}`);
 
-          //       }
+                 }
                 
-          //   // RESPUESTA EXITOSA 
-          //   const data = await response.json();
-          //   console.log('Equipo creado: ' , data);
-          //   return data; 
+             // RESPUESTA EXITOSA 
+             const data = await response.json();
+             console.log('Equipo creado: ' , data);
+             return data; 
           
-          // }
-          // catch (error){
-          //     console.log(error);
-          //     Alert.alert("Error", data,menssage || "Hubo un error al cargar el nombre del equipo en la BD");
-          //   }// fin try-catch de create equipo
+           }
+           catch (error){
+               console.log(error);
+               Alert.alert("Error", data,menssage || "Hubo un error al cargar el nombre del equipo en la BD");
+             }// fin try-catch de create equipo
             
             
             /**********  CREACION DE LA ETAPA *********** */
             //nombresEtapas.map(item=>{console.log(item[0])});
-        //     const nombresEtapas = restoValores.etapas.map(item=>({
-        //       nombre:item.nombre
-        //     }));
+             const nombresEtapas = restoValores.etapas.map(item=>({
+               nombre:item.nombre
+             }));
         //     console.log(nombresEtapas);
             
-        //     try{
-        //       if(!token){
-        //         throw new Error("No hay token de validacion");
-        //       }
-        //       restEtapas = await fetch('http://localhost:3000/api/etapa',{
-        //         method:'POST',
-        //         headers:{
-        //           'Content-Type':'application/json',
-        //           'Authorization':`Bearer ${token}`,
-        //         },
+             try{
+               if(!token){
+                 throw new Error("No hay token de validacion");
+               }
+               const restEtapas = await fetch('http://localhost:3000/api/etapa',{
+                 method:'POST',
+                 headers:{
+                   'Content-Type':'application/json',
+                   'Authorization':`Bearer ${token}`,
+                 },
                 
-        //         body:JSON.stringify({nombresEtapas}),
-        //       });
-        //       if(!restEtapas.ok){
-        //         const errorData = await restEtapas.json();
-        //         //console.log(restEtapas);
-        //         throw new Error(errorData.menssage || `Error ${restEtapas.status}:${restEtapas.statusText}`);
-        //       }// fin if 
+                 body:JSON.stringify({nombresEtapas}),
+               });
+               if(!restEtapas.ok){
+                 const errorData = await restEtapas.json();
+                 //console.log(restEtapas);
+                 throw new Error(errorData.menssage || `Error ${restEtapas.status}:${restEtapas.statusText}`);
+               }// fin if 
 
-        //       /** RESPUESTA EXITOSA */
-        //       const dataEtapas = await restEtapas.json();
-        //       console.log('Datos exitosos de la creacion de la etapa',dataEtapas);
-        //     return dataEtapas;
-        //   }// fin del try
-        //  catch (error){
-        //     console.log(error);
-        //     //Alert.alert("Error", dataEtapas,menssage || "Hubo un error al cargar las etapas en la BD");
-        //   }// fin try-catch de create etapas
+               /** RESPUESTA EXITOSA */
+               const dataEtapas = await restEtapas.json();
+               //console.log('Datos exitosos de la creacion de la etapa',dataEtapas);
+             return dataEtapas;
+           }// fin del try
+          catch (error){
+             console.log(error);
+             //Alert.alert("Error", dataEtapas,menssage || "Hubo un error al cargar las etapas en la BD");
+           }// fin try-catch de create etapas
 
 
           /** *******CREACION DEL PROYECTO ***********/
           // Obtencion del ID del equipo creado 
           // console.log(user.id);
-          // try {
-          //   const response = await fetch(`http://localhost:3000/api/equipo/${equipo}`,{
-          //     method: 'GET',
-          //     headers: {
-          //       'Authorization': `Bearer ${token}`,
-          //       'Content-Type': 'application/json',
-          //     },
-          //   });
+           try {
+             const response = await fetch(`http://localhost:3000/api/equipo/${equipo}`,{
+               method: 'GET',
+               headers: {
+                 'Authorization': `Bearer ${token}`,
+                 'Content-Type': 'application/json',
+               },
+             });
       
-          //   if (!response.ok){
-          //     const errorMessage = await response.text();
-          //     console.error("Error al obtener el nombre del equipo:", errorMessage);
-          //     throw new Error(`HTTP error! status: ${response.status}`);
-          //   }
+             if (!response.ok){
+               const errorMessage = await response.text();
+               console.error("Error al obtener el nombre del equipo:", errorMessage);
+               throw new Error(`HTTP error! status: ${response.status}`);
+             }
       
-          //   const dataEquipo = await response.json();
-          //   // LLAMADO AL POST DE LA TABLA PROYECTO
-          //   try{
-          //     const responseProyecto = await fetch(`http://localhost:3000/api/proyectos`,{
-          //       method: 'POST',
-          //       headers:{
-          //         'Authorization':`Bearer ${token}`,
-          //         'Content-Type': 'application/json',
-          //       },
-          //       body:JSON.stringify({titulo:nombre,descripcion:descripcion,id_cliente:user.id,id_equipo:dataEquipo.id}),
-          //     });
-          //     if(!responseProyecto.ok){
-          //       const errorMensaje = await responseProyecto.text();
-          //       console.error('Error al crear el proyecto',errorMensaje);
-          //       throw new Error(`HTTP error! status: ${responseProyecto.status}`);
+             const dataEquipo = await response.json();
 
-          //     }
-          //   }
-          //   catch(error){
-          //     console.log(error);
-          //   }
+             // LLAMADO AL POST DE LA TABLA PROYECTO
+             try{
+               const responseProyecto = await fetch(`http://localhost:3000/api/proyectos`,{
+                 method: 'POST',
+                 headers:{
+                   'Authorization':`Bearer ${token}`,
+                   'Content-Type': 'application/json',
+                 },
+                 body:JSON.stringify({titulo:nombre,descripcion:descripcion,id_cliente:user.id,id_equipo:dataEquipo.id}),
+               });
+               if(!responseProyecto.ok){
+                 const errorMensaje = await responseProyecto.text();
+                 console.error('Error al crear el proyecto',errorMensaje);
+                 throw new Error(`HTTP error! status: ${responseProyecto.status}`);
 
-          // }// fin try
-          // catch (error) {
-          //   console.log('Error consulta nombre del  equipo:', error.message);
-          // }// fin catch
+               }
+             }
+             catch(error){
+               console.log(error);
+             }
+
+           }// fin try
+           catch (error) {
+             console.log('Error consulta nombre del  equipo:', error.message);
+           }// fin catch
           
           /********* CREACION DEL PROYECTO  - ETAPA *********** */
-          // const etapasProyecto = restoValores.etapas;
-          // try{
-          //   const proyectos = await fetch(`http://localhost:3000/api/proyectos`,{
-          //     method: 'GET',
-          //     headers:{
-          //       'Authorization': `Bearer ${token}`,
-          //       'Content-Type': 'application/json',
-          //     },
-          //   });
-          //   const proyects = await proyectos.json();
-          //   //console.log(etapasProyecto);
-          //   //console.log(proyects);
+           const etapasProyecto = restoValores.etapas;
+           try{
+             const proyectos = await fetch(`http://localhost:3000/api/proyectos`,{
+               method: 'GET',
+               headers:{
+                 'Authorization': `Bearer ${token}`,
+                 'Content-Type': 'application/json',
+               },
+             });
+             const proyects = await proyectos.json();
+             //console.log(etapasProyecto);
+             //console.log(proyects);
 
-          //   let indexProyect = proyects.findIndex((value)=>{
-          //     return value.titulo === nombre;
-          //   });
+             let indexProyect = proyects.findIndex((value)=>{
+               return value.titulo === nombre;
+             });
 
-          //   /** RECORRE LAS ETAPAS QUE TIENE EL FORMULARIO Y LAS COMPARA CON LAS QUE ESTAN EN LA BD PARA OBTENER EL ID */
-          //   for (let unEtapa of etapasProyecto){
-          //     const fechaInicio = unEtapa.fechaInicio;
-          //     const fechaFin = unEtapa.fechaFin;
-          //     //console.log(fechaInicio);
-          //     //console.log(fechaFin);
-          //     try{
-          //       console.log(unEtapa.nombre);
-          //       const etapasBD = await fetch(`http://localhost:3000/api/etapa/${unEtapa.nombre}`,{
-          //         method:'GET',
-          //         headers:{'Authorization':`Bearer ${token}`,'Content-Type':'application/json'},
-          //       });
-          //       //console.log(etapasBD);
-          //       let etapasP = await etapasBD.json();
-          //       //console.log(etapasP);
-          //       /** CREATE DE PROYECTO ETAPA */
+             /** RECORRE LAS ETAPAS QUE TIENE EL FORMULARIO Y LAS COMPARA CON LAS QUE ESTAN EN LA BD PARA OBTENER EL ID */
+             for (let unEtapa of etapasProyecto){
+               const fechaInicio = unEtapa.fechaInicio;
+               const fechaFin = unEtapa.fechaFin;
+               try{
+                 console.log(unEtapa.nombre);
+                 const etapasBD = await fetch(`http://localhost:3000/api/etapa/${unEtapa.nombre}`,{
+                   method:'GET',
+                   headers:{'Authorization':`Bearer ${token}`,'Content-Type':'application/json'},
+                 });
+                 //console.log(etapasBD);
+                 let etapasP = await etapasBD.json();
+                 //console.log(etapasP);
+                 /** CREATE DE PROYECTO ETAPA */
                 
-          //         const proyectoEtapa = await fetch(`http://localhost:3000/api/proyectoEtapa`,{
-          //           method: 'POST',
-          //           headers:{'Authorization':`Bearer ${token}`,'Content-Type':'application/json'},
-          //           body:JSON.stringify({id_proyecto:proyects[indexProyect].id,
-          //             id_etapa:etapasP.id,
-          //             fecha_inicio:fechaInicio,
-          //             fecha_fin:fechaFin,
-          //           }),  
-          //         });// fin peticion
+                   const proyectoEtapa = await fetch(`http://localhost:3000/api/proyectoEtapa`,{
+                     method: 'POST',
+                     headers:{'Authorization':`Bearer ${token}`,'Content-Type':'application/json'},
+                     body:JSON.stringify({id_proyecto:proyects[indexProyect].id,
+                       id_etapa:etapasP.id,
+                       fecha_inicio:fechaInicio,
+                       fecha_fin:fechaFin,
+                     }),  
+                   });// fin peticion
                   
-          //         if(!proyectoEtapa.ok){
-          //           const errorMensaje = await proyectoEtapa.text();
-          //           console.error('Error al crear el proyecto',errorMensaje);
-          //           throw new Error(`HTTP error! status: ${proyectoEtapa.status}`);
-          //         }// fin if 
-          //         else{
-          //           const dataEP = await proyectoEtapa.json();
-          //           console.log('Datos exitosos de la creacion del proyetco-etapa',dataEP);
+                   if(!proyectoEtapa.ok){
+                     const errorMensaje = await proyectoEtapa.text();
+                     console.error('Error al crear el proyecto',errorMensaje);
+                     throw new Error(`HTTP error! status: ${proyectoEtapa.status}`);
+                   }// fin if 
+                   else{
+                     const dataEP = await proyectoEtapa.json();
+                     console.log('Datos exitosos de la creacion del proyetco-etapa',dataEP);
 
-          //         }// fin else
+                   }// fin else
 
 
 
-          //     }// fin try
+               }// fin try
 
-          //     catch (error){
-          //       console.log('Ocurrio un error al obtener los ID de las etapas');
-          //       console.log(error);
-          //     }// fin catch 
+               catch (error){
+                 console.log('Ocurrio un error al obtener los ID de las etapas');
+                 console.log(error);
+               }// fin catch 
 
-          //   }// fin for 
-          //   //console.log(proyects[indexProyect].id);
-          // }// fin try
-          // catch(error){
-          //   console.log(error);
-          // }// fin catch 
+             }// fin for 
+             //console.log(proyects[indexProyect].id);
+           }// fin try
+           catch(error){
+             console.log(error);
+           }// fin catch 
 
           /**********************CREACION DE LOS REQUERIMIENTOS ************************ */
           
-          // let id_proyecto=5;//proyects[indexProyect].id
-          //  // Obtengo las etapas del proyecto desde la BD. 
-          //  const etapasProyect = await fetch(`http://localhost:3000/api/proyectoEtapa`,{
-          //           method:'GET',
-          //           headers:{'Authorization':`Bearer ${token}`,'Content-Type':'application/json'},
-          //         });
-          //         //console.log(etapasBD);
-          //         let listEtapas = await etapasProyect.json();
+           let id_proyecto=3;//proyects[indexProyect].id
+            // Obtengo las etapas del proyecto desde la BD. 
+            const etapasProyect = await fetch(`http://localhost:3000/api/proyectoEtapa`,{
+                     method:'GET',
+                     headers:{'Authorization':`Bearer ${token}`,'Content-Type':'application/json'},
+                   });
+                   //console.log(etapasBD);
+                   let listEtapas = await etapasProyect.json();
                   
-          //         const cantEtapasProyect = listEtapas.filter((value)=>{
-          //           return value.id_proyecto === id_proyecto;
-          //         });
+                   const cantEtapasProyect = listEtapas.filter((value)=>{
+                     return value.id_proyecto === id_proyecto;
+                   });
 
-          //         //console.log(cantEtapasProyect);
-          //         //console.log(reqPorEtapas)
-          //         // /** RECORRIDO DE DE LAS ETAPAS */
-          //         for(let i=0; i<cantEtapasProyect.length;i++){
-          //           const id_proyecto_etapa = cantEtapasProyect[i].id;
-          //           const reqPorEtapas = restoValores.etapas[i].requerimientos;
-          //
-          //           // RECORRIDO DE LOS REQUERIMIENTO DE UNA ETAPA
-          //           for(let k=0; k<reqPorEtapas.length;k++){
-          //             const nombre=reqPorEtapas[k].nombre;
-          //             const descripcion=reqPorEtapas[k].descripcion;
-          //             // CREAR REQUERIMIENTO 
-          //             try{
-          //               const resReq = await fetch(`http://localhost:3000/api/requerimiento`,{
-          //                 method:'POST',
-          //                 headers:{'Authorization':`Bearer ${token}`,'Content-Type':'application/json'},
-          //                 body:JSON.stringify({
-          //                   nombre:nombre,
-          //                   id_proyecto_etapa:id_proyecto_etapa,
-          //                   descripcion:descripcion,
-          //                   disponible:0, 
-          //                 })
+                   // /** RECORRIDO DE DE LAS ETAPAS */
+                   for(let i=0; i<cantEtapasProyect.length;i++){
+                     const id_proyecto_etapa = cantEtapasProyect[i].id;
+                     const reqPorEtapas = restoValores.etapas[i].requerimientos;
+          
+                   // RECORRIDO DE LOS REQUERIMIENTO DE UNA ETAPA
+                     for(let k=0; k<reqPorEtapas.length;k++){
+                       const nombre=reqPorEtapas[k].nombre;
+                       const descripcion=reqPorEtapas[k].descripcion;
 
-          //               }); // fin metodo POST
+                       // CREAR REQUERIMIENTO 
+                       try{
+                         const resReq = await fetch(`http://localhost:3000/api/requerimiento`,{
+                           method:'POST',
+                           headers:{'Authorization':`Bearer ${token}`,'Content-Type':'application/json'},
+                           body:JSON.stringify({
+                             nombre:nombre,
+                             id_proyecto_etapa:id_proyecto_etapa,
+                             descripcion:descripcion,
+                             disponible:1, 
+                           })
 
-          //               if(resReq.ok){
-          //                 const exitoReq = await resReq.json();
-          //                 console.log(exitoReq);
-          //                 /** HACER LA LLAMADA A REQ-HABILIDAD */
-                             /**  const getRequerimientos = async (idProyectoEtapa) => {
-    const response = await fetch(
-        `http://localhost:3000/api/requerimientos?id_proyecto_etapa=${idProyectoEtapa}`,
-        {
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            }
-        }
-    );
-    return await response.json();
-}; */     
-          //               }
-          //               else{
-          //                 const errorMensaje = await resReq.text();
-          //                 console.error('Error al crear el proyecto',errorMensaje);
-          //                 throw new Error(`HTTP error! status: ${resReq.status}`);
-          //               }
-          //             }
-          //             catch(error){
-          //               console.log(error);
-          //             }
+                       }); // fin metodo POST
 
-          //           }// fin for 
+                         if(resReq.ok){
+                           const exitoReq = await resReq.json();
+                           console.log(exitoReq);
+
+                          /** HACER LA LLAMADA A REQ-HABILIDAD */
+                            // OBTENGO LOS REQUERIMIENTOS RECIEN CREADOS 
+                              const getRequerimientos = async (idProyectoEtapa) => {
+                                 const response = await fetch(
+                                     `http://localhost:3000/api/requerimientos?id_proyecto_etapa=${idProyectoEtapa}`,
+                                     {
+                                         headers: {
+                                             'Authorization': `Bearer ${token}`,
+                                             'Content-Type': 'application/json'
+                                         }
+                                     }
+                                 );
+                                 return await response.json();
+                             };   
+                             const reqPorEtapa = getRequerimientos(id_proyecto_etapa); 
+                             //console.log(reqPorEtapa);
+                             // RECORRER LAS HABILIDADES DE CADA REQUERIMIENTO
+                             
+                             for(let a=0; a<reqPorEtapa.length; a++){
+                                const idReq = reqPorEtapa[a].id;
+                                const idNivel = restoValores.etapas[i].requerimientos[k].nivel;
+                                const habilidadesPorReq = restoValores.etapas[i].requerimientos[k].habilidades;
+
+                                for(let ind=0;ind<habilidadesPorReq.length;ind++){
+                                  // CREACION DE REQUERIMIENTO - HABILIDADES
+                                  const responseRH = await fetch(`http://localhost:3000/api/requerimiento-habilidad`,{
+                                    method:'POST',
+                                    headers:{'Authorization':`Bearer${token}`,'Content-Type':'application/json'},
+                                    body:{id_requerimiento:idReq,id_habilidad:habilidadesPorReq.id,id_desarrollador:user.id,
+                                      id_nivel:idNivel,terminado:0
+                                    }
+                                  });
+
+                                  if(!responseRH.ok){
+                                    console.log(responseRH.statusText);
+                                  }
+                                  else{
+                                    console.log(responseRH.ok);
+                                  }
 
 
-          //         }// fin for 
+                                }// fin for 
 
-                  /** ***************** CREACION DEREQUERIMIENTO HABILIDAD ************************** */
-                  
+                             }// fin for
 
+                             // OBTENER LA HABILIDAD DE CADA REQUERIMIENTO 
+                             console.log('REQUERIMIENTOS : ');
+                             console.log(restoValores.etapas[0].requerimientos);
+                             console.log('HABILIDADES DE UN REQUERIMIENTOS: ');
+                             console.log(restoValores.etapas[0].requerimientos[0].habilidades);
+                             console.log('fECHA INICIO DE UNA ETAPA');
+                             console.log(restoValores.etapas[0].fechaInicio);
+                             console.log('FECHA FIN DE UNA ETAPA');
+                             console.log(restoValores.etapas[0].fechaFin);
+                             console.log('REQUERIMIENTOS DE UNA ETAPA');
+                             console.log(restoValores.etapas[0].requerimientos);
+                             console.log('Nivel del requerimiento');
+                             console.log(restoValores.etapas[0].requerimientos[0].nivel);
+                             
+
+
+
+
+
+                         }// fin if 
+                         else{
+                           const errorMensaje = await resReq.text();
+                           console.error('Error al crear el proyecto',errorMensaje);
+                           throw new Error(`HTTP error! status: ${resReq.status}`);
+                         }
+                       }
+                       catch(error){
+                         console.log(error);
+                       }
+
+                    }// fin for 
+
+
+                   }// fin for 
             
 
 
@@ -571,12 +592,10 @@ export default function CrearProyecto() {
                     
                     {/* Campo nivel */}
                     <Text style={styles.sectionTitle}>Nivel:</Text>
-                    <TextInput 
-                      style={styles.input}
-                      onChangeText={handleChange(`etapas.${index}.requerimientos.${indexR}.nivel`)}
-                      onBlur={handleBlur(`etapas.${index}.requerimientos.${indexR}.nivel`)}
-                      value={requerimiento.nivel}
-                      placeholder='Nivel'
+                    <ListaNiveles
+                      onNivelSelect={(itemValue)=>{
+                        setFieldValue(`etapas.${index}.requerimientos.${indexR}.nivel`,itemValue)
+                      }}
                     />
                     
                     

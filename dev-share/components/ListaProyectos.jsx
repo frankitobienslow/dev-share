@@ -49,7 +49,7 @@ const ListaProyectos = ({ mostrarActivos }) => {
       });
       
       setProyectos(proyectosFiltrados);
-    } catch (error) {
+    } catch (error){
       console.error("Error en fetchProyectos:", error);
       setError("Error al cargar los proyectos.");
     } finally {

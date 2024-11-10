@@ -33,6 +33,8 @@ router.use('/proyectoEtapa', proyectoEtapa);
 router.use('/equipos', equipoDesarrolladorRoutes);
 router.use('/postulacion', postulacion);
 router.use('/etapa',etapaRoutes);
+router.use('/equipo',equipoRoutes);
+
 
 
 module.exports = router;

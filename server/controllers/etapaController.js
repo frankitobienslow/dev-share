@@ -45,7 +45,7 @@ const etapaController = {
       }
       const resultados=[];
       for(const etapa of nombresEtapas){
-        console.log(etapa.nombre);
+        //console.log(etapa.nombre);
         if(!etapa.nombre){
           return (res.status(400).json({message:'Cada etapa debe tener un nombreEtapa'}));
         }

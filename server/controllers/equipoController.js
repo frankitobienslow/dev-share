@@ -1,4 +1,4 @@
-const { Equipo } = require('../models/Equipo'); // Importa el modelo de Equipo
+const  Equipo = require('../models/Equipo'); // Importa el modelo de Equipo
 
 const equipoController = {
   // Obtener todos los equipos
@@ -31,6 +31,7 @@ const equipoController = {
   crearEquipo: async (req, res) => {
     try {
       const { nombre } = req.body;
+      console.log(nombre);
       const nuevoEquipo = await Equipo.create({ nombre });
       res.status(201).json(nuevoEquipo);
     } catch (error) {

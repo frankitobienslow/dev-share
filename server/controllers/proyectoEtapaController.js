@@ -14,12 +14,13 @@ const obtenerProyectoEtapas = async (req, res) => {
 // Crear una nueva etapa de proyecto
 const crearProyectoEtapa = async (req, res) => {
     const { id_proyecto, id_etapa } = req.body; // No recibimos fechas desde el cuerpo
+    const {fecha_inicio, fecha_fin} = req.body;
     try {
         const nuevaEtapa = await ProyectoEtapa.create({
             id_proyecto,
             id_etapa,
-            fecha_inicio: null, // Asignar null por defecto
-            fecha_fin: null, // Asignar null por defecto
+            fecha_inicio, // Asignar null por defecto
+            fecha_fin, // Asignar null por defecto
         });
         res.status(201).json(nuevaEtapa);
     } catch (error) {

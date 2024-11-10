@@ -66,11 +66,7 @@ const validationSchema = Yup.object().shape({
     )
     .min(1, 'Debe agregar al menos una etapa'),
 });
-// const datePickerWeb=()=>{
-  //   const [startDate,setStartDate]=useState(new Date());
-  
-  
-  // }
+
   
   const DatePickerField = ({ field, form, ...props }) => {
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -105,28 +101,123 @@ const validationSchema = Yup.object().shape({
   );
 };
 
+async function peticion(url, metodo, token, body = null) {
+  const headers = { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` };
+  const response = await fetch(url, { method:metodo, headers, body: JSON.stringify(body) });
+  if (!response.ok) throw new Error(await response.text());
+  return await response.json();
+};
+
+
 export default function CrearProyecto() {
-  // const {user} = useUser();
-  // console.log(user.id);
   const {user} = useUser();
+  
+  // MANEJO DEL SUBMIT 
+  const submit = async (values)=>{
+    //console.log(user.id);
+    //console.log(values);
+    try{
+        //console.log(values);
+        const token = await AsyncStorage.getItem("token");
+        const urlGeneral='http://localhost:3000/api';
+        if(!token){
+          throw new Error('No hay token de validacion');
+        }
+        //**** CREAR EQUIPO ********
+        
+          const urlEquipo = urlGeneral+'/equipo';
+          const metodoE = 'POST';
+          const bodyE ={nombre:values.equipo};
+          let equipo =await peticion(urlEquipo,metodoE,token,bodyE);
+        
+        // ******** CREAR ETAPAS DEL PROYECTO *************
+        
+          const urlEtapa = urlGeneral+'/etapa';
+          const metodoEtapa='POST';
+          let etapas = values.etapas.map(item=>({
+            nombre:item.nombre
+          }));
+          const body={nombresEtapas:etapas}
+          const resEtapas = await peticion(urlEtapa,metodoEtapa,token,body);
+  
+        // ****** CREACION DEL PROYECTO************
+        
+          const urlProyecto=urlGeneral+'/proyectos';
+          const metodoProyecto='POST';
+          const proyecto = {titulo:values.nombre,descripcion:values.descripcion,id_cliente:user.id,id_equipo:equipo.id}
+          const resProject = await peticion(urlProyecto,metodoProyecto,token,proyecto);
+
+
+          /*************** CREACION DE PROYECTO ETAPA ************************ */
+          const urlPE=urlGeneral+'/proyectoEtapa';
+          const metodoPE='POST';
+          await Promise.all(values.etapas.map(async(etapa,index)=>{
+            const bodyPE={
+              id_proyecto:resProject.id,
+              id_etapa:resEtapas.data[index].id,
+              fecha_inicio:etapa.fechaInicio,
+              fecha_fin:etapa.fechaFin
+            }
+            const resPE = await peticion(urlPE,metodoPE,token,bodyPE);
+            
+            /*******************CREACION DE LOS REQUERIMIENTOS************************ */
+            const urlReq = urlGeneral+'/requerimiento';
+            const metodoReq='POST';
+            await Promise.all(etapa.requerimientos.map(async (req)=>{
+              //console.log(resPE);
+              const requerimiento={
+                nombre:req.nombre,
+                id_proyecto_etapa:resPE.id,
+                descripcion:req.descripcion,
+                disponible:1
+              };
+              const resReq = await peticion(urlReq,metodoReq,token,requerimiento);
+
+              /************** CREACION REQUERIMIENTO HABILIDAD************************* */
+              const urlReqHab = urlGeneral+'/requerimiento-habilidad';
+              const metodoRH = 'POST';
+              await Promise.all(req.habilidades.map(async (habilidad)=>{
+                
+                const reqHab={
+                  id_requerimiento:resReq.id,
+                  id_habilidad:habilidad,
+                  id_nivel:req.nivel,
+                  id_desarrollador:user.id,
+                }
+                const resReqHab = await peticion(urlReqHab,metodoRH,token,reqHab);
+                console.log(resReqHab);
+              }));
+            }));
+          }));
+          
+
+
+      }// fin del bloque try
+      catch(error){
+        console.error('Error al crear el proyecto ',error.message);
+      }
+
+
+
+  }// fin submit
 
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContainer}>
       <Formik
         initialValues={
           {
-            nombre:'nombre',
-            descripcion:'descripcion',
-            equipo:'equipo',
+            nombre:'',
+            descripcion:'',
+            equipo:'',
             etapas: [
               {
-                nombre:'etapa',
+                nombre:'',
                 fechaInicio:new Date(),
                 fechaFin:new Date(),
                 requerimientos:[
                   {
-                    nombre:'requerimiento',
-                    descripcion:'descripcion',
+                    nombre:'',
+                    descripcion:'',
                     nivel:"",
                     habilidades:[""]
                   }
@@ -136,348 +227,8 @@ export default function CrearProyecto() {
           }
         }
         validationSchema={validationSchema}
-        onSubmit={async (values) => {
-          //ENVIO DE DATOS A LA BD
-          
-          const {nombre,descripcion,equipo,...restoValores}=values;
-          const token = await AsyncStorage.getItem("token");
-          //console.log(restoValores.etapas[0].requerimientos);
-          // 
-          // console.log('Resto de los Valores : ');
-          console.log('REQUERIMIENTOS : ');
-          console.log(restoValores.etapas[0].requerimientos);
-          console.log('HABILIDADES DE UN REQUERIMIENTOS: ');
-          console.log(restoValores.etapas[0].requerimientos[0].habilidades);
-          console.log('fECHA INICIO DE UNA ETAPA');
-          console.log(restoValores.etapas[0].fechaInicio);
-          console.log('FECHA FIN DE UNA ETAPA');
-          console.log(restoValores.etapas[0].fechaFin);
-          console.log('REQUERIMIENTOS DE UNA ETAPA');
-          console.log(restoValores.etapas[0].requerimientos);
-          console.log('Nivel del requerimiento');
-          console.log(restoValores.etapas[0].requerimientos[0].nivel);
-          // //  OBTENER TODOS LAS HABILIDADES DE UN REQUERIMIENTO;
-
-
-          /** CONFIGURACION DE LA VARIABLES PARA LOS METODOS POST */
-
-          /***********CREACION DEL EQUIPO DEL PROYECTO*************/ 
-           const nombreEquipo = {"nombre":equipo};
-           try{
-               if(!token){
-                   throw new Error('No hay token de vaidacion');
-                 }
-                 if(typeof(nombreEquipo)!=='object'){
-                     throw new Error('Datos de equipo invalidos');
-                   }
-                   const response = await fetch ('http://localhost:3000/api/equipo',{
-                       method:'POST',
-                       headers:{'Content-Type':'application/json',
-                         'Authorization':`Bearer ${token}`,
-                   },
-                   body: JSON.stringify(nombreEquipo),
-                 }); 
-                 console.log("Status =>  ", response.status);
-                 console.log("HEADERS  =>  ", response.headers);
-
-                 if(!response.ok){
-                     const errorData = await response.json();
-                     throw new Error(errorData.menssage || `Error ${response.status}: ${response.statusText}`);
-
-                 }
-                
-             // RESPUESTA EXITOSA 
-             const data = await response.json();
-             console.log('Equipo creado: ' , data);
-             return data; 
-          
-           }
-           catch (error){
-               console.log(error);
-               Alert.alert("Error", data,menssage || "Hubo un error al cargar el nombre del equipo en la BD");
-             }// fin try-catch de create equipo
-            
-            
-            /**********  CREACION DE LA ETAPA *********** */
-            //nombresEtapas.map(item=>{console.log(item[0])});
-             const nombresEtapas = restoValores.etapas.map(item=>({
-               nombre:item.nombre
-             }));
-        //     console.log(nombresEtapas);
-            
-             try{
-               if(!token){
-                 throw new Error("No hay token de validacion");
-               }
-               const restEtapas = await fetch('http://localhost:3000/api/etapa',{
-                 method:'POST',
-                 headers:{
-                   'Content-Type':'application/json',
-                   'Authorization':`Bearer ${token}`,
-                 },
-                
-                 body:JSON.stringify({nombresEtapas}),
-               });
-               if(!restEtapas.ok){
-                 const errorData = await restEtapas.json();
-                 //console.log(restEtapas);
-                 throw new Error(errorData.menssage || `Error ${restEtapas.status}:${restEtapas.statusText}`);
-               }// fin if 
-
-               /** RESPUESTA EXITOSA */
-               const dataEtapas = await restEtapas.json();
-               //console.log('Datos exitosos de la creacion de la etapa',dataEtapas);
-             return dataEtapas;
-           }// fin del try
-          catch (error){
-             console.log(error);
-             //Alert.alert("Error", dataEtapas,menssage || "Hubo un error al cargar las etapas en la BD");
-           }// fin try-catch de create etapas
-
-
-          /** *******CREACION DEL PROYECTO ***********/
-          // Obtencion del ID del equipo creado 
-          // console.log(user.id);
-           try {
-             const response = await fetch(`http://localhost:3000/api/equipo/${equipo}`,{
-               method: 'GET',
-               headers: {
-                 'Authorization': `Bearer ${token}`,
-                 'Content-Type': 'application/json',
-               },
-             });
-      
-             if (!response.ok){
-               const errorMessage = await response.text();
-               console.error("Error al obtener el nombre del equipo:", errorMessage);
-               throw new Error(`HTTP error! status: ${response.status}`);
-             }
-      
-             const dataEquipo = await response.json();
-
-             // LLAMADO AL POST DE LA TABLA PROYECTO
-             try{
-               const responseProyecto = await fetch(`http://localhost:3000/api/proyectos`,{
-                 method: 'POST',
-                 headers:{
-                   'Authorization':`Bearer ${token}`,
-                   'Content-Type': 'application/json',
-                 },
-                 body:JSON.stringify({titulo:nombre,descripcion:descripcion,id_cliente:user.id,id_equipo:dataEquipo.id}),
-               });
-               if(!responseProyecto.ok){
-                 const errorMensaje = await responseProyecto.text();
-                 console.error('Error al crear el proyecto',errorMensaje);
-                 throw new Error(`HTTP error! status: ${responseProyecto.status}`);
-
-               }
-             }
-             catch(error){
-               console.log(error);
-             }
-
-           }// fin try
-           catch (error) {
-             console.log('Error consulta nombre del  equipo:', error.message);
-           }// fin catch
-          
-          /********* CREACION DEL PROYECTO  - ETAPA *********** */
-           const etapasProyecto = restoValores.etapas;
-           try{
-             const proyectos = await fetch(`http://localhost:3000/api/proyectos`,{
-               method: 'GET',
-               headers:{
-                 'Authorization': `Bearer ${token}`,
-                 'Content-Type': 'application/json',
-               },
-             });
-             const proyects = await proyectos.json();
-             //console.log(etapasProyecto);
-             //console.log(proyects);
-
-             let indexProyect = proyects.findIndex((value)=>{
-               return value.titulo === nombre;
-             });
-
-             /** RECORRE LAS ETAPAS QUE TIENE EL FORMULARIO Y LAS COMPARA CON LAS QUE ESTAN EN LA BD PARA OBTENER EL ID */
-             for (let unEtapa of etapasProyecto){
-               const fechaInicio = unEtapa.fechaInicio;
-               const fechaFin = unEtapa.fechaFin;
-               try{
-                 console.log(unEtapa.nombre);
-                 const etapasBD = await fetch(`http://localhost:3000/api/etapa/${unEtapa.nombre}`,{
-                   method:'GET',
-                   headers:{'Authorization':`Bearer ${token}`,'Content-Type':'application/json'},
-                 });
-                 //console.log(etapasBD);
-                 let etapasP = await etapasBD.json();
-                 //console.log(etapasP);
-                 /** CREATE DE PROYECTO ETAPA */
-                
-                   const proyectoEtapa = await fetch(`http://localhost:3000/api/proyectoEtapa`,{
-                     method: 'POST',
-                     headers:{'Authorization':`Bearer ${token}`,'Content-Type':'application/json'},
-                     body:JSON.stringify({id_proyecto:proyects[indexProyect].id,
-                       id_etapa:etapasP.id,
-                       fecha_inicio:fechaInicio,
-                       fecha_fin:fechaFin,
-                     }),  
-                   });// fin peticion
-                  
-                   if(!proyectoEtapa.ok){
-                     const errorMensaje = await proyectoEtapa.text();
-                     console.error('Error al crear el proyecto',errorMensaje);
-                     throw new Error(`HTTP error! status: ${proyectoEtapa.status}`);
-                   }// fin if 
-                   else{
-                     const dataEP = await proyectoEtapa.json();
-                     console.log('Datos exitosos de la creacion del proyetco-etapa',dataEP);
-
-                   }// fin else
-
-
-
-               }// fin try
-
-               catch (error){
-                 console.log('Ocurrio un error al obtener los ID de las etapas');
-                 console.log(error);
-               }// fin catch 
-
-             }// fin for 
-             //console.log(proyects[indexProyect].id);
-           }// fin try
-           catch(error){
-             console.log(error);
-           }// fin catch 
-
-          /**********************CREACION DE LOS REQUERIMIENTOS ************************ */
-          
-           let id_proyecto=3;//proyects[indexProyect].id
-            // Obtengo las etapas del proyecto desde la BD. 
-            const etapasProyect = await fetch(`http://localhost:3000/api/proyectoEtapa`,{
-                     method:'GET',
-                     headers:{'Authorization':`Bearer ${token}`,'Content-Type':'application/json'},
-                   });
-                   //console.log(etapasBD);
-                   let listEtapas = await etapasProyect.json();
-                  
-                   const cantEtapasProyect = listEtapas.filter((value)=>{
-                     return value.id_proyecto === id_proyecto;
-                   });
-
-                   // /** RECORRIDO DE DE LAS ETAPAS */
-                   for(let i=0; i<cantEtapasProyect.length;i++){
-                     const id_proyecto_etapa = cantEtapasProyect[i].id;
-                     const reqPorEtapas = restoValores.etapas[i].requerimientos;
-          
-                   // RECORRIDO DE LOS REQUERIMIENTO DE UNA ETAPA
-                     for(let k=0; k<reqPorEtapas.length;k++){
-                       const nombre=reqPorEtapas[k].nombre;
-                       const descripcion=reqPorEtapas[k].descripcion;
-
-                       // CREAR REQUERIMIENTO 
-                       try{
-                         const resReq = await fetch(`http://localhost:3000/api/requerimiento`,{
-                           method:'POST',
-                           headers:{'Authorization':`Bearer ${token}`,'Content-Type':'application/json'},
-                           body:JSON.stringify({
-                             nombre:nombre,
-                             id_proyecto_etapa:id_proyecto_etapa,
-                             descripcion:descripcion,
-                             disponible:1, 
-                           })
-
-                       }); // fin metodo POST
-
-                         if(resReq.ok){
-                           const exitoReq = await resReq.json();
-                           console.log(exitoReq);
-
-                          /** HACER LA LLAMADA A REQ-HABILIDAD */
-                            // OBTENGO LOS REQUERIMIENTOS RECIEN CREADOS 
-                              const getRequerimientos = async (idProyectoEtapa) => {
-                                 const response = await fetch(
-                                     `http://localhost:3000/api/requerimientos?id_proyecto_etapa=${idProyectoEtapa}`,
-                                     {
-                                         headers: {
-                                             'Authorization': `Bearer ${token}`,
-                                             'Content-Type': 'application/json'
-                                         }
-                                     }
-                                 );
-                                 return await response.json();
-                             };   
-                             const reqPorEtapa = getRequerimientos(id_proyecto_etapa); 
-                             //console.log(reqPorEtapa);
-                             // RECORRER LAS HABILIDADES DE CADA REQUERIMIENTO
-                             
-                             for(let a=0; a<reqPorEtapa.length; a++){
-                                const idReq = reqPorEtapa[a].id;
-                                const idNivel = restoValores.etapas[i].requerimientos[k].nivel;
-                                const habilidadesPorReq = restoValores.etapas[i].requerimientos[k].habilidades;
-
-                                for(let ind=0;ind<habilidadesPorReq.length;ind++){
-                                  // CREACION DE REQUERIMIENTO - HABILIDADES
-                                  const responseRH = await fetch(`http://localhost:3000/api/requerimiento-habilidad`,{
-                                    method:'POST',
-                                    headers:{'Authorization':`Bearer${token}`,'Content-Type':'application/json'},
-                                    body:{id_requerimiento:idReq,id_habilidad:habilidadesPorReq.id,id_desarrollador:user.id,
-                                      id_nivel:idNivel,terminado:0
-                                    }
-                                  });
-
-                                  if(!responseRH.ok){
-                                    console.log(responseRH.statusText);
-                                  }
-                                  else{
-                                    console.log(responseRH.ok);
-                                  }
-
-
-                                }// fin for 
-
-                             }// fin for
-
-                             // OBTENER LA HABILIDAD DE CADA REQUERIMIENTO 
-                             console.log('REQUERIMIENTOS : ');
-                             console.log(restoValores.etapas[0].requerimientos);
-                             console.log('HABILIDADES DE UN REQUERIMIENTOS: ');
-                             console.log(restoValores.etapas[0].requerimientos[0].habilidades);
-                             console.log('fECHA INICIO DE UNA ETAPA');
-                             console.log(restoValores.etapas[0].fechaInicio);
-                             console.log('FECHA FIN DE UNA ETAPA');
-                             console.log(restoValores.etapas[0].fechaFin);
-                             console.log('REQUERIMIENTOS DE UNA ETAPA');
-                             console.log(restoValores.etapas[0].requerimientos);
-                             console.log('Nivel del requerimiento');
-                             console.log(restoValores.etapas[0].requerimientos[0].nivel);
-                             
-
-
-
-
-
-                         }// fin if 
-                         else{
-                           const errorMensaje = await resReq.text();
-                           console.error('Error al crear el proyecto',errorMensaje);
-                           throw new Error(`HTTP error! status: ${resReq.status}`);
-                         }
-                       }
-                       catch(error){
-                         console.log(error);
-                       }
-
-                    }// fin for 
-
-
-                   }// fin for 
-            
-
-
-          // Aquí puedes manejar el envío del formulario
-        }}
+        onSubmit={submit}
+    
       >
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue }) => (
           <View style={styles.container}>

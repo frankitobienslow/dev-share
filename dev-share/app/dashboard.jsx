@@ -9,6 +9,7 @@ import {
 import { useUser } from "../context/UserContext"; // Asegúrate de que la ruta sea correcta
 import { useRouter } from "expo-router";
 import ListaProyectos from "../components/ListaProyectos"; // Importa el componente de Proyectos
+import DashboardCard from "../components/DashboardCard";
 
 const Dashboard = () => {
   const { user } = useUser(); // Extraer el usuario del UserContext
@@ -42,12 +43,30 @@ const Dashboard = () => {
 
   return (
     <ScrollView className="h-auto">
-      <View>
-        <Text className="text-lg font-bold text-center">
-          Bienvenido, {user.nombre}
-        </Text>
-      </View>
-
+         <DashboardCard
+        title="Proyectos"
+        icon="briefcase-outline"
+        link="/proyectos"
+   // Cambiar por rol según el contexto
+      />
+        <DashboardCard
+        title="Ofertas"
+        icon="briefcase-outline"
+        link="/ofertas"
+        role="desarrollador" // Cambiar por rol según el contexto
+      />
+        <DashboardCard
+        title="Postulaciones"
+        icon="paper-plane-outline"
+        link="/postulaciones"
+        role="desarrollador" // Cambiar por rol según el contexto
+      />
+         <DashboardCard
+        title="Conocimientos"
+        icon="school-outline"
+        link="/skills"
+        role="desarrollador" // Cambiar por rol según el contexto
+      />
       {/* Si es desarrollador, muestra contenido específico para desarrolladores */}
       {esDesarrollador ? (
         <View className="p-4">

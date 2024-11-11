@@ -11,13 +11,6 @@ const Header = () => {
   const [hoveredIndex, setHoveredIndex] = useState(null); // Estado para el hover
   const sidebarWidth = useRef(new Animated.Value(60)).current;
 
-  // Interpolación de opacidad corregida
-  const opacity = sidebarWidth.interpolate({
-    inputRange: [150, 180], // Aquí cambiaremos el inputRange
-    outputRange: [0, 1], // La opacidad va de 0 a 1 mientras la barra se expande
-    extrapolate: "clamp", // Evita que la opacidad se pase de 1
-  });
-
   // Verifica si el usuario está logueado y no está en las rutas excluidas
   const shouldDisplayLayout =
     user && !["/home", "/login", "/register"].includes(router.pathname);
@@ -47,19 +40,14 @@ const Header = () => {
   }
 
   const navigationOptions = [
-    { label: "Mi perfil", route: "/perfil", icon: "person-outline" },
-    {
-      label: "Conocimientos",
-      route: "/skills",
-      icon: "school-outline",
-      showIf: user?.rol === "desarrollador",
-    },
+    { label: "Inicio", route: "/dashboard", icon: "home-outline" },
     {
       label: "Ofertas",
       route: "/ofertas",
       icon: "briefcase-outline",
       showIf: user?.rol === "desarrollador",
     },
+    { label: "Mi perfil", route: "/perfil", icon: "person-outline" },
     {
       label: "Cerrar sesión",
       route: "/logout",
@@ -77,11 +65,12 @@ const Header = () => {
     <Animated.View
       style={{
         width: sidebarWidth,
-        justifyContent: "flex-start", // Asegura que el contenido esté al inicio
-        alignItems: "center", // Centra horizontalmente los iconos
+        justifyContent: "flex-start", // Asegura que el contenido esté al inicio cuando se expanda
+        alignItems: isExpanded ? "flex-start" : "center", // Centra solo cuando está contraída
       }}
       className="h-full bg-gray-900 p-4 shadow-lg"
     >
+      {/* Botón de toggle para expandir y contraer la barra */}
       <Pressable
         onPress={toggleSidebar}
         className="absolute top-4 left-4" // Posiciona el botón en la parte superior
@@ -92,14 +81,16 @@ const Header = () => {
         <Ionicons name="menu-outline" size={24} color="white" />
       </Pressable>
 
-      {/* Mostrar saludo solo si la barra está expandida y la animación ha terminado */}
+      {/* Mostrar saludo solo si la barra está expandida */}
       <Animated.Text
         style={{
           flexShrink: 1,
           marginLeft: 10,
-          opacity: opacity, // Aquí aplicamos la interpolación de opacidad
+          opacity: isExpanded ? 1 : 0,
+          width: isExpanded ? 150 : 0, // El texto tiene ancho solo cuando la barra está expandida
           transition: "opacity 200ms ease-in-out",
-          marginTop: 40, // Ajusta este valor para separar el saludo del botón
+          marginTop: 40,
+          textAlign: "center", // Centra el saludo horizontalmente cuando está contraída
         }}
         className="text-white text-xl mb-6"
         numberOfLines={1}
@@ -108,58 +99,69 @@ const Header = () => {
         Hola, {user.nombre} {user.apellido}
       </Animated.Text>
 
-      {/* Opciones de navegación */}
-      <View className="mt-4 space-y-4">
-        {navigationOptions.map((option, index) => (
-          (option.showIf === undefined || option.showIf) && (
-            <Pressable
-              key={index}
-              onPress={() =>
-                option.action
-                  ? option.action()
-                  : handleOptionPress(option.route)
-              }
-              onMouseEnter={() => setHoveredIndex(index)} // Detectar cuando el mouse entra
-              onMouseLeave={() => setHoveredIndex(null)} // Detectar cuando el mouse sale
-              className={"flex-row items-center rounded-lg transition-all duration-200"}
-              style={{
-                paddingVertical: 10,
-                paddingHorizontal: 8,
-                backgroundColor: hoveredIndex === index ? "rgba(255, 255, 255, 0.1)" : "transparent", // Cambia el fondo cuando el mouse está sobre el item
-              }}
-            >
-              <View
+      {/* Opciones de navegación con texto */}
+      <View
+        className="mt-4 space-y-4"
+        style={{ alignItems: isExpanded ? "flex-start" : "center" }}
+      >
+        {navigationOptions.map(
+          (option, index) =>
+            (option.showIf === undefined || option.showIf) && (
+              <Pressable
+                key={index}
+                onPress={() =>
+                  option.action
+                    ? option.action()
+                    : handleOptionPress(option.route)
+                }
+                
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+                className="flex-row items-center rounded-lg transition-all duration-200"
                 style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  width: 40,
-                  height: 40,
-                  borderRadius: 20,
-                  backgroundColor: "rgba(255, 255, 255, 0.1)",
+                  paddingVertical: 10,
+                  paddingHorizontal: 8,
+                  backgroundColor:
+                    hoveredIndex === index
+                      ? "rgba(255, 255, 255, 0.1)"
+                      : "transparent",
+                  justifyContent: "center", // Centra los elementos dentro de cada opción
                 }}
               >
-                <Ionicons name={option.icon} size={24} color="white" />
-              </View>
-
-              {/* Mostrar texto solo si la barra está expandida */}
-              {isExpanded && (
-                <Animated.Text
-                  className="text-white text-base font-medium"
+                {/* Icono siempre visible */}
+                <View
                   style={{
-                    flexShrink: 1,
-                    marginLeft: 10,
-                    opacity: opacity, // Aquí aplicamos la interpolación de opacidad
-                    transition: "opacity 200ms ease-in-out",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: 40,
+                    height: 40,
+                    borderRadius: 20,
+                    backgroundColor: "rgba(255, 255, 255, 0.1)",
                   }}
-                  numberOfLines={1}
-                  ellipsizeMode="tail"
                 >
-                  {option.label}
-                </Animated.Text>
-              )}
-            </Pressable>
-          )
-        ))}
+                  <Ionicons name={option.icon} size={24} color="white" />
+                </View>
+
+                {/* Mostrar texto solo si la barra está expandida */}
+                {isExpanded && (
+                  <Text
+                    className="text-white text-base font-medium"
+                    style={{
+                      flexShrink: 1,
+                      marginLeft: 10,
+                      opacity: isExpanded ? 1 : 0,
+                      width: isExpanded ? 150 : 0, // El texto tiene ancho solo cuando la barra está expandida
+                      transition: "opacity 200ms ease-in-out",
+
+                      marginLeft: 10,
+                    }}
+                  >
+                    {option.label}
+                  </Text>
+                )}
+              </Pressable>
+            )
+        )}
       </View>
     </Animated.View>
   );

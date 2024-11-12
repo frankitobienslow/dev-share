@@ -143,9 +143,9 @@ const Proyecto = () => {
                   <Button title="Renunciar" onPress={handleRenunciar} color="red" />
                 </>
               ) : (
-                <View>
-                  <Pressable onPress={handlePress}>
-                    <Text>Contratar desarrolladores</Text>
+                <View className='bg-cyan-400'>
+                  <Pressable  onPress={handlePress}>
+                    <Text>Contratar desarrolladores</Text>                    
                   </Pressable>
                 </View>
           

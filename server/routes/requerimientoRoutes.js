@@ -10,5 +10,6 @@ router.get("/:id", requerimientoController.getRequerimientoById); // Obtener por
 router.post("/", requerimientoController.createRequerimiento); // Crear
 router.put("/:id", requerimientoController.updateRequerimiento); // Actualizar
 router.delete("/:id", requerimientoController.deleteRequerimiento); // Eliminar
+router.get("/ofertas", requerimientoController.getOfertas); // Obtener pfertas
 
 module.exports = router;

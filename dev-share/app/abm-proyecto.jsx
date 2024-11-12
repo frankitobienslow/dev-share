@@ -156,7 +156,7 @@ export default function CrearProyecto() {
               id_proyecto:resProject.id,
               id_etapa:resEtapas.data[index].id,
               fecha_inicio:etapa.fechaInicio,
-              fecha_fin:etapa.fechaFin
+              fecha_fin:null
             }
             const resPE = await peticion(urlPE,metodoPE,token,bodyPE);
             
@@ -304,7 +304,7 @@ export default function CrearProyecto() {
             <Text style={styles.errorText}>{errors.etapas[index].fechaInicio}</Text>
           )}
           
-          <View style={{marginTop:10,marginBottom:10}}>
+         {/* <View style={{marginTop:10,marginBottom:10}}>
             <Text>Fecha Fin</Text>  
             <DatePicker
               selected={etapa.fechaFin}
@@ -315,7 +315,7 @@ export default function CrearProyecto() {
           </View>      
           {touched.etapas?.[index]?.fechaFin && errors.etapas?.[index]?.fechaFin && (
             <Text style={styles.errorText}>{errors.etapas[index].fechaFin}</Text>
-          )}
+          )}}
 
           {/* REQUERIMIENTOS DENTRO DE ETAPA */}
           <FieldArray
@@ -517,7 +517,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-
 
 
 

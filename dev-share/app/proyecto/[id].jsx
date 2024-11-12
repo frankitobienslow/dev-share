@@ -130,19 +130,28 @@ const Proyecto = () => {
         </Text>
         <Text className={`text-sm mb-2`}>Estado: {proyecto.etapaActual}</Text>
 
-        {user?.rol === "desarrollador" &&
-          proyecto?.Equipo?.desarrolladores?.some(
+        {user?.rol === "desarrollador"  && 
+          (proyecto?.Equipo?.desarrolladores?.some(
             (dev) =>
               dev.id === user?.id && dev.EquipoDesarrollador?.activo === true // Verificación del estado activo
-          ) && (
-            <>
-              <ListaRequerimientosHabilidad
-                id_proyecto={proyecto.id}
-                id_desarrollador={user.id}
-              />
-              <Button title="Renunciar" onPress={handleRenunciar} color="red" />
-            </>
-          )}
+          ))? (
+                <>
+                  <ListaRequerimientosHabilidad
+                    id_proyecto={proyecto.id}
+                    id_desarrollador={user.id}
+                  />
+                  <Button title="Renunciar" onPress={handleRenunciar} color="red" />
+                </>
+              ) : (
+                <View>
+                  <Pressable onPress={handlePress}>
+                    <Text>Contratar desarrolladores</Text>
+                  </Pressable>
+                </View>
+          
+              )}
+
+
         {/* Modal de Feedback */}
         <FeedbackModal
           visible={modalVisible}

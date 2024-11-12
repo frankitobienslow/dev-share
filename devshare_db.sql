@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 04-11-2024 a las 21:03:25
--- Versión del servidor: 10.4.28-MariaDB
--- Versión de PHP: 8.2.4
+-- Host: localhost
+-- Generation Time: Nov 12, 2024 at 08:42 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `devshare_db`
+-- Database: `devshare_db`
 --
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `cliente`
+-- Table structure for table `cliente`
 --
 
 CREATE TABLE `cliente` (
@@ -32,7 +32,7 @@ CREATE TABLE `cliente` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `cliente`
+-- Dumping data for table `cliente`
 --
 
 INSERT INTO `cliente` (`id`) VALUES
@@ -42,7 +42,7 @@ INSERT INTO `cliente` (`id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `desarrollador`
+-- Table structure for table `desarrollador`
 --
 
 CREATE TABLE `desarrollador` (
@@ -51,16 +51,17 @@ CREATE TABLE `desarrollador` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `desarrollador`
+-- Dumping data for table `desarrollador`
 --
 
 INSERT INTO `desarrollador` (`id`, `activo`) VALUES
-(26, 1);
+(26, 1),
+(28, 1);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `equipo`
+-- Table structure for table `equipo`
 --
 
 CREATE TABLE `equipo` (
@@ -69,7 +70,7 @@ CREATE TABLE `equipo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `equipo`
+-- Dumping data for table `equipo`
 --
 
 INSERT INTO `equipo` (`id`, `nombre`) VALUES
@@ -79,7 +80,7 @@ INSERT INTO `equipo` (`id`, `nombre`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `equipo_desarrollador`
+-- Table structure for table `equipo_desarrollador`
 --
 
 CREATE TABLE `equipo_desarrollador` (
@@ -90,7 +91,7 @@ CREATE TABLE `equipo_desarrollador` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `equipo_desarrollador`
+-- Dumping data for table `equipo_desarrollador`
 --
 
 INSERT INTO `equipo_desarrollador` (`id`, `id_desarrollador`, `id_equipo`, `activo`) VALUES
@@ -100,7 +101,7 @@ INSERT INTO `equipo_desarrollador` (`id`, `id_desarrollador`, `id_equipo`, `acti
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `etapa`
+-- Table structure for table `etapa`
 --
 
 CREATE TABLE `etapa` (
@@ -109,7 +110,7 @@ CREATE TABLE `etapa` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `etapa`
+-- Dumping data for table `etapa`
 --
 
 INSERT INTO `etapa` (`id`, `nombre`) VALUES
@@ -121,7 +122,7 @@ INSERT INTO `etapa` (`id`, `nombre`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `evaluacion`
+-- Table structure for table `evaluacion`
 --
 
 CREATE TABLE `evaluacion` (
@@ -134,7 +135,7 @@ CREATE TABLE `evaluacion` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `evaluacion`
+-- Dumping data for table `evaluacion`
 --
 
 INSERT INTO `evaluacion` (`id`, `id_desarrollador`, `id_habilidad`, `id_nivel`, `resultado`, `fecha`) VALUES
@@ -150,7 +151,7 @@ INSERT INTO `evaluacion` (`id`, `id_desarrollador`, `id_habilidad`, `id_nivel`, 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `experiencia`
+-- Table structure for table `experiencia`
 --
 
 CREATE TABLE `experiencia` (
@@ -165,7 +166,7 @@ CREATE TABLE `experiencia` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `feedback`
+-- Table structure for table `feedback`
 --
 
 CREATE TABLE `feedback` (
@@ -174,7 +175,7 @@ CREATE TABLE `feedback` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `feedback`
+-- Dumping data for table `feedback`
 --
 
 INSERT INTO `feedback` (`id`, `descripcion`) VALUES
@@ -187,7 +188,7 @@ INSERT INTO `feedback` (`id`, `descripcion`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `feedback_usuario`
+-- Table structure for table `feedback_usuario`
 --
 
 CREATE TABLE `feedback_usuario` (
@@ -200,7 +201,7 @@ CREATE TABLE `feedback_usuario` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `feedback_usuario`
+-- Dumping data for table `feedback_usuario`
 --
 
 INSERT INTO `feedback_usuario` (`id`, `id_feedback`, `id_autor`, `id_destino`, `detalle`, `fecha`) VALUES
@@ -215,7 +216,7 @@ INSERT INTO `feedback_usuario` (`id`, `id_feedback`, `id_autor`, `id_destino`, `
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `habilidad`
+-- Table structure for table `habilidad`
 --
 
 CREATE TABLE `habilidad` (
@@ -226,7 +227,7 @@ CREATE TABLE `habilidad` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `habilidad`
+-- Dumping data for table `habilidad`
 --
 
 INSERT INTO `habilidad` (`id`, `nombre`, `descripcion`, `id_rol`) VALUES
@@ -258,7 +259,7 @@ INSERT INTO `habilidad` (`id`, `nombre`, `descripcion`, `id_rol`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `nivel`
+-- Table structure for table `nivel`
 --
 
 CREATE TABLE `nivel` (
@@ -267,7 +268,7 @@ CREATE TABLE `nivel` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `nivel`
+-- Dumping data for table `nivel`
 --
 
 INSERT INTO `nivel` (`id`, `nombre`) VALUES
@@ -280,7 +281,7 @@ INSERT INTO `nivel` (`id`, `nombre`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `postulacion`
+-- Table structure for table `postulacion`
 --
 
 CREATE TABLE `postulacion` (
@@ -292,7 +293,7 @@ CREATE TABLE `postulacion` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `proyecto`
+-- Table structure for table `proyecto`
 --
 
 CREATE TABLE `proyecto` (
@@ -304,7 +305,7 @@ CREATE TABLE `proyecto` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `proyecto`
+-- Dumping data for table `proyecto`
 --
 
 INSERT INTO `proyecto` (`id`, `titulo`, `descripcion`, `id_cliente`, `id_equipo`) VALUES
@@ -316,7 +317,7 @@ INSERT INTO `proyecto` (`id`, `titulo`, `descripcion`, `id_cliente`, `id_equipo`
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `proyecto_etapa`
+-- Table structure for table `proyecto_etapa`
 --
 
 CREATE TABLE `proyecto_etapa` (
@@ -328,7 +329,7 @@ CREATE TABLE `proyecto_etapa` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `proyecto_etapa`
+-- Dumping data for table `proyecto_etapa`
 --
 
 INSERT INTO `proyecto_etapa` (`id`, `id_proyecto`, `id_etapa`, `fecha_inicio`, `fecha_fin`) VALUES
@@ -348,7 +349,7 @@ INSERT INTO `proyecto_etapa` (`id`, `id_proyecto`, `id_etapa`, `fecha_inicio`, `
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `requerimiento`
+-- Table structure for table `requerimiento`
 --
 
 CREATE TABLE `requerimiento` (
@@ -360,7 +361,7 @@ CREATE TABLE `requerimiento` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `requerimiento`
+-- Dumping data for table `requerimiento`
 --
 
 INSERT INTO `requerimiento` (`id`, `nombre`, `id_proyecto_etapa`, `descripcion`, `disponible`) VALUES
@@ -374,7 +375,7 @@ INSERT INTO `requerimiento` (`id`, `nombre`, `id_proyecto_etapa`, `descripcion`,
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `requerimiento_habilidad`
+-- Table structure for table `requerimiento_habilidad`
 --
 
 CREATE TABLE `requerimiento_habilidad` (
@@ -387,7 +388,7 @@ CREATE TABLE `requerimiento_habilidad` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `requerimiento_habilidad`
+-- Dumping data for table `requerimiento_habilidad`
 --
 
 INSERT INTO `requerimiento_habilidad` (`id`, `id_requerimiento`, `id_habilidad`, `id_nivel`, `id_desarrollador`, `terminado`) VALUES
@@ -401,7 +402,7 @@ INSERT INTO `requerimiento_habilidad` (`id`, `id_requerimiento`, `id_habilidad`,
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `rol`
+-- Table structure for table `rol`
 --
 
 CREATE TABLE `rol` (
@@ -411,7 +412,7 @@ CREATE TABLE `rol` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `rol`
+-- Dumping data for table `rol`
 --
 
 INSERT INTO `rol` (`id`, `nombre`, `descripcion`) VALUES
@@ -430,7 +431,7 @@ INSERT INTO `rol` (`id`, `nombre`, `descripcion`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `usuario`
+-- Table structure for table `usuario`
 --
 
 CREATE TABLE `usuario` (
@@ -439,42 +440,44 @@ CREATE TABLE `usuario` (
   `apellido` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `dni` varchar(255) NOT NULL
+  `dni` varchar(255) NOT NULL,
+  `biografia` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `usuario`
+-- Dumping data for table `usuario`
 --
 
-INSERT INTO `usuario` (`id`, `nombre`, `apellido`, `password`, `email`, `dni`) VALUES
-(22, 'lokillo', 'AAA', '$2a$10$x0ICM2jTRN9oP//FL2.KS.sD9T/c2b.4wlkTJcwL3ud3zvQT84gAi', 'marianoturner@hotmail.com', '848418'),
-(26, 'Francisco', 'insua', '$2a$10$vRzCZyPaMYYakF2M/4Wsi.pCQJ1SgEUytSQnh/bU4LErNIV/APOQS', 'franinsua7@gmail.com', '44103173'),
-(27, 'prueba', 'prueba', '$2a$10$jL0FQGidvu50pVfwQqNY6u3QWytfPKQhNTFQLsYXV8nOvLpA1Jj5G', 'prueba@prueba.com', '1111111');
+INSERT INTO `usuario` (`id`, `nombre`, `apellido`, `password`, `email`, `dni`, `biografia`) VALUES
+(22, 'lokillo', 'AAA', '$2a$10$x0ICM2jTRN9oP//FL2.KS.sD9T/c2b.4wlkTJcwL3ud3zvQT84gAi', 'marianoturner@hotmail.com', '848418', NULL),
+(26, 'Francisco', 'insua', '$2a$10$vRzCZyPaMYYakF2M/4Wsi.pCQJ1SgEUytSQnh/bU4LErNIV/APOQS', 'franinsua7@gmail.com', '44103173', NULL),
+(27, 'prueba', 'prueba', '$2a$10$jL0FQGidvu50pVfwQqNY6u3QWytfPKQhNTFQLsYXV8nOvLpA1Jj5G', 'prueba@prueba.com', '1111111', NULL),
+(28, 'anuel', 'aa', '$2a$10$WbQBFkEg0gzkF6eKRnZoHupGXKfbjAB0AV5TmtuIO2e8QLzWmsNOW', 'real@hastalamuerte.com', '11111111111111111', 'Bebesita soy adicto a tu play');
 
 --
--- Índices para tablas volcadas
+-- Indexes for dumped tables
 --
 
 --
--- Indices de la tabla `cliente`
+-- Indexes for table `cliente`
 --
 ALTER TABLE `cliente`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `desarrollador`
+-- Indexes for table `desarrollador`
 --
 ALTER TABLE `desarrollador`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `equipo`
+-- Indexes for table `equipo`
 --
 ALTER TABLE `equipo`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `equipo_desarrollador`
+-- Indexes for table `equipo_desarrollador`
 --
 ALTER TABLE `equipo_desarrollador`
   ADD PRIMARY KEY (`id`),
@@ -482,13 +485,13 @@ ALTER TABLE `equipo_desarrollador`
   ADD KEY `id_equipo` (`id_equipo`);
 
 --
--- Indices de la tabla `etapa`
+-- Indexes for table `etapa`
 --
 ALTER TABLE `etapa`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `evaluacion`
+-- Indexes for table `evaluacion`
 --
 ALTER TABLE `evaluacion`
   ADD PRIMARY KEY (`id`),
@@ -497,20 +500,20 @@ ALTER TABLE `evaluacion`
   ADD KEY `id_nivel` (`id_nivel`);
 
 --
--- Indices de la tabla `experiencia`
+-- Indexes for table `experiencia`
 --
 ALTER TABLE `experiencia`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_usuario` (`id_usuario`);
 
 --
--- Indices de la tabla `feedback`
+-- Indexes for table `feedback`
 --
 ALTER TABLE `feedback`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `feedback_usuario`
+-- Indexes for table `feedback_usuario`
 --
 ALTER TABLE `feedback_usuario`
   ADD PRIMARY KEY (`id`),
@@ -519,20 +522,20 @@ ALTER TABLE `feedback_usuario`
   ADD KEY `id_destino` (`id_destino`);
 
 --
--- Indices de la tabla `habilidad`
+-- Indexes for table `habilidad`
 --
 ALTER TABLE `habilidad`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_rol` (`id_rol`);
 
 --
--- Indices de la tabla `nivel`
+-- Indexes for table `nivel`
 --
 ALTER TABLE `nivel`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `postulacion`
+-- Indexes for table `postulacion`
 --
 ALTER TABLE `postulacion`
   ADD PRIMARY KEY (`id`),
@@ -540,7 +543,7 @@ ALTER TABLE `postulacion`
   ADD KEY `id_requerimiento_rol` (`id_requerimiento_habilidad`);
 
 --
--- Indices de la tabla `proyecto`
+-- Indexes for table `proyecto`
 --
 ALTER TABLE `proyecto`
   ADD PRIMARY KEY (`id`),
@@ -548,7 +551,7 @@ ALTER TABLE `proyecto`
   ADD KEY `id_equipo` (`id_equipo`);
 
 --
--- Indices de la tabla `proyecto_etapa`
+-- Indexes for table `proyecto_etapa`
 --
 ALTER TABLE `proyecto_etapa`
   ADD PRIMARY KEY (`id`),
@@ -556,14 +559,14 @@ ALTER TABLE `proyecto_etapa`
   ADD KEY `id_etapa` (`id_etapa`);
 
 --
--- Indices de la tabla `requerimiento`
+-- Indexes for table `requerimiento`
 --
 ALTER TABLE `requerimiento`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_proyecto_etapa` (`id_proyecto_etapa`);
 
 --
--- Indices de la tabla `requerimiento_habilidad`
+-- Indexes for table `requerimiento_habilidad`
 --
 ALTER TABLE `requerimiento_habilidad`
   ADD PRIMARY KEY (`id`),
@@ -573,154 +576,154 @@ ALTER TABLE `requerimiento_habilidad`
   ADD KEY `fk_requerimiento_habilidad_desarrollador` (`id_desarrollador`);
 
 --
--- Indices de la tabla `rol`
+-- Indexes for table `rol`
 --
 ALTER TABLE `rol`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `usuario`
+-- Indexes for table `usuario`
 --
 ALTER TABLE `usuario`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT de las tablas volcadas
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT de la tabla `cliente`
+-- AUTO_INCREMENT for table `cliente`
 --
 ALTER TABLE `cliente`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
--- AUTO_INCREMENT de la tabla `desarrollador`
+-- AUTO_INCREMENT for table `desarrollador`
 --
 ALTER TABLE `desarrollador`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
--- AUTO_INCREMENT de la tabla `equipo`
+-- AUTO_INCREMENT for table `equipo`
 --
 ALTER TABLE `equipo`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT de la tabla `equipo_desarrollador`
+-- AUTO_INCREMENT for table `equipo_desarrollador`
 --
 ALTER TABLE `equipo_desarrollador`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT de la tabla `etapa`
+-- AUTO_INCREMENT for table `etapa`
 --
 ALTER TABLE `etapa`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT de la tabla `evaluacion`
+-- AUTO_INCREMENT for table `evaluacion`
 --
 ALTER TABLE `evaluacion`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
--- AUTO_INCREMENT de la tabla `experiencia`
+-- AUTO_INCREMENT for table `experiencia`
 --
 ALTER TABLE `experiencia`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `feedback`
+-- AUTO_INCREMENT for table `feedback`
 --
 ALTER TABLE `feedback`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT de la tabla `feedback_usuario`
+-- AUTO_INCREMENT for table `feedback_usuario`
 --
 ALTER TABLE `feedback_usuario`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT de la tabla `habilidad`
+-- AUTO_INCREMENT for table `habilidad`
 --
 ALTER TABLE `habilidad`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
--- AUTO_INCREMENT de la tabla `nivel`
+-- AUTO_INCREMENT for table `nivel`
 --
 ALTER TABLE `nivel`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT de la tabla `postulacion`
+-- AUTO_INCREMENT for table `postulacion`
 --
 ALTER TABLE `postulacion`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `proyecto`
+-- AUTO_INCREMENT for table `proyecto`
 --
 ALTER TABLE `proyecto`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT de la tabla `proyecto_etapa`
+-- AUTO_INCREMENT for table `proyecto_etapa`
 --
 ALTER TABLE `proyecto_etapa`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- AUTO_INCREMENT de la tabla `requerimiento`
+-- AUTO_INCREMENT for table `requerimiento`
 --
 ALTER TABLE `requerimiento`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT de la tabla `requerimiento_habilidad`
+-- AUTO_INCREMENT for table `requerimiento_habilidad`
 --
 ALTER TABLE `requerimiento_habilidad`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT de la tabla `rol`
+-- AUTO_INCREMENT for table `rol`
 --
 ALTER TABLE `rol`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
--- AUTO_INCREMENT de la tabla `usuario`
+-- AUTO_INCREMENT for table `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
--- Restricciones para tablas volcadas
+-- Constraints for dumped tables
 --
 
 --
--- Filtros para la tabla `cliente`
+-- Constraints for table `cliente`
 --
 ALTER TABLE `cliente`
   ADD CONSTRAINT `fk_cliente_usuario` FOREIGN KEY (`id`) REFERENCES `usuario` (`id`);
 
 --
--- Filtros para la tabla `desarrollador`
+-- Constraints for table `desarrollador`
 --
 ALTER TABLE `desarrollador`
   ADD CONSTRAINT `fk_desarrollador_usuario` FOREIGN KEY (`id`) REFERENCES `usuario` (`id`);
 
 --
--- Filtros para la tabla `equipo_desarrollador`
+-- Constraints for table `equipo_desarrollador`
 --
 ALTER TABLE `equipo_desarrollador`
   ADD CONSTRAINT `equipo_desarrollador_ibfk_1` FOREIGN KEY (`id_desarrollador`) REFERENCES `desarrollador` (`id`),
   ADD CONSTRAINT `equipo_desarrollador_ibfk_2` FOREIGN KEY (`id_equipo`) REFERENCES `equipo` (`id`);
 
 --
--- Filtros para la tabla `evaluacion`
+-- Constraints for table `evaluacion`
 --
 ALTER TABLE `evaluacion`
   ADD CONSTRAINT `evaluacion_ibfk_1` FOREIGN KEY (`id_desarrollador`) REFERENCES `desarrollador` (`id`),
@@ -728,13 +731,13 @@ ALTER TABLE `evaluacion`
   ADD CONSTRAINT `evaluacion_ibfk_3` FOREIGN KEY (`id_nivel`) REFERENCES `nivel` (`id`);
 
 --
--- Filtros para la tabla `experiencia`
+-- Constraints for table `experiencia`
 --
 ALTER TABLE `experiencia`
   ADD CONSTRAINT `experiencia_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`);
 
 --
--- Filtros para la tabla `feedback_usuario`
+-- Constraints for table `feedback_usuario`
 --
 ALTER TABLE `feedback_usuario`
   ADD CONSTRAINT `feedback_usuario_ibfk_1` FOREIGN KEY (`id_feedback`) REFERENCES `feedback` (`id`),
@@ -742,40 +745,40 @@ ALTER TABLE `feedback_usuario`
   ADD CONSTRAINT `feedback_usuario_ibfk_3` FOREIGN KEY (`id_destino`) REFERENCES `usuario` (`id`);
 
 --
--- Filtros para la tabla `habilidad`
+-- Constraints for table `habilidad`
 --
 ALTER TABLE `habilidad`
   ADD CONSTRAINT `habilidad_ibfk_1` FOREIGN KEY (`id_rol`) REFERENCES `rol` (`id`);
 
 --
--- Filtros para la tabla `postulacion`
+-- Constraints for table `postulacion`
 --
 ALTER TABLE `postulacion`
   ADD CONSTRAINT `postulacion_ibfk_1` FOREIGN KEY (`id_desarrollador`) REFERENCES `desarrollador` (`id`),
   ADD CONSTRAINT `postulacion_ibfk_2` FOREIGN KEY (`id_requerimiento_habilidad`) REFERENCES `requerimiento_habilidad` (`id`);
 
 --
--- Filtros para la tabla `proyecto`
+-- Constraints for table `proyecto`
 --
 ALTER TABLE `proyecto`
   ADD CONSTRAINT `proyecto_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id`),
   ADD CONSTRAINT `proyecto_ibfk_2` FOREIGN KEY (`id_equipo`) REFERENCES `equipo` (`id`);
 
 --
--- Filtros para la tabla `proyecto_etapa`
+-- Constraints for table `proyecto_etapa`
 --
 ALTER TABLE `proyecto_etapa`
   ADD CONSTRAINT `proyecto_etapa_ibfk_1` FOREIGN KEY (`id_proyecto`) REFERENCES `proyecto` (`id`),
   ADD CONSTRAINT `proyecto_etapa_ibfk_2` FOREIGN KEY (`id_etapa`) REFERENCES `etapa` (`id`);
 
 --
--- Filtros para la tabla `requerimiento`
+-- Constraints for table `requerimiento`
 --
 ALTER TABLE `requerimiento`
   ADD CONSTRAINT `requerimiento_ibfk_1` FOREIGN KEY (`id_proyecto_etapa`) REFERENCES `proyecto_etapa` (`id`);
 
 --
--- Filtros para la tabla `requerimiento_habilidad`
+-- Constraints for table `requerimiento_habilidad`
 --
 ALTER TABLE `requerimiento_habilidad`
   ADD CONSTRAINT `fk_requerimiento_habilidad_desarrollador` FOREIGN KEY (`id_desarrollador`) REFERENCES `desarrollador` (`id`),

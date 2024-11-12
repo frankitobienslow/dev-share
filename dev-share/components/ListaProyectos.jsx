@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, ActivityIndicator, ScrollView } from "react-native";
+import { Text, ActivityIndicator, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useUser } from "../context/UserContext";
 import ProyectoItem from "./ProyectoItem";
@@ -72,7 +72,8 @@ const ListaProyectos = ({ mostrarActivos }) => {
   }
 
   return (
-    <ScrollView className="h-auto p-4">
+
+    <View className="h-auto p-4">
       {/* Título basado en mostrarActivos */}
       <Text className={`text-center ${mostrarActivos ? "text-2xl font-bold text-blue-600 my-4" : "text-xl font-bold text-gray-500 my-4"}`}>
   {mostrarActivos ? "Proyectos Activos" : "Proyectos Históricos"}
@@ -86,7 +87,8 @@ const ListaProyectos = ({ mostrarActivos }) => {
           <ProyectoItem key={proyecto.id} proyecto={proyecto} />
         ))
       )}
-    </ScrollView>
+    </View>
+    
   );
 };
 

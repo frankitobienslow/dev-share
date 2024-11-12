@@ -67,27 +67,6 @@ const Dashboard = () => {
         link="/skills"
         role="desarrollador" // Cambiar por rol según el contexto
       />
-      {/* Si es desarrollador, muestra contenido específico para desarrolladores */}
-      {esDesarrollador ? (
-        <View className="p-4">
-          <ListaProyectos  mostrarActivos={true}/> {/* Mostrar lista de proyectos del usuario */}
-          <ListaProyectos  mostrarActivos={false}/>{/* Mostrar lista de proyectos del usuario */}
-        </View>
-      ) : (
-        <View className="p-4">
-          <ListaProyectos  mostrarActivos={true}/> {/* Mostrar lista de proyectos del usuario */}
-          <ListaProyectos  mostrarActivos={false}/> {/* Mostrar lista de proyectos del usuario */}
-          {/* Botón "Publicar Oferta" */}
-          <Pressable
-            className="bg-blue-700 rounded-lg py-2 px-4 mt-4"
-            onPress={() => router.push("/abm-proyecto")}
-          >
-            <Text className="text-white text-lg text-center">
-            Nuevo proyecto
-            </Text>
-          </Pressable>
-        </View>
-      )}
     </ScrollView>
   );
 };

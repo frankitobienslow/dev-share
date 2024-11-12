@@ -23,6 +23,7 @@ const RegisterSchema = Yup.object().shape({
   userType: Yup.string()
     .oneOf(["desarrollador", "cliente"], "Selecciona un tipo de usuario")
     .required("Selecciona un tipo de usuario"),
+    biografia: Yup.string().optional()
 });
 
 const Register = () => {
@@ -101,6 +102,7 @@ const Register = () => {
           password: "",
           confirmPassword: "",
           userType: "",
+            biografia: ""
         }}
         validationSchema={RegisterSchema}
         onSubmit={handleRegister}
@@ -171,6 +173,15 @@ const Register = () => {
             {touched.apellido && errors.apellido && (
               <Text style={{ color: "red" }}>{errors.apellido}</Text>
             )}
+             <TextInput
+              className="border border-gray-300 rounded-lg p-4 mb-1"
+              placeholder="Biografía (opcional)"
+              placeholderTextColor="#888"
+              onChangeText={handleChange("biografia")}
+              onBlur={handleBlur("biografia")}
+              value={values.biografia}
+              multiline
+            />
 
             {/* Contraseña Input */}
             <TextInput

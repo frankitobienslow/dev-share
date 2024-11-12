@@ -20,11 +20,16 @@ const Usuario = sequelize.define('Usuario', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    biografia: {
+        type: DataTypes.TEXT,
+        allowNull: true, // Permite que sea opcional
+      },
     email: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true // Asegúrate de que el email sea único
     },
+    
     password: {
         type: DataTypes.STRING,
         allowNull: false

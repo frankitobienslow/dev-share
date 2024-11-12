@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 
 // Crear usuario genérico
 exports.createUsuario = async (datosUsuario) => {
-    const { dni, nombre, apellido, email, password } = datosUsuario;
+    const { dni, nombre, apellido, email, password,biografia} = datosUsuario;
 
     // Validar que los campos requeridos estén presentes
     if (!dni || !nombre || !apellido || !email || !password) {
@@ -25,7 +25,7 @@ exports.createUsuario = async (datosUsuario) => {
     const hashedPassword = await bcryptjs.hash(password, 10);
 
     // Crear el usuario
-    const usuario = await Usuario.create({ dni, nombre, apellido, email, password: hashedPassword });
+    const usuario = await Usuario.create({ dni, nombre, apellido, email, password: hashedPassword, biografia });
 
     return usuario; // Devolver el usuario creado
 };
@@ -33,10 +33,10 @@ exports.createUsuario = async (datosUsuario) => {
 // Crear desarrollador
 exports.createDesarrollador = async (req, res) => {
     try {
-        const { dni, nombre, apellido, email, password } = req.body;
+        const { dni, nombre, apellido, email, password,biografia } = req.body;
 
         // Crear el usuario usando la función genérica
-        const usuario = await exports.createUsuario({ dni, nombre, apellido, email, password });
+        const usuario = await exports.createUsuario({ dni, nombre, apellido, email, password, biografia });
 
         // Crear el desarrollador
         await Desarrollador.create({ id: usuario.id, activo: true });
@@ -51,10 +51,10 @@ exports.createDesarrollador = async (req, res) => {
 // Crear cliente
 exports.createCliente = async (req, res) => {
     try {
-        const { dni, nombre, apellido, email, password } = req.body;
+        const { dni, nombre, apellido, email, password, biografia } = req.body;
 
         // Crear el usuario usando la función genérica
-        const usuario = await exports.createUsuario({ dni, nombre, apellido, email, password });
+        const usuario = await exports.createUsuario({ dni, nombre, apellido, email, password, biografia });
 
         // Crear el cliente
         await Cliente.create({ id: usuario.id });
@@ -88,15 +88,15 @@ exports.loginUsuario = async (req, res) => {
 
         // Obtener rol del usuario en un solo paso
         const rol = await Cliente.findOne({ where: { id: usuario.id } })
-            .then(cliente => cliente ? 'cliente' : 
+            .then(cliente => cliente ? 'cliente' :
                 Desarrollador.findOne({ where: { id: usuario.id } })
-                .then(desarrollador => desarrollador ? 'desarrollador' : null)
+                    .then(desarrollador => desarrollador ? 'desarrollador' : null)
             );
 
         console.log("Rol encontrado:", rol); // Verifica el rol encontrado
 
         const token = jwt.sign(
-            { id: usuario.id, email: usuario.email, rol:rol },
+            { id: usuario.id, email: usuario.email, rol: rol },
             process.env.JWT_SECRET,
             { expiresIn: '8h' }
         );
@@ -130,6 +130,7 @@ exports.getUsuarios = async (req, res) => {
 // Obtener usuario por ID
 exports.getUsuarioById = async (req, res) => {
     try {
+        console.log("ID recibido en el backend:", req.params.id);
         console.log(req);
         const usuario = await Usuario.findByPk(req.params.id);
         if (usuario) {
@@ -146,7 +147,7 @@ exports.getUsuarioById = async (req, res) => {
 // Actualizar usuario
 exports.updateUsuario = async (req, res) => {
     try {
-        const { dni, nombre, apellido, password } = req.body;
+        const { dni, nombre, apellido, password, biografia } = req.body;
         const usuario = await Usuario.findByPk(req.params.id);
         if (usuario) {
             const updateData = { dni, nombre, apellido };

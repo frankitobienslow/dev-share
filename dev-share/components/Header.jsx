@@ -47,7 +47,7 @@ const Header = () => {
       icon: "briefcase-outline",
       showIf: user?.rol === "desarrollador",
     },
-    { label: "Mi perfil", route: "/perfil", icon: "person-outline" },
+    user && { label: "Mi perfil", route: `/perfil/${user.id}`, icon: "person-outline" }, // Solo mostrar si user existe
     {
       label: "Cerrar sesión",
       route: "/logout",
@@ -82,22 +82,24 @@ const Header = () => {
       </Pressable>
 
       {/* Mostrar saludo solo si la barra está expandida */}
-      <Animated.Text
-        style={{
-          flexShrink: 1,
-          marginLeft: 10,
-          opacity: isExpanded ? 1 : 0,
-          width: isExpanded ? 150 : 0, // El texto tiene ancho solo cuando la barra está expandida
-          transition: "opacity 200ms ease-in-out",
-          marginTop: 40,
-          textAlign: "center", // Centra el saludo horizontalmente cuando está contraída
-        }}
-        className="text-white text-xl mb-6"
-        numberOfLines={1}
-        ellipsizeMode="tail"
-      >
-        Hola, {user.nombre} {user.apellido}
-      </Animated.Text>
+      {user && (
+  <Animated.Text
+    style={{
+      flexShrink: 1,
+      marginLeft: 10,
+      opacity: isExpanded ? 1 : 0,
+      width: isExpanded ? 150 : 0,
+      transition: "opacity 200ms ease-in-out",
+      marginTop: 40,
+      textAlign: "center",
+    }}
+    className="text-white text-xl mb-6"
+    numberOfLines={1}
+    ellipsizeMode="tail"
+  >
+    Hola, {user.nombre} {user.apellido}
+  </Animated.Text>
+)}
 
       {/* Opciones de navegación con texto */}
       <View

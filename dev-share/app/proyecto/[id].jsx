@@ -92,7 +92,7 @@ const Proyecto = () => {
   };
 
   const handlePress =()=>{
-    router.push('../equipoDev');
+    router.push(`../equipoDev`);
   }
   const handleFeedbackSuccess = () => {
     setAlertVisible(true); // Mostrar el AlertModal cuando el feedback es exitoso
@@ -143,9 +143,9 @@ const Proyecto = () => {
                   <Button title="Renunciar" onPress={handleRenunciar} color="red" />
                 </>
               ) : (
-                <View className='bg-cyan-400'>
+                <View className='bg-indigo-500 shadow-lg shadow-indigo-500/50 rounded-2xl w-1/6 p-0.5'>
                   <Pressable  onPress={handlePress}>
-                    <Text>Contratar desarrolladores</Text>                    
+                    <Text className='text-center'>Contratar desarrolladores</Text>                    
                   </Pressable>
                 </View>
           

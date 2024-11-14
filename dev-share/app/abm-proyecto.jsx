@@ -101,13 +101,13 @@ const validationSchema = Yup.object().shape({
   );
 };
 
+
 async function peticion(url, metodo, token, body = null) {
   const headers = { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` };
   const response = await fetch(url, { method:metodo, headers, body: JSON.stringify(body) });
   if (!response.ok) throw new Error(await response.text());
   return await response.json();
 };
-
 
 export default function CrearProyecto() {
   const {user} = useUser();

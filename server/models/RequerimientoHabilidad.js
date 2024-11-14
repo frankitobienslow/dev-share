@@ -25,6 +25,11 @@ const RequerimientoHabilidad = sequelize.define('RequerimientoHabilidad', {
       model: 'habilidad',
       key: 'id',
     },
+    terminado: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
   },
   id_nivel: {
     type: DataTypes.INTEGER,
